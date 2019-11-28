@@ -191,6 +191,12 @@ static PyObject *PyAUTOCVE_get_parameters_char(PyAUTOCVE* self, PyObject* args){
     return parameters_py;
 }
 
+static PyObject *PyAUTOCVE_get_unweighted_area_under_roc(PyAUTOCVE* self, PyObject* args) {
+    // double* predictions, int n_instances, int n_classes
+    PyObject *auc = Py_BuildValue("d", 0.001);
+    return auc;
+}
+
 
 static PyMethodDef PyAUTOCVE_methods[] = {
     { "optimize", (PyCFunction)PyAUTOCVE_optimize,METH_VARARGS | METH_KEYWORDS,"Optimize an ensemble to the (X,y) base. X and y expect to be numeric (used pandas.get_dummies otherwise)." },
@@ -200,6 +206,7 @@ static PyMethodDef PyAUTOCVE_methods[] = {
     { "get_voting_ensemble_all", (PyCFunction)PyAUTOCVE_get_voting_ensemble_all,METH_VARARGS,"Get the ensemble compound by all the pipelines defined in the last generation." },
     { "get_grammar", (PyCFunction)PyAUTOCVE_get_grammar_char,METH_VARARGS,"Get as text the grammar used in the optimization procedure." },
     { "get_parameters", (PyCFunction)PyAUTOCVE_get_parameters_char,METH_VARARGS,"Get as text the parameters used in the optimization procedure." },
+    { "get_unweighted_area_under_roc", (PyCFunction)PyAUTOCVE_get_unweighted_area_under_roc,METH_VARARGS,"Get unweighted area under the ROC curve for a set of predictions." },
     {NULL}  /* Sentinel */
 };
 
@@ -226,10 +233,6 @@ static PyModuleDef AUTOCVE_module = {
     -1,//sizeof(struct module_state),       /* size of per-interpreter state of the module,or -1 if the module keeps state in global variables. */
     AUTOCVEMethods
 };
-
-
-
-
 
 
 PyMODINIT_FUNC PyInit_AUTOCVE(void){

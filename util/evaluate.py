@@ -75,8 +75,6 @@ def evaluate_population(pipelines_population,X,y,scoring,n_jobs,timeout_pip_sec,
             X_train = load(filename_train, mmap_mode='r') 
             X_test = load(filename_test, mmap_mode='r') 
 
-
-
             result_pipeline=ParallelSilentTimeout(n_jobs=n_jobs, backend="loky",timeout=timeout_pip_sec)(delayed(evaluate_pipe_timeout)(pipeline_str, X_train, X_test, y[train_index], y[test_index]) for pipeline_str in pipelines_population if pipeline_str is not None) 
 
             metric_population_cv=[]
@@ -152,7 +150,9 @@ def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test,verbose=1):
 
     predict_data=[]
     try:
-        predict_data=pipeline.predict(X_test)
+        predict_data=pipeline.predict(X_test)  # original line of code. commenting for replacing with probs
+        predict_data= pipeline.predict_proba(X_test)  # TODO testing!
+
     except Exception as e:
         if verbose>0:
             print("Pipeline predict error: "+str(pipeline))
