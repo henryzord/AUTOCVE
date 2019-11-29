@@ -255,7 +255,14 @@ def execute_exp(
         verbose=1
     )
 
-    res = p.get_unweighted_area_under_roc(None)
+    res = p.get_unweighted_area_under_roc(
+        y_true=np.array([1, 0, 1], dtype=np.int32),
+        y_pred=np.array(
+            [[0.1, 0.9],
+             [0.7, 0.3],
+             [0.6, 0.4]], dtype=np.float32
+        )
+    )
     print('Res:', res)
 
     import warnings

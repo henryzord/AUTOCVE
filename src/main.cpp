@@ -3,7 +3,7 @@
 #include "AUTOCVE.h"
 #include "grammar.h"
 #include "python_interface.h"
-
+#include "auc_metric.h"
 
 typedef struct {
     PyObject_HEAD
@@ -191,10 +191,85 @@ static PyObject *PyAUTOCVE_get_parameters_char(PyAUTOCVE* self, PyObject* args){
     return parameters_py;
 }
 
-static PyObject *PyAUTOCVE_get_unweighted_area_under_roc(PyAUTOCVE* self, PyObject* args) {
-    // double* predictions, int n_instances, int n_classes
-    PyObject *auc = Py_BuildValue("d", 0.001);
-    return auc;
+static PyObject *PyAUTOCVE_get_unweighted_area_under_roc(PyObject *self, PyObject *args, PyObject *kwargs) {
+
+    static char *kwds[] = {"y_true", "y_pred", NULL};
+    PyObject *y_true, *y_pred;
+
+    if (!PyArg_ParseTupleAndKeywords(
+            args, kwargs, "OO", kwds, &y_true, &y_pred)) {
+        return NULL;
+    }
+
+    if(PyArray_NDIM((PyArrayObject*)y_pred) > 2) {
+        PyErr_SetString(PyExc_ValueError, "Probability matrix should have two dimensions.");
+        return NULL;
+    }
+
+    y_true = (PyObject*)PyArray_GETCONTIGUOUS((PyArrayObject*)y_true);
+    y_pred = (PyObject*)PyArray_GETCONTIGUOUS((PyArrayObject*)y_pred);
+
+    npy_intp *y_pred_dims = PyArray_DIMS((PyArrayObject*)y_pred);
+    int n_instances = (int)y_pred_dims[0], n_classes = (int)y_pred_dims[1];
+
+    roc_point_t *curve;
+    for(int c = 0; c < n_classes; c++) {
+        curve = getCurve(y_pred, y_true, c);
+
+        // TODO remove
+        printf("curve %d:\n", c);
+        for(int n = 0; n < n_instances; n++) {
+            printf("tp: %f fp: %f threshold: %f\n", curve[n].tp, curve[n].fp, curve[n].threshold);
+        }
+        printf("\n");
+        // TODO remove
+
+        free(curve); // TODO remove later
+    }
+
+    // double *getCurve(double *predictions, int n_instances, int n_classes, int classIndex)
+
+//    PyObject *roc_curve = PyArray_Empty(1, roc_curve_dims, PyArray_DESCR((PyArrayObject*)y_pred), 0);
+
+    // TODO check if it is C or F contiguous; move pointer accordingly
+
+
+//
+//    char *sampled_ptr = PyArray_BYTES(sampled), *p_ptr, *a_ptr;  // data pointers
+//    p_ptr = PyArray_BYTES((PyArrayObject*)p);
+//
+//    double p_data;
+//    PyObject *p_data;
+//
+//    for(int i = 0; i < n_objects; i++) {
+//
+//        p_ptr = PyArray_BYTES((PyArrayObject*)p);
+//        a_ptr = PyArray_BYTES((PyArrayObject*)a);
+//
+//        for(int k = 0; k < a_dims[0]; k++) {
+//            p_data = (float)PyFloat_AsDouble(PyArray_GETITEM((PyArrayObject*)p, p_ptr));
+//            a_data = PyArray_GETITEM((PyArrayObject*)a, a_ptr);
+//            p_ptr += p_itemsize;
+//            a_ptr += a_itemsize;
+//
+//            div = (int)(num/((sum + p_data) * spread));
+//
+//            if(div <= 0) {
+//                PyArray_SETITEM(sampled, sampled_ptr, a_data);
+//                break;
+//            }
+//            sum += p_data;
+//        }
+//        sampled_ptr += sampled_itemsize;
+//    }
+    // TODO here
+
+
+    // getCurve(double *predictions, int n_instances, int n_classes, int classIndex)
+
+
+    return Py_BuildValue("d", 0.003); // TODO builds a double value
+//    return roc_curve;
 }
 
 
@@ -206,7 +281,7 @@ static PyMethodDef PyAUTOCVE_methods[] = {
     { "get_voting_ensemble_all", (PyCFunction)PyAUTOCVE_get_voting_ensemble_all,METH_VARARGS,"Get the ensemble compound by all the pipelines defined in the last generation." },
     { "get_grammar", (PyCFunction)PyAUTOCVE_get_grammar_char,METH_VARARGS,"Get as text the grammar used in the optimization procedure." },
     { "get_parameters", (PyCFunction)PyAUTOCVE_get_parameters_char,METH_VARARGS,"Get as text the parameters used in the optimization procedure." },
-    { "get_unweighted_area_under_roc", (PyCFunction)PyAUTOCVE_get_unweighted_area_under_roc,METH_VARARGS,"Get unweighted area under the ROC curve for a set of predictions." },
+    { "get_unweighted_area_under_roc", (PyCFunction)PyAUTOCVE_get_unweighted_area_under_roc,METH_VARARGS | METH_KEYWORDS,"Get unweighted area under the ROC curve for a set of predictions." },
     {NULL}  /* Sentinel */
 };
 
