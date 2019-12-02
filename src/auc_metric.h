@@ -11,11 +11,11 @@ struct roc_point {
     double threshold;
 } typedef roc_point_t;
 
-int compare (const void *a, const void *b) {
+int compare(const void *a, const void *b) {
   return ((pair_t*)a)->value >= ((pair_t*)b)->value;
 }
 
-roc_point_t *getCurve(PyObject *y_pred, PyObject *y_true, int classIndex) {
+roc_point_t *getCurve(PyObject *y_pred, int classIndex) {
     if(y_pred == NULL) {
         return NULL;
     }
@@ -29,47 +29,44 @@ roc_point_t *getCurve(PyObject *y_pred, PyObject *y_true, int classIndex) {
 
     npy_intp y_pred_itemsize = PyArray_ITEMSIZE((PyArrayObject*)y_pred);
 
-    double totPos = 0, totNeg = 0;
-
-    double *probs = (double*)malloc(sizeof(double) * n_instances);
-
     char *y_pred_ptr = PyArray_BYTES((PyArrayObject*)y_pred);
-    // PyObject* iterator = PyArray_IterNew(y_pred);
+    int *pred = (int*)malloc(sizeof(int) * n_instances);
 
-    char isLastCorrect = -1;
+    pair_t *pairedArray = (pair_t*)malloc(sizeof(pair_t) * n_instances);
+
+    // Weka code starts below
+
+    int totPos = 0, totNeg = 0;
 
     // Get distribution of positive/negatives
-    double cur_pred, other_max;
+    double prob, max_prob;
     int max_index;
     for (int i = 0; i < n_instances; i++) {
-        other_max = -1;
+        max_prob = -1;
         max_index = -1;
 
         for(int j = 0; j < n_classes; j++) {
-            cur_pred = PyFloat_AsDouble(PyArray_GETITEM((PyArrayObject*)y_pred, y_pred_ptr));
-            if(cur_pred > other_max) {
-                other_max = cur_pred;
+            prob = PyFloat_AsDouble(PyArray_GETITEM((PyArrayObject*)y_pred, y_pred_ptr));
+            y_pred_ptr += y_pred_itemsize;
+
+            if(prob > max_prob) {
+                max_prob = prob;
                 max_index = j;
             }
             if(j == classIndex) {
-                probs[i] = cur_pred;
+                pairedArray[i] = {.value = prob, .index = i};
             }
-            y_pred_ptr += y_pred_itemsize;
         }
 
+        pred[i] = max_index;
         if(max_index == classIndex) {
             totPos += 1;
-            isLastCorrect = 1;
         } else {
             totNeg += 1;
-            isLastCorrect = 0;
         }
     }
 
-    pair_t *pairedArray = (pair_t*)malloc(sizeof(pair_t) * n_instances);
-    for(int i = 0; i < n_instances; i++) {
-        pairedArray[i] = {.value = probs[i], .index = i};
-    }
+    qsort(pairedArray, n_instances, sizeof(pair_t), compare);
 
     //     Actual Class
     //      0       1
@@ -83,20 +80,19 @@ roc_point_t *getCurve(PyObject *y_pred, PyObject *y_true, int classIndex) {
     //   |       |       |
     //    ---------------
     double threshold = 0;
-    double cumulativePos = 0;
-    double cumulativeNeg = 0;
-    int tc[2][2] = {{0, 0}, {0, 0}};  // confusion matrix
+    int cumulativePos = 0, cumulativeNeg = 0;
+    int fp = totNeg, fn = 0, tp = totPos, tn = 0;
 
-    roc_point_t *points = (roc_point_t*)malloc(sizeof(roc_point_t) * n_instances);
+    roc_point_t *points = (roc_point_t*)malloc(sizeof(roc_point_t) * (n_instances + 1));
 
     for(int i = 0; i < n_instances; i++) {
-        if((i == 0) || probs[pairedArray[i].index] > threshold) {
-            tc[1][1] = tc[1][1] - cumulativePos;
-            tc[0][1] = tc[0][1] + cumulativePos;
-            tc[1][0] = tc[1][0] - cumulativeNeg;
-            tc[0][0] = tc[0][0] + cumulativeNeg;
-            threshold = probs[pairedArray[i].index];
-            points[i] = {.tp = tc[1][1], .fp = tc[1][0], .threshold = threshold};
+        if((i == 0) || (pairedArray[i].value > threshold)) {
+            tp = tp - cumulativePos;  // true positive
+            fn = fn + cumulativePos;  // false negative
+            fp = fp - cumulativeNeg;  // false positive
+            tn = tn + cumulativeNeg;  // true negative
+            threshold = pairedArray[i].value;
+            points[i] = {.tp = tp, .fp = fp, .threshold = threshold};
             cumulativeNeg = 0;
             cumulativePos = 0;
             if(i == (n_instances - 1)) {
@@ -104,7 +100,7 @@ roc_point_t *getCurve(PyObject *y_pred, PyObject *y_true, int classIndex) {
             }
         }
 
-        if(isLastCorrect) {
+        if(pred[pairedArray[i].index] == classIndex) {
             cumulativePos += 1;
         } else {
             cumulativeNeg += 1;
@@ -112,16 +108,16 @@ roc_point_t *getCurve(PyObject *y_pred, PyObject *y_true, int classIndex) {
     }
 
     // make sure a zero point gets into the curve
-    if((tc[0][1] != totPos) || (tc[0][0] != totNeg)) {
-        tc[1][1] = 0;
-        tc[1][0] = 0;
-        tc[0][0] = totNeg;
-        tc[0][1] = totPos;
-        threshold = probs[pairedArray[n_instances - 1].index] + 10e-6;
-        points[n_instances - 1] = {.tp = tc[1][1], .fp = tc[1][0], .threshold = threshold};
-    }
+    // if((fn != totPos) || (tn != totNeg)) {
+    tp = 0;
+    fp = 0;
+    tn = totNeg;
+    fn = totPos;
+    threshold = pairedArray[n_instances - 1].value + 10e-6;
+    points[n_instances] = {.tp = tp, .fp = fp, .threshold = threshold};
+    // }
 
-    free(probs);
+    free(pred);
     free(pairedArray);
     return points;
 }

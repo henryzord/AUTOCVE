@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/auc_metric.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auc_metric.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/auc_metric.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,38 +12,10 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1575050119433" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1575315316692" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$Nosetests_in_test_getAUC_py.coverage" NAME="Nosetests in test_getAUC.py Coverage Results" MODIFIED="1574970661350" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script__module_.coverage" NAME="AUTOCVE[EACOMP]_script (module) Coverage Results" MODIFIED="1574965796672" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script__1_.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1574441486883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-  </component>
-  <component name="DockManager">
-    <window id="2">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file pinned="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/util/evaluate.py">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="541">
-                    <caret line="150" column="19" selection-start-line="150" selection-start-column="19" selection-end-line="150" selection-end-column="19" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file pinned="false" current-in-tab="true">
-              <entry file="file://$USER_HOME$/Desktop/cpu_code.c">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="558">
-                    <caret line="106" selection-start-line="106" selection-end-line="106" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="375004058">
@@ -83,18 +52,18 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Python Console" value="155" />
-          <entry key="cpp" value="2479" />
-          <entry key="h" value="2718" />
+          <entry key="Python Console" value="174" />
+          <entry key="cpp" value="2487" />
+          <entry key="h" value="4307" />
           <entry key="py" value="7870" />
           <entry key="txt" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C++" value="5197" />
+          <entry key="C++" value="6794" />
           <entry key="PLAIN_TEXT" value="7" />
-          <entry key="Python" value="8025" />
+          <entry key="Python" value="8044" />
         </counts>
       </usages-collector>
     </session>
@@ -104,8 +73,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="262" column="42" selection-start-line="262" selection-start-column="42" selection-end-line="262" selection-end-column="42" />
+            <state relative-caret-position="358">
+              <caret line="262" column="22" selection-start-line="262" selection-start-column="22" selection-end-line="262" selection-end-column="22" />
               <folding>
                 <element signature="e#2#30#0" expanded="true" />
                 <marker date="1575051244795" expanded="true" signature="823:826" ph="..." />
@@ -118,8 +87,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="223" column="21" selection-start-line="223" selection-start-column="21" selection-end-line="223" selection-end-column="21" />
+            <state relative-caret-position="420">
+              <caret line="221" column="66" selection-start-line="221" selection-start-column="66" selection-end-line="221" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -127,8 +96,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/auc_metric.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="434">
-              <caret line="102" column="22" lean-forward="true" selection-start-line="102" selection-start-column="22" selection-end-line="102" selection-end-column="22" />
+            <state relative-caret-position="338">
+              <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
             </state>
           </provider>
         </entry>
@@ -144,36 +113,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>PyAUTOCVE_get_parameters_char</find>
-      <find>PyAUTOCVE_methods</find>
-      <find>autocve</find>
-      <find>build</find>
-      <find>exit</find>
-      <find>py_build_vale</find>
-      <find>-1</find>
-      <find>unweighte</find>
-      <find>dim</find>
-      <find>sampled_size</find>
-      <find>PyArray_GETITEM</find>
-      <find>p_ptr</find>
-      <find>double</find>
-      <find>npy_intp</find>
-      <find>sampled_counters</find>
-      <find>predictions</find>
-      <find>fromdescr</find>
       <find>pyarray_type</find>
       <find>a_descr</find>
       <find>sampled_ndims</find>
-      <find>pred</find>
       <find>y_pred_itemsize</find>
       <find>printf</find>
       <find>classPreds</find>
       <find>roc_curve</find>
       <find>roc_cur</find>
-      <find>probs</find>
       <find>points</find>
       <find>tc[][]</find>
       <find>n_objects</find>
+      <find>itemsize</find>
+      <find>isLastCorrect</find>
+      <find>tp:</find>
+      <find>totpos</find>
+      <find>cumulative</find>
+      <find>qsort</find>
+      <find>sort</find>
+      <find>compare</find>
+      <find>p</find>
+      <find>probs</find>
+      <find>y_true_ptr</find>
+      <find>cur_pred</find>
+      <find>other_max</find>
+      <find>prob</find>
+      <find>pred</find>
+      <find>tc[0][0]</find>
+      <find>res:</find>
+      <find>max_i</find>
+      <find>max_index</find>
     </findStrings>
     <replaceStrings>
       <replace>some_args.experiment_name</replace>
@@ -182,9 +151,12 @@
       <replace>test</replace>
       <replace>jtest_probs</replace>
       <replace>test_probs</replace>
-      <replace>y_pred</replace>
       <replace>cur_pred</replace>
+      <replace>y_pred</replace>
       <replace>probs</replace>
+      <replace>pred</replace>
+      <replace>max_prob</replace>
+      <replace>tn</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -203,9 +175,9 @@
         <option value="$PROJECT_DIR$/test_getAUC.py" />
         <option value="$PROJECT_DIR$/src/auc_metric.h.py" />
         <option value="$PROJECT_DIR$/src/utility.cpp" />
+        <option value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
         <option value="$PROJECT_DIR$/src/main.cpp" />
         <option value="$PROJECT_DIR$/src/auc_metric.h" />
-        <option value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
       </list>
     </option>
   </component>
@@ -373,7 +345,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.15257049" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.15257049" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
@@ -382,7 +354,7 @@
       <window_info anchor="bottom" id="Terminal" order="5" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" sideWeight="0.4991708" weight="0.3294979" />
-      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.4859038" visible="true" weight="0.3294979" />
+      <window_info active="true" anchor="bottom" id="Run" order="8" sideWeight="0.4859038" visible="true" weight="0.3294979" />
       <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.48258707" weight="0.28138074" />
       <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
@@ -832,13 +804,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/util/evaluate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="541">
-          <caret line="150" column="19" selection-start-line="150" selection-start-column="19" selection-end-line="150" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/utility.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -849,24 +814,31 @@
     <entry file="file://$PROJECT_DIR$/src/grammar.h">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.cpp">
+    <entry file="file://$USER_HOME$/Desktop/cpu_code.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="223" column="21" selection-start-line="223" selection-start-column="21" selection-end-line="223" selection-end-column="21" />
+        <state relative-caret-position="918">
+          <caret line="93" selection-start-line="93" selection-end-line="93" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/cpu_code.c">
+    <entry file="file://$PROJECT_DIR$/util/evaluate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="106" selection-start-line="106" selection-end-line="106" />
+        <state relative-caret-position="555">
+          <caret line="150" column="19" selection-start-line="150" selection-start-column="19" selection-end-line="150" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="221" column="66" selection-start-line="221" selection-start-column="66" selection-end-line="221" selection-end-column="66" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="262" column="42" selection-start-line="262" selection-start-column="42" selection-end-line="262" selection-end-column="42" />
+        <state relative-caret-position="358">
+          <caret line="262" column="22" selection-start-line="262" selection-start-column="22" selection-end-line="262" selection-end-column="22" />
           <folding>
             <element signature="e#2#30#0" expanded="true" />
             <marker date="1575051244795" expanded="true" signature="823:826" ph="..." />
@@ -877,8 +849,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/auc_metric.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="102" column="22" lean-forward="true" selection-start-line="102" selection-start-column="22" selection-end-line="102" selection-end-column="22" />
+        <state relative-caret-position="338">
+          <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
         </state>
       </provider>
     </entry>
