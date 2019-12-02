@@ -215,6 +215,7 @@ static PyObject *PyAUTOCVE_get_unweighted_area_under_roc(PyObject *self, PyObjec
     roc_point_t *curve;
     for(int c = 0; c < n_classes; c++) {
         curve = getCurve(y_pred, c);
+        double area = getROCArea(curve, n_instances + 1);
 
         // TODO remove
         printf("curve %d:\n", c);
@@ -222,6 +223,7 @@ static PyObject *PyAUTOCVE_get_unweighted_area_under_roc(PyObject *self, PyObjec
             printf("tp: %f\tfp: %f\tthreshold: %f\n", curve[n].tp, curve[n].fp, curve[n].threshold);
         }
         printf("\n");
+        printf("area: %f\n", area);
         // TODO remove
 
         free(curve); // TODO remove later

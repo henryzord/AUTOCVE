@@ -68,17 +68,6 @@ roc_point_t *getCurve(PyObject *y_pred, int classIndex) {
 
     qsort(pairedArray, n_instances, sizeof(pair_t), compare);
 
-    //     Actual Class
-    //      0       1
-    //    ---------------
-    //   |       |       |
-    // 0 |  TN   |  FN   | Predicted
-    //   |       |       | Class
-    //    ---------------
-    //   |       |       |
-    // 1 |  FP   |  TP   |
-    //   |       |       |
-    //    ---------------
     double threshold = 0;
     int cumulativePos = 0, cumulativeNeg = 0;
     int fp = totNeg, fn = 0, tp = totPos, tn = 0;
@@ -108,16 +97,49 @@ roc_point_t *getCurve(PyObject *y_pred, int classIndex) {
     }
 
     // make sure a zero point gets into the curve
-    // if((fn != totPos) || (tn != totNeg)) {
-    tp = 0;
-    fp = 0;
-    tn = totNeg;
-    fn = totPos;
-    threshold = pairedArray[n_instances - 1].value + 10e-6;
-    points[n_instances] = {.tp = tp, .fp = fp, .threshold = threshold};
-    // }
+    if((fn != totPos) || (tn != totNeg)) {
+        tp = 0;
+        fp = 0;
+        tn = totNeg;
+        fn = totPos;
+        threshold = pairedArray[n_instances - 1].value + 10e-6;
+        points[n_instances] = {.tp = tp, .fp = fp, .threshold = threshold};
+    } else {
+        points[n_instances] = {.tp = -1, .fp = -1, .threshold = -1};
+    }
 
     free(pred);
     free(pairedArray);
     return points;
+}
+
+double getROCArea(roc_point_t *points, int n_instances) {
+    int n;
+    if(points[n_instances].threshold == -1) {
+        n = n_instances;
+    } else {
+        n = n_instances + 1;
+    }
+    if(n == 0) {
+        return NAN;
+    }
+
+    double area = 0.0, cumNeg = 0.0;
+    double totalPos = points[0].tp;
+    double totalNeg = points[0].fp;
+    for(int i = 0; i < n; i++) {
+        double cip, cin;
+        if(i < (n - 1)) {
+            cip = points[i].tp - points[i + 1].tp;
+            cin = points[i].fp - points[i + 1].fp;
+        }  else {
+            cip = points[n - 1].tp;
+            cin = points[n - 1].fp;
+        }
+        area += cip * (cumNeg + (0.5 * cin));
+        cumNeg += cin;
+    }
+    area /= (totalNeg * totalPos);
+
+    return area;
 }
