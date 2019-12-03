@@ -192,25 +192,25 @@ static PyObject *PyAUTOCVE_get_parameters_char(PyAUTOCVE* self, PyObject* args){
 }
 
 
-static PyObject *get_unweighted_area_under_roc(PyObject *args, PyObject *kwargs) {
+static PyObject *PyAUTOCVE_get_unweighted_area_under_roc(PyObject *self, PyObject *args, PyObject *kwargs) {
 
-    static char *kwds[] = {"y_true", "y_pred", NULL};
-    PyObject *y_true, *y_pred;
+    static char *kwds[] = {"y_true", "y_score", NULL};
+    PyObject *y_true, *y_score;
 
     if (!PyArg_ParseTupleAndKeywords(
-            args, kwargs, "OO", kwds, &y_true, &y_pred)) {
+            args, kwargs, "OO", kwds, &y_true, &y_score)) {
         return NULL;
     }
 
-    if(PyArray_NDIM((PyArrayObject*)y_pred) > 2) {
+    if(PyArray_NDIM((PyArrayObject*)y_score) > 2) {
         PyErr_SetString(PyExc_ValueError, "Probability matrix should have two dimensions.");
         return NULL;
     }
 
     y_true = (PyObject*)PyArray_GETCONTIGUOUS((PyArrayObject*)y_true);
-    y_pred = (PyObject*)PyArray_GETCONTIGUOUS((PyArrayObject*)y_pred);
+    y_score = (PyObject*)PyArray_GETCONTIGUOUS((PyArrayObject*)y_score);
 
-    npy_intp *y_pred_dims = PyArray_DIMS((PyArrayObject*)y_pred);
+    npy_intp *y_pred_dims = PyArray_DIMS((PyArrayObject*)y_score);
     int n_instances = (int)y_pred_dims[0], n_classes = (int)y_pred_dims[1];
 
     roc_point_t *curve;
@@ -228,7 +228,7 @@ static PyObject *get_unweighted_area_under_roc(PyObject *args, PyObject *kwargs)
 
     int count_vec;
     for(int c = 0; c < n_classes; c++) {
-        curve = getCurve(y_pred, y_true_int, c, &count_vec);
+        curve = getCurve(y_score, y_true_int, c, &count_vec);
         area = getROCArea(curve, count_vec);
         mean_area += area;
         free(curve);
@@ -248,7 +248,7 @@ static PyMethodDef PyAUTOCVE_methods[] = {
     { "get_voting_ensemble_all", (PyCFunction)PyAUTOCVE_get_voting_ensemble_all,METH_VARARGS,"Get the ensemble compound by all the pipelines defined in the last generation." },
     { "get_grammar", (PyCFunction)PyAUTOCVE_get_grammar_char,METH_VARARGS,"Get as text the grammar used in the optimization procedure." },
     { "get_parameters", (PyCFunction)PyAUTOCVE_get_parameters_char,METH_VARARGS,"Get as text the parameters used in the optimization procedure." },
-    { "get_unweighted_area_under_roc", (PyCFunction)get_unweighted_area_under_roc, METH_VARARGS | METH_KEYWORDS, "Get unweighted area under the ROC curve for a set of predictions." },
+    { "get_unweighted_area_under_roc", (PyCFunction)PyAUTOCVE_get_unweighted_area_under_roc, METH_VARARGS | METH_KEYWORDS | METH_CLASS, "Get unweighted area under the ROC curve for a set of predictions." },
     {NULL}  /* Sentinel */
 };
 
