@@ -255,12 +255,32 @@ def execute_exp(
         verbose=1
     )
 
-    res = p.get_unweighted_area_under_roc(
-        y_true=np.array([1, 0, 1], dtype=np.int32),
-        y_pred=np.array(
-            [[0.1, 0.9],
-             [0.7, 0.3],
-             [0.6, 0.4]], dtype=np.float32
+    from AUTOCVE.AUTOCVE import unweighted_area_under_roc
+
+    res = get_unweighted_area_under_roc(
+        y_true=np.array([1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0]),
+        y_pred=np.array([
+            [0.100, 0.900],
+            [0.200, 0.800],
+            [0.300, 0.700],
+            [0.400, 0.600],
+            [0.450, 0.550],
+            [0.460, 0.540],
+            [0.470, 0.530],
+            [0.480, 0.520],
+            [0.490, 0.510],
+            [0.495, 0.505],
+            [0.600, 0.400],
+            [0.610, 0.390],
+            [0.620, 0.380],
+            [0.630, 0.370],
+            [0.640, 0.360],
+            [0.650, 0.350],
+            [0.660, 0.340],
+            [0.670, 0.330],
+            [0.700, 0.300],
+            [0.900, 0.100]],
+            dtype=np.float32
         )
     )
     print('Res:', res)
