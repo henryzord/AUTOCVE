@@ -2,7 +2,7 @@ import numpy
 from distutils.core import setup, Extension
 
 AUTOCVE_modulename=Extension('AUTOCVE.AUTOCVE',
-                          sources=['src/main.cpp',"src/AUTOCVE.cpp","src/grammar.cpp","src/solution.cpp","src/population.cpp","src/python_interface.cpp","src/population_ensemble.cpp","src/utility.cpp", "src/metrics.cpp"],
+                          sources=['src/main.cpp',"src/AUTOCVE.cpp","src/grammar.cpp","src/solution.cpp","src/population.cpp","src/python_interface.cpp","src/population_ensemble.cpp","src/utility.cpp"],
                           include_dirs=[numpy.get_include()],
                           language='c++'
                          )

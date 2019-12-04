@@ -151,7 +151,7 @@ def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test,verbose=1):
     predict_data=[]
     try:
         predict_data=pipeline.predict(X_test)  # original line of code. commenting for replacing with probs
-        predict_data= pipeline.predict_proba(X_test)  # TODO testing!
+        # predict_data = pipeline.predict_proba(X_test)  # TODO reactivate
 
     except Exception as e:
         if verbose>0:

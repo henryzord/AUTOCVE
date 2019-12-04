@@ -1,0 +1,10 @@
+NAME,TYPE
+date,numerical
+day,categorical
+period,numerical
+nswprice,numerical
+nswdemand,numerical
+vicprice,numerical
+vicdemand,numerical
+transfer,numerical
+target,target

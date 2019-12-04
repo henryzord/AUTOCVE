@@ -1,0 +1,6 @@
+NAME,TYPE
+left-weight,numerical
+left-distance,numerical
+right-weight,numerical
+right-distance,numerical
+target,target

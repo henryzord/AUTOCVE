@@ -1,29 +1,24 @@
+import argparse
+import json
+import multiprocessing as mp
+import os
+from datetime import datetime as dt
 from functools import reduce
 
+import numpy as np
 import pandas as pd
 from AUTOCVE.AUTOCVE import AUTOCVEClassifier
-from sklearn.pipeline import Pipeline
+from scipy.io import arff
 from sklearn.metrics import balanced_accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer
-import os
-import time
-import numpy as np
-from shutil import move
-import signal
-import argparse
-from datetime import datetime as dt
-import json
-from scipy.io import arff
+from weka.core import jvm
 from weka.core.converters import Loader
 from weka.core.dataset import Instances
-from weka.core import jvm
 
 from pbil.evaluations import evaluate_on_test, EDAEvaluation, collapse_metrics
 
 GRACE_PERIOD = 0  # 60
-
-import javabridge
 
 
 def unweighted_area_under_roc(score_handler, some_arg, y_true):
@@ -33,13 +28,43 @@ def unweighted_area_under_roc(score_handler, some_arg, y_true):
     )
 
 
-def read_datasets(dataset_path, n_fold):
+def create_metadata_path(args):
+    now = dt.now()
+
+    str_time = now.strftime('%d-%m-%Y-%H:%M:%S')
+
+    joined = os.getcwd() if not os.path.isabs(args.metadata_path) else ''
+    to_process = [args.metadata_path, str_time]
+
+    for path in to_process:
+        joined = os.path.join(joined, path)
+        if not os.path.exists(joined):
+            os.mkdir(joined)
+
+    with open(os.path.join(joined, 'parameters.json'), 'w') as f:
+        json.dump({k: getattr(args, k) for k in args.__dict__}, f, indent=2)
+
+    return joined
+    # these_paths = []
+    # for dataset_name in datasets_names:
+    #     local_joined = os.path.join(joined, dataset_name)
+    #     these_paths += [local_joined]
+    #
+    #     if not os.path.exists(local_joined):
+    #         os.mkdir(local_joined)
+    #
+    # return joined
+
+
+def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_path, id_exp, id_trial):
     """
 
     :param dataset_path:
     :param n_fold:
     :return: A tuple (train-data, test_data), where each object is an Instances object
     """
+    import javabridge
+    jvm.start()
 
     dataset_name = dataset_path.split('/')[-1]
 
@@ -70,35 +95,53 @@ def read_datasets(dataset_path, n_fold):
     train_data = Instances(jtrain_data)
     test_data = Instances(jtest_data)
 
-    return train_data, test_data
+    env = javabridge.get_env()  # type: javabridge.JB_Env
+    jtrain_probs = env.make_object_array(train_probs.shape[0], env.find_class('[D'))  # type: numpy.ndarray
+    for i in range(train_probs.shape[0]):
+        row = env.make_double_array(np.ascontiguousarray(train_probs[i, :]))
+        env.set_object_array_element(jtrain_probs, i, row)
 
+    jtest_probs = env.make_object_array(test_probs.shape[0], env.find_class('[D'))
+    for i in range(test_probs.shape[0]):
+        row = env.make_double_array(np.ascontiguousarray(test_probs[i, :]))
+        env.set_object_array_element(jtest_probs, i, row)
 
-def create_metadata_path(args):
-    now = dt.now()
+    clf = javabridge.make_instance(
+        'Leda/NonJavaClassifier;',
+        '([[D[[DLweka/core/Instances;Lweka/core/Instances;)V',
+        jtrain_probs,
+        jtest_probs,
+        jtrain_data,
+        jtest_data
+    )
 
-    str_time = now.strftime('%d-%m-%Y-%H:%M:%S')
+    test_evaluation_obj = evaluate_on_test(jobject=clf, test_data=test_data)
+    test_pevaluation = EDAEvaluation.from_jobject(test_evaluation_obj, data=test_data, seed=seed)
 
-    joined = os.getcwd() if not os.path.isabs(args.metadata_path) else ''
-    to_process = [args.metadata_path, str_time]
+    dict_metrics = dict()
+    dict_models = dict()
+    for metric_name, metric_aggregator in EDAEvaluation.metrics:
+        value = getattr(test_pevaluation, metric_name)
+        if isinstance(value, np.ndarray):
+            new_value = np.array2string(value.ravel().astype(np.int32), separator=',')
+            new_value_a = 'np.array(%s, dtype=np.%s).reshape(%s)' % (new_value, value.dtype, value.shape)
+            value = new_value_a
 
-    for path in to_process:
-        joined = os.path.join(joined, path)
-        if not os.path.exists(joined):
-            os.mkdir(joined)
+        dict_metrics[metric_name] = value
 
-    with open(os.path.join(joined, 'parameters.json'), 'w') as f:
-        json.dump({k: getattr(args, k) for k in args.__dict__}, f, indent=2)
+    df_metrics = pd.DataFrame(dict_metrics, index=['AUTOCVE'])
+    dict_models['AUTOCVE'] = df_metrics
 
-    return joined
-    # these_paths = []
-    # for dataset_name in datasets_names:
-    #     local_joined = os.path.join(joined, dataset_name)
-    #     these_paths += [local_joined]
-    #
-    #     if not os.path.exists(local_joined):
-    #         os.mkdir(local_joined)
-    #
-    # return joined
+    collapsed = reduce(lambda x, y: x.append(y), dict_models.values())
+    collapsed.to_csv(os.path.join(
+        results_path, id_exp,
+        'test_sample-%02.d_fold-%02.d.csv' % (id_trial, n_fold)), index=True
+    )
+
+    print('got collapsed everything')
+    jvm.stop()
+
+    return test_pevaluation
 
 
 def path_to_dataframe(dataset_path):
@@ -143,14 +186,14 @@ def path_to_arff(dataset_path):
     return af
 
 
-def parse_open_ml(datasets_path, d_id, n_fold, seed):
+def parse_open_ml(datasets_path, d_id, n_fold, queue=None):
     """Function that processes each dataset into an interpretable form
     Args:
         d_id (int): dataset id
-        seed (int): random seed for replicable results
     Returns:
         A tuple of the train / test split data along with the column types
     """
+    jvm.start()
 
     # X_train, X_test, y_train, y_test, df_types
     train = path_to_dataframe('{0}-10-{1}tra.arff'.format(os.path.join(datasets_path, str(d_id), str(d_id)), n_fold))
@@ -183,6 +226,11 @@ def parse_open_ml(datasets_path, d_id, n_fold, seed):
 
     # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=seed)
 
+    jvm.stop()
+
+    if queue is not None:
+        queue.put((X_train, X_test, y_train, y_test, df_types))
+
     return X_train, X_test, y_train, y_test, df_types
 
 
@@ -203,9 +251,9 @@ def fit_predict_proba(estimator, X, y, X_test):
         estimator.fit(X,y)
         return estimator.predict_proba(X_test)
     except Exception as e:
-        with open('log_exp.txt', 'a+') as file_out:
-            file_out.write("Experience error in pipeline:\n" + str(estimator) + "\n")
-            file_out.write(str(e) + "\n")
+        # with open('log_exp.txt', 'a+') as file_out:
+        #     file_out.write("Experience error in pipeline:\n" + str(estimator) + "\n")
+        #     file_out.write(str(e) + "\n")
         return None
 
 
@@ -235,7 +283,7 @@ def fit_predict(estimator, X, y, X_test):
 def execute_exp(
         id_trial, n_fold, datasets_path, d_id, n_generations, time_per_task, pool_size,
         mutation_rate_pool, crossover_rate_pool, n_ensembles, mutation_rate_ensemble, crossover_rate_ensemble,
-        n_jobs, seed=None, subsample=1, METRIC='balanced_accuracy', F_METRIC=balanced_accuracy_score):
+        n_jobs, results_path, seed=None, subsample=1, METRIC='balanced_accuracy', F_METRIC=balanced_accuracy_score):
 
     # try:
     # with open('log_exp.txt', 'a+') as file_out:
@@ -254,34 +302,44 @@ def execute_exp(
         max_evolution_time_secs=time_per_task,
         n_jobs=n_jobs,
         random_state=seed,
-        scoring=METRIC,
+        # scoring=METRIC,  # TODO reactivate
+        scoring='balanced_accuracy',
         verbose=1
     )
 
-    with open('log_exp.txt', 'a+') as file_out:
-        file_out.write("Parameters: " + str(p.get_parameters()) + "\n")
+    mp.set_start_method('spawn')
+    ctx = mp.get_context('spawn')
 
-    X_train, X_test, y_train, y_test, df_types = parse_open_ml(
-        datasets_path=datasets_path, d_id=d_id, n_fold=n_fold, seed=seed
+    queue = ctx.Queue()
+    pro = mp.Process(
+        target=parse_open_ml, kwargs=dict(
+            datasets_path=datasets_path, d_id=d_id, n_fold=n_fold, queue=queue
+        )
     )
+    pro.start()
+    pro.join()
 
-    def handler(signum, frame):
-        print("Maximum time reached.")
-        raise SystemExit('Time limit exceeded, sending system exit...')
+    X_train, X_test, y_train, y_test, df_types = queue.get()
 
-    signal.signal(signal.SIGALRM, handler)
+    # def handler(signum, frame):
+    #     print("Maximum time reached.")
+    #     raise SystemExit('Time limit exceeded, sending system exit...')
+    #
+    # signal.signal(signal.SIGALRM, handler)
+    # signal.alarm(time_per_task + GRACE_PERIOD)
+    # start = time.time()
 
-    signal.alarm(time_per_task + GRACE_PERIOD)
+    # try:
+    p.optimize(X_train, y_train, subsample_data=subsample)
+    # except (KeyboardInterrupt, SystemExit) as e:
+        # print(e)  # TODO commented
+        # raise e
 
-    start = time.time()
+    # duration = time.time()-start
 
-    try:
-        p.optimize(X_train, y_train, subsample_data=subsample)
-    except (KeyboardInterrupt, SystemExit) as e:
-        print(e)
-    duration = time.time()-start
+    print('Finished evolutionary process! Hooray!')
 
-    signal.alarm(0)
+    # signal.alarm(0)
 
     # with open('log_exp.txt', 'a+') as file_out:
     #     file_out.write("Optimization time: "+str(duration)+"\n")
@@ -298,104 +356,18 @@ def execute_exp(
 
     # try:
     # TODO testing!
-    jtrain_data, jtest_data = read_datasets(os.path.join(datasets_path, d_id), n_fold=n_fold)
-
     train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
     test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)
 
-    # TODO convert both arrays to java!
-
-    env = javabridge.get_env()  # type: javabridge.JB_Env
-    jtrain_probs = env.make_object_array(train_probs.shape[0], env.find_class('[D'))  # type: numpy.ndarray
-    for i in range(train_probs.shape[0]):
-        row = env.make_double_array(np.ascontiguousarray(train_probs[i, :]))
-        env.set_object_array_element(jtrain_probs, i, row)
-
-    jtest_probs = env.make_object_array(test_probs.shape[0], env.find_class('[D'))
-    for i in range(test_probs.shape[0]):
-        row = env.make_double_array(np.ascontiguousarray(test_probs[i, :]))
-        env.set_object_array_element(jtest_probs, i, row)
-
-    clf = javabridge.make_instance(
-        'Leda/NonJavaClassifier;',
-        '([[D[[DLweka/core/Instances;Lweka/core/Instances;)V',
-        jtrain_probs,
-        jtest_probs,
-        jtrain_data.jobject,
-        jtest_data.jobject
+    pro = mp.Process(
+        target=get_evaluation, kwargs=dict(
+            dataset_path=os.path.join(datasets_path, d_id), n_fold=n_fold,
+            seed=seed, train_probs=train_probs, test_probs=test_probs,
+            results_path=results_path, id_exp=d_id, id_trial=id_trial
+        )
     )
-
-    test_evaluation_obj = evaluate_on_test(jobject=clf, test_data=jtest_data)
-    test_pevaluation = EDAEvaluation.from_jobject(test_evaluation_obj, data=jtest_data, seed=seed)
-    return test_pevaluation
-
-    #         submit = fit_predict(p.get_best_pipeline(), X_train, y_train, X_test)
-    #         if submit is not None:
-    #             with open('pipe_found.txt', 'a+') as file_out:
-    #                 if isinstance(p.get_best_pipeline(), type(Pipeline)):
-    #                     file_out.write("Best pipeline: "+str(p.get_best_pipeline().steps)+"\n")
-    #                 else:
-    #                     file_out.write("Best pipeline: "+str(p.get_best_pipeline())+"\n")
-    #
-    #             with open('results.txt', 'a+') as results_out:
-    #                 results_out.write(str(d_id)+";best_pip;"+str(F_METRIC(y_test,submit))+";"+str(duration)+"\n")
-    #     except Exception as e:
-    #         with open('log_exp.txt', 'a+') as file_out:
-    #             file_out.write("Experience error in problem "+str(d_id)+" trial "+str(id_trial)+"\n")
-    #             file_out.write(str(e)+"\n")
-    #
-    #     try:
-    #         submit=fit_predict(p.get_voting_ensemble_elite(),X_train,y_train,X_test)
-    #         if submit is not None:
-    #             with open('pipe_found.txt', 'a+') as file_out:
-    #                 file_out.write("Ensemble Elite pipeline: "+str(p.get_voting_ensemble_elite().estimators)+"\n")
-    #
-    #             with open('results.txt', 'a+') as results_out:
-    #                 results_out.write(str(d_id)+";ensemble_elite;"+str(F_METRIC(y_test,submit))+";"+str(duration)+"\n")
-    #     except Exception as e:
-    #         with open('log_exp.txt', 'a+') as file_out:
-    #             file_out.write("Experience error in problem "+str(d_id)+" trial "+str(id_trial)+"\n")
-    #             file_out.write(str(e)+"\n")
-    #
-    #
-    #     try:
-    #         submit=fit_predict(p.get_best_voting_ensemble(),X_train,y_train,X_test)
-    #         if submit is not None:
-    #             with open('pipe_found.txt', 'a+') as file_out:
-    #                 file_out.write("Ensemble AUTOCVE pipeline: "+str(p.get_best_voting_ensemble().estimators)+"\n")
-    #
-    #             with open('results.txt', 'a+') as results_out:
-    #                 results_out.write(str(d_id)+";AUTOCVE;"+str(F_METRIC(y_test,submit))+";"+str(duration)+"\n")
-    #     except Exception as e:
-    #         with open('log_exp.txt', 'a+') as file_out:
-    #             file_out.write("Experience error in problem "+str(d_id)+" trial "+str(id_trial)+"\n")
-    #             file_out.write(str(e)+"\n")
-    #
-    #
-    #     try:
-    #         submit=fit_predict(p.get_voting_ensemble_all(),X_train,y_train,X_test)
-    #         if submit is not None:
-    #             with open('pipe_found.txt', 'a+') as file_out:
-    #                 file_out.write("Ensemble All pipeline: "+str(p.get_voting_ensemble_all().estimators)+"\n")
-    #
-    #             with open('results.txt', 'a+') as results_out:
-    #                 results_out.write(str(d_id)+";ensemble_all;"+str(F_METRIC(y_test,submit))+";"+str(duration)+"\n")
-    #     except Exception as e:
-    #         with open('log_exp.txt', 'a+') as file_out:
-    #             file_out.write("Experience error in problem "+str(d_id)+" trial "+str(id_trial)+"\n")
-    #             file_out.write(str(e)+"\n")
-    #
-    # except Exception as e:
-    #     with open('log_exp.txt', 'a+') as file_out:
-    #         file_out.write("Experience error in problem "+str(d_id)+" trial "+str(id_trial)+"\n")
-    #         file_out.write(str(e)+"\n")
-    #
-    # with open('log_exp.txt', 'a+') as file_out:
-    #     file_out.write("\n"+200*"-"+"\n")
-    # with open('pipe_found.txt', 'a+') as file_out:
-    #     file_out.write("\n"+200*"-"+"\n")
-    #
-    # return test_pevaluation
+    pro.start()
+    pro.join()
 
 
 def main():
@@ -487,11 +459,6 @@ def main():
     results_path = create_metadata_path(args=some_args)
     os.chdir(results_path)
 
-    with open('log_exp.txt', 'a+') as file_out:
-        file_out.write("Experience " + results_path + "\n")
-        file_out.write("Description: " + str(some_args.experiment_description) + "\n\n")
-
-    jvm.start()
     for id_exp in datasets_names:
         os.mkdir(os.path.join(results_path, id_exp))
 
@@ -499,7 +466,7 @@ def main():
         for id_trial in range(1, N_TRIALS + 1):
             print("Trial " + str(id_trial))
             for n_fold in range(1, 10 + 1):  # iterates over folds
-                test_pevaluation = execute_exp(
+                execute_exp(
                     n_fold=n_fold,
                     id_trial=id_trial,
                     datasets_path=some_args.datasets_path,
@@ -514,36 +481,18 @@ def main():
                     crossover_rate_pool=some_args.crossover_rate_pool,
                     n_ensembles=some_args.n_ensembles,
                     mutation_rate_ensemble=some_args.mutation_rate_ensemble,
-                    crossover_rate_ensemble=some_args.crossover_rate_ensemble
+                    crossover_rate_ensemble=some_args.crossover_rate_ensemble,
+                    results_path=results_path
                 )
 
-                dict_metrics = dict()
-                dict_models = dict()
-                for metric_name, metric_aggregator in EDAEvaluation.metrics:
-                    value = getattr(test_pevaluation, metric_name)
-                    if isinstance(value, np.ndarray):
-                        new_value = np.array2string(value.ravel().astype(np.int32), separator=',')
-                        new_value_a = 'np.array(%s, dtype=np.%s).reshape(%s)' % (new_value, value.dtype, value.shape)
-                        value = new_value_a
-
-                    dict_metrics[metric_name] = value
-
-                df_metrics = pd.DataFrame(dict_metrics, index=['AUTOCVE'])
-                dict_models['AUTOCVE'] = df_metrics
-
-                collapsed = reduce(lambda x, y: x.append(y), dict_models.values())
-                collapsed.to_csv(os.path.join(
-                    results_path, id_exp,
-                    'test_sample-%02.d_fold-%02.d.csv' % (id_trial, n_fold)), index=True
-                )
                 break  # TODO remove!
             break  # TODO remove!
+
+        print('collapsing!')
 
         summary = collapse_metrics(os.path.join(results_path, id_exp), only_baselines=True)
         print('summary for dataset %s:' % id_exp)
         print(summary)
-
-    jvm.stop()
 
     # move('results.txt', 'results_finished.txt')
 

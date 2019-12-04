@@ -1,0 +1,11 @@
+NAME,TYPE
+top-left-square,categorical
+top-middle-square,categorical
+top-right-square,categorical
+middle-left-square,categorical
+middle-middle-square,categorical
+middle-right-square,categorical
+bottom-left-square,categorical
+bottom-middle-square,categorical
+bottom-right-square,categorical
+target,target

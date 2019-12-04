@@ -31,14 +31,14 @@
 <weights> ::= "'uniform'" | "'distance'"
 <p_knn> ::= "1" | "2"
 
-<LinearClassifier> ::= "sklearn.svm/LinearSVC(penalty=" <penalty> ", loss=" <loss> ", dual=" <dual> ", tol=" <tol> ", C=" <C> ", random_state=" <RANDOM_STATE> ")"
+#<LinearClassifier> ::= "sklearn.svm/LinearSVC(penalty=" <penalty> ", loss=" <loss> ", dual=" <dual> ", tol=" <tol> ", C=" <C> ", random_state=" <RANDOM_STATE> ")"
+<LinearClassifier> ::= "sklearn.linear_model/LogisticRegression(penalty=" <penalty> ", C=" <C> ", dual=" <dual> ", random_state=" <RANDOM_STATE> ")"
 <penalty> ::= "'l1'" | "'l2'"
 <loss> ::= "'hinge'" | "'squared_hinge'"
 <dual> ::= "True" | "False"
 <tol> ::= "1e-5" | "1e-4" | "1e-3" | "1e-2" | "1e-1"
 <C> ::= "1e-4" | "1e-3" | "1e-2" | "1e-1" | "0.5" | "1." | "5." | "10." | "15." | "20." | "25."
 
-<LinearClassifier> ::= "sklearn.linear_model/LogisticRegression(penalty=" <penalty> ", C=" <C> ", dual=" <dual> ", random_state=" <RANDOM_STATE> ")" 
 <EnsembleTree> ::= "xgboost/XGBClassifier(n_estimators=100, max_depth=" <max_depth> ", learning_rate=" <learning_rate> ", subsample=" <subsample> ", min_child_weight=" <min_child_weight> ", random_state=" <RANDOM_STATE> ", seed=" <RANDOM_STATE> ", nthread=1)"
 <min_child_weight> ::= "CONSTINT(1, 21)"
 
