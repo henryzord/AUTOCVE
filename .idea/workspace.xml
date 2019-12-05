@@ -2,13 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/grammar/grammarPBIL" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grammar/grammarTPOT" beforeDir="false" afterPath="$PROJECT_DIR$/grammar/grammarTPOT" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/metrics.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/metrics.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/metrics.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/population.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/population.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/python_interface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/python_interface.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/python_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/python_interface.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/util/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/evaluate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,7 +19,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1575469251015" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1575576509310" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$Nosetests_in_test_getAUC_py.coverage" NAME="Nosetests in test_getAUC.py Coverage Results" MODIFIED="1574970661350" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$old_script.coverage" NAME="old_script Coverage Results" MODIFIED="1575465746286" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script__module_.coverage" NAME="AUTOCVE[EACOMP]_script (module) Coverage Results" MODIFIED="1574965796672" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -37,6 +39,34 @@
     <expand />
     <select />
   </component>
+  <component name="DockManager">
+    <window id="5">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/AUTOCVE/util/evaluate.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="825">
+                    <caret line="168" selection-start-line="168" selection-end-line="168" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/src/population.cpp">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="471">
+                    <caret line="368" column="13" selection-start-line="368" selection-start-column="13" selection-end-line="368" selection-end-column="13" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="FUSProjectUsageTrigger">
     <session id="375004058">
       <usages-collector id="statistics.lifecycle.project">
@@ -55,63 +85,131 @@
         <counts>
           <entry key="LICENSE" value="1" />
           <entry key="c" value="2" />
-          <entry key="cpp" value="33" />
+          <entry key="cpp" value="47" />
           <entry key="gitignore" value="1" />
-          <entry key="grammarTPOT" value="1" />
-          <entry key="h" value="15" />
+          <entry key="grammarPBIL" value="4" />
+          <entry key="grammarTPOT" value="4" />
+          <entry key="grammarTest" value="1" />
+          <entry key="h" value="20" />
           <entry key="in" value="1" />
           <entry key="md" value="2" />
-          <entry key="py" value="103" />
+          <entry key="py" value="118" />
+          <entry key="pyi" value="1" />
           <entry key="txt" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="C++" value="50" />
+          <entry key="C++" value="69" />
           <entry key="Git file" value="1" />
           <entry key="Markdown" value="2" />
-          <entry key="PLAIN_TEXT" value="4" />
-          <entry key="Python" value="103" />
+          <entry key="PLAIN_TEXT" value="12" />
+          <entry key="Python" value="118" />
+          <entry key="PythonStub" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="1293" />
-          <entry key="cpp" value="3347" />
+          <entry key="cpp" value="6218" />
           <entry key="grammarTPOT" value="7" />
-          <entry key="h" value="5644" />
-          <entry key="py" value="8990" />
+          <entry key="h" value="5718" />
+          <entry key="py" value="9743" />
           <entry key="txt" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C++" value="8991" />
+          <entry key="C++" value="11936" />
           <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="10283" />
+          <entry key="Python" value="11036" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="370" lean-forward="true" selection-start-line="370" selection-end-line="370" />
+            <state relative-caret-position="319">
+              <caret line="114" selection-start-line="114" selection-end-line="114" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
+                <marker date="1575571687971" expanded="true" signature="542:547" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file:///media/henry/Storage/Henry/Projects/AUTOCVE/pbil/evaluations.py">
+        <entry file="file://$PROJECT_DIR$/src/AUTOCVE.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="252" selection-start-line="252" selection-end-line="252" />
+            <state relative-caret-position="198">
+              <caret line="27" column="68" selection-start-line="27" selection-start-column="68" selection-end-line="27" selection-end-column="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AUTOCVE.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="406">
+              <caret line="109" selection-start-line="109" selection-end-line="109" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/population.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="397" lean-forward="true" selection-start-line="397" selection-end-line="397" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grammar/grammarTPOT">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-90">
+              <caret line="19" column="32" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/population.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="29" column="78" selection-start-line="29" selection-start-column="78" selection-end-line="29" selection-end-column="78" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="73" column="64" selection-start-line="73" selection-start-column="64" selection-end-line="73" selection-end-column="64" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/python_interface.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="426">
+              <caret line="38" column="30" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/python_interface.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="268">
+              <caret line="152" selection-start-line="152" selection-end-line="152" />
             </state>
           </provider>
         </entry>
@@ -127,36 +225,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>METH_</find>
-      <find>javabridge</find>
-      <find>mp.set</find>
-      <find>ctx</find>
-      <find>mp.g</find>
-      <find>parse_ope</find>
-      <find>if queue is not none</find>
-      <find>read_datasets</find>
-      <find>test_pe</find>
-      <find>test_peva</find>
-      <find>get_evalua</find>
-      <find>with open</find>
+      <find>evalua</find>
+      <find>metric=</find>
+      <find>balanced_ac</find>
+      <find>unweighted</find>
+      <find>run_genetic_programming</find>
+      <find>gamma</find>
+      <find>predict</find>
+      <find>scoring</find>
+      <find>ScorerHandler</find>
+      <find>scorerhandler</find>
       <find>optimize</find>
-      <find>pro =</find>
-      <find>queue</find>
-      <find>scoring=</find>
-      <find>parse_open_ml</find>
-      <find>results</find>
-      <find>results.txt</find>
-      <find>Classification metrics can't handle a mix of binary and continuous-multioutput targets</find>
-      <find>from utils</find>
-      <find>METRIC=</find>
-      <find>getROCArea</find>
-      <find>METRIC</find>
-      <find>fit_pred</find>
-      <find>balanced_</find>
-      <find>evaluation</find>
-      <find>end process</find>
-      <find>get_evalu</find>
-      <find>get_eva</find>
+      <find>grammarpbil</find>
+      <find>scorerhan</find>
+      <find>evaluate_predic</find>
+      <find>predict_ensemble</find>
+      <find>evaluate_predict_vector</find>
+      <find>scores_dimension</find>
+      <find>scores_ensemble</find>
+      <find>scores_dimension[0]</find>
+      <find>scores_dime</find>
+      <find>evaluate_ensemble</find>
+      <find>printing i</find>
+      <find>printing in</find>
+      <find>0.07407407</find>
+      <find>scores</find>
+      <find>int local_co</find>
+      <find>bf2142</find>
+      <find>bf214</find>
+      <find>local_counter</find>
+      <find>printin</find>
     </findStrings>
     <replaceStrings>
       <replace>some_args.experiment_name</replace>
@@ -175,6 +273,7 @@
       <replace>metrics_methods</replace>
       <replace>metricsMethods</replace>
       <replace>get_unweighted_area_under_roc</replace>
+      <replace>y_true</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -187,23 +286,31 @@
         <option value="$PROJECT_DIR$/../AUTOCVE_GECCO19/AUTOCVE[EACOMP]_script.py" />
         <option value="$PROJECT_DIR$/individuals.py" />
         <option value="$PROJECT_DIR$/evaluations.py" />
-        <option value="$PROJECT_DIR$/src/population.cpp" />
         <option value="$PROJECT_DIR$/src/utility.h" />
         <option value="$PROJECT_DIR$/test_getAUC.py" />
         <option value="$PROJECT_DIR$/src/auc_metric.h.py" />
         <option value="$PROJECT_DIR$/src/utility.cpp" />
         <option value="$PROJECT_DIR$/src/auc_metric.h" />
-        <option value="$PROJECT_DIR$/src/main.cpp" />
-        <option value="$PROJECT_DIR$/setup.py" />
-        <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/src/metrics.cpp" />
         <option value="$PROJECT_DIR$/src/metrics.h" />
         <option value="$PROJECT_DIR$/old_script.py" />
         <option value="$PROJECT_DIR$/grammar/grammarTPOT" />
         <option value="$PROJECT_DIR$/util/scoring_handler.py" />
-        <option value="$PROJECT_DIR$/util/evaluate.py" />
         <option value="$PROJECT_DIR$/pbil/evaluations.py" />
+        <option value="$PROJECT_DIR$/setup.py" />
+        <option value="$PROJECT_DIR$/util/__ini__.py" />
+        <option value="$PROJECT_DIR$/utils.py" />
+        <option value="$PROJECT_DIR$/src/population.h" />
+        <option value="$PROJECT_DIR$/src/AUTOCVE.h" />
+        <option value="$PROJECT_DIR$/src/AUTOCVE.cpp" />
+        <option value="$PROJECT_DIR$/grammar/grammarPBIL" />
+        <option value="$PROJECT_DIR$/src/main.cpp" />
         <option value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
+        <option value="$PROJECT_DIR$/util/evaluate.py" />
+        <option value="$PROJECT_DIR$/src/python_interface.h" />
+        <option value="$PROJECT_DIR$/src/python_interface.cpp" />
+        <option value="$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/AUTOCVE/util/evaluate.py" />
+        <option value="$PROJECT_DIR$/src/population.cpp" />
       </list>
     </option>
   </component>
@@ -248,6 +355,11 @@
             <path>
               <item name="AUTOCVE" type="b2602c69:ProjectViewProjectNode" />
               <item name="AUTOCVE" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AUTOCVE" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AUTOCVE" type="462c0819:PsiDirectoryNode" />
               <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -273,6 +385,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/grammar" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
@@ -304,7 +417,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
-      <option name="PARAMETERS" value="--metadata-path $PROJECT_DIR$/../AUTOCVE_GECCO19/.metadata --datasets-path $PROJECT_DIR$/../eacomp/keel_datasets_10fcv --datasets-names bloodtransfusion --n-generations 1 --n-samples 1 --n-jobs 1 --pool-size 20 --n-ensembles 20" />
+      <option name="PARAMETERS" value="--metadata-path $PROJECT_DIR$/../AUTOCVE_GECCO19/.metadata --datasets-path $PROJECT_DIR$/../eacomp/keel_datasets_10fcv --datasets-names balancescale --n-generations 10 --n-samples 1 --n-jobs 1 --pool-size 10 --n-ensembles 10" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -412,25 +525,25 @@
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.15422885" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="3" />
-      <window_info anchor="bottom" id="Python Console" order="4" sideWeight="0.47705916" side_tool="true" visible="true" weight="0.3294979" />
-      <window_info anchor="bottom" id="Terminal" order="5" />
+      <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.52902156" side_tool="true" visible="true" weight="0.28138074" />
+      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="4" />
+      <window_info anchor="bottom" id="Python Console" order="5" sideWeight="0.50193477" side_tool="true" weight="0.32845187" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" sideWeight="0.498618" weight="0.3294979" />
-      <window_info active="true" anchor="bottom" id="Run" order="8" sideWeight="0.5229409" visible="true" weight="0.3294979" />
-      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.47761193" weight="0.28138074" />
+      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.51630735" weight="0.31799164" />
+      <window_info active="true" anchor="bottom" id="Debug" order="9" sideWeight="0.47097844" visible="true" weight="0.28138074" />
       <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="12" />
       <window_info anchor="right" x="0" y="0" width="413" height="884" id="Documentation" order="0" side_tool="true" weight="0.1652847" />
-      <window_info anchor="right" auto_hide="true" x="2985" y="304" width="564" height="611" id="SciView" order="1" show_stripe_button="false" sideWeight="0.4973046" type="FLOATING" weight="0.15312327" />
+      <window_info anchor="right" auto_hide="true" x="2346" y="71" width="564" height="611" id="SciView" order="1" show_stripe_button="false" sideWeight="0.4973046" type="FLOATING" weight="0.15312327" />
       <window_info anchor="right" id="Database" order="2" sideWeight="0.49921995" weight="0.32946378" />
       <window_info anchor="right" id="Data View" order="3" weight="0.14339623" />
       <window_info anchor="right" id="Commander" order="4" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="5" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="6" weight="0.25" />
-      <window_info anchor="right" id="Structure" order="7" sideWeight="0.50078005" side_tool="true" visible="true" weight="0.15035932" />
+      <window_info anchor="right" id="Structure" order="7" sideWeight="0.50153375" side_tool="true" visible="true" weight="0.1448314" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,29 +556,24 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py</url>
-          <line>24</line>
-          <option name="timeStamp" value="65" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py</url>
-          <line>341</line>
-          <option name="timeStamp" value="83" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/old_script.py</url>
-          <line>79</line>
-          <option name="timeStamp" value="88" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py</url>
-          <line>238</line>
-          <option name="timeStamp" value="89" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/sklearn/metrics/classification.py</url>
           <line>79</line>
           <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/util/evaluate.py</url>
+          <line>164</line>
+          <option name="timeStamp" value="114" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/util/evaluate.py</url>
+          <line>80</line>
+          <option name="timeStamp" value="115" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/AUTOCVE/util/evaluate.py</url>
+          <line>168</line>
+          <option name="timeStamp" value="119" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -475,6 +583,14 @@
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>AUTOCVEClassifier.get_unweighted_area_under_roc(
+        y_true=y_true,
+        y_score=score_handler.y_scores
+    )</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>AUTOCVEClassifier.get_unweighted_area_under_roc(
         y_true=y_true,
@@ -542,107 +658,56 @@
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>javabridge.make_instance('Leda/NonJavaClassifier;', '([[DLweka/core/Instances;)V', jprobs,
-                                           jtrain_data.jobject)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>score_handler.y_pred</expression-string>
+        <expression-string>predict_scores</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>proba_predictions</expression-string>
+        <expression-string>predict_scores.shape</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>proba_predictions = pipeline.predict_proba(X_test)  # TODO testing!</expression-string>
+        <expression-string>predict_scores = predict_scores.reshape(len(predict_vector), int(len(predict_scores)/len(predict_vector)))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>pipeline_str</expression-string>
+        <expression-string>predict_scores.reshape(len(predict_vector), int(len(predict_scores)/len(predict_vector)))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>len(y_test)</expression-string>
+        <expression-string>predict_scores.reshape(len(predict_vector), len(predict_scores)/len(predict_vector))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>len(args[0].y_pred)</expression-string>
+        <expression-string>predict_scores.shape = (len(predict_vector), np.newaxis)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>args[0].y_pred</expression-string>
+        <expression-string>predict_scores.shape = (len(predict_vector), None)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>args[0]</expression-string>
+        <expression-string>predict_scores.reshape(len(predict_vector), None)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>args[2]</expression-string>
+        <expression-string>predict_scores.reshape(len(predict_vector), :)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/sklearn/pipeline.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="331" selection-start-line="331" selection-end-line="331" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/__ini__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/joblib/_parallel_backends.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="200" selection-start-line="200" selection-end-line="200" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/joblib/parallel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="752" selection-start-line="752" selection-end-line="752" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/AUTOCVE/util/evaluate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="106" selection-start-line="106" selection-end-line="106" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utility.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/python_interface.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-72">
-          <caret line="8" column="38" selection-start-line="8" selection-start-column="38" selection-end-line="8" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test_getAUC.py" />
     <entry file="file://$PROJECT_DIR$/src/utility.cpp">
       <provider selected="true" editor-type-id="text-editor">
@@ -672,45 +737,10 @@
     <entry file="file://$PROJECT_DIR$/src/grammar.cpp">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AUTOCVE.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="20" column="72" selection-start-line="20" selection-start-column="72" selection-end-line="20" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/population.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14274">
-          <caret line="793" selection-start-line="793" selection-end-line="793" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/grammar.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
           <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/population.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1116">
-          <caret line="62" column="2" selection-start-line="62" selection-start-column="2" selection-end-line="62" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/python_interface.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="20" column="22" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/809528131/AUTOCVE/AUTOCVE.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="43" column="12" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -731,22 +761,8 @@
     <entry file="file://$PROJECT_DIR$/old_evaluate.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="4" column="200" selection-start-line="4" selection-start-column="200" selection-end-line="4" selection-end-column="200" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LICENSE">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-504">
-          <caret line="46" column="22" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/util/make_pipeline.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -774,9 +790,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/util/__ini__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/util/custom_methods/__ini__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -798,13 +811,6 @@
     <entry file="file://$PROJECT_DIR$/util/custom_methods/TPOT/zero_count.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/metrics.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -812,27 +818,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/metrics.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="18" column="65" selection-start-line="18" selection-start-column="65" selection-end-line="18" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/old_script.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
           <caret line="18" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <marker date="1575465844488" expanded="true" signature="633:634" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grammar/grammarTPOT">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="666">
-          <caret line="37" column="27" selection-start-line="37" selection-start-column="27" selection-end-line="37" selection-end-column="27" />
         </state>
       </provider>
     </entry>
@@ -864,20 +853,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AUTOCVE.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="135" column="23" selection-start-line="135" selection-start-column="23" selection-end-line="135" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/util/evaluate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="445">
-          <caret line="164" column="52" lean-forward="true" selection-start-line="164" selection-start-column="52" selection-end-line="164" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/multiprocessing/process.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="211">
@@ -899,13 +874,156 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/metrics.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="18" column="65" selection-start-line="18" selection-start-column="65" selection-end-line="18" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="21" column="25" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/__ini__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file:///media/henry/Storage/Henry/Projects/AUTOCVE/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="376">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="39" column="37" selection-start-line="39" selection-start-column="37" selection-end-line="39" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/809528131/AUTOCVE/AUTOCVE.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grammar/grammarTest">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="27" column="7" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/solution.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="730">
+          <caret line="75" column="36" selection-start-line="70" selection-end-line="75" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/population.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="29" column="78" selection-start-line="29" selection-start-column="78" selection-end-line="29" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AUTOCVE.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="27" column="68" selection-start-line="27" selection-start-column="68" selection-end-line="27" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AUTOCVE.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="109" selection-start-line="109" selection-end-line="109" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/functools.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="46" column="8" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grammar/grammarTPOT">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-90">
+          <caret line="19" column="32" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="73" column="64" selection-start-line="73" selection-start-column="64" selection-end-line="73" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grammar/grammarPBIL">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python_interface.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="38" column="30" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python_interface.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="152" selection-start-line="152" selection-end-line="152" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/evaluate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="627">
+          <caret line="157" selection-start-line="157" selection-end-line="157" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="370" lean-forward="true" selection-start-line="370" selection-end-line="370" />
+        <state relative-caret-position="319">
+          <caret line="114" selection-start-line="114" selection-end-line="114" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+            <marker date="1575571687971" expanded="true" signature="542:547" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/AUTOCVE/util/evaluate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="825">
+          <caret line="168" selection-start-line="168" selection-end-line="168" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/population.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="397" lean-forward="true" selection-start-line="397" selection-end-line="397" />
         </state>
       </provider>
     </entry>

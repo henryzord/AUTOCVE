@@ -71,7 +71,7 @@ static PyObject *PyAUTOCVE_optimize(PyAUTOCVE *self, PyObject *args, PyObject *k
     static char *keywords[]={"X","y","subsample_data", NULL}; //NULL-terminated array
 
 
-    if(!PyArg_ParseTupleAndKeywords(args,kwargs,"OO|$d",keywords ,&data_X, &data_y, &subsample_data)) //Function and arguments |$ before keyword args
+    if(!PyArg_ParseTupleAndKeywords(args,kwargs,"OO|$d",keywords, &data_X, &data_y, &subsample_data)) //Function and arguments |$ before keyword args
         return NULL;
     try{
         if(!self->ptr_autocve->run_genetic_programming(data_X,data_y,subsample_data))

@@ -36,7 +36,7 @@ class PythonInterface{
     int unload_dataset();
     int get_n_feat_dataset();
     int evaluate_pipelines_cv(char *pipeline_evaluated, PyObject **pipeline_score, PyObject **result_obj, int *predict_size);
-    int evaluate_predict_vector(PyObject *predict_vector, double *return_score);
+    int evaluate_predict_vector(PyObject *predict_vector, PyObject *scores_vector, double *return_score);
     PyObject *make_pipeline_from_str(char *pipeline_str);
     PyObject *make_voting_ensemble_from_str(char *population_str);
     static PyObject* load_python_function(const char *file, const char* function);

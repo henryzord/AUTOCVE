@@ -143,8 +143,8 @@ int PythonInterface::evaluate_pipelines_cv(char *pipeline_evaluated, PyObject **
     return 1;
 }
 
-int PythonInterface::evaluate_predict_vector(PyObject *predict_vector, double *return_score){
-    PyObject *return_func=PyObject_CallFunction(this->evaluate_predict_vector_py, "OO", predict_vector, this->scoring);
+int PythonInterface::evaluate_predict_vector(PyObject *predict_vector, PyObject *scores_vector, double *return_score){
+    PyObject *return_func=PyObject_CallFunction(this->evaluate_predict_vector_py, "OOO", predict_vector, scores_vector, this->scoring);
 
     if(!return_func)
         return NULL; 

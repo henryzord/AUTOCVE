@@ -23,16 +23,20 @@ def log_warning_output(message, category, filename, lineno, file=None, line=None
 
 warnings.showwarning=log_warning_output
 
-class ScorerHandler():
-    def __init__(self, y_pred):
+
+class ScorerHandler(object):
+    def __init__(self, y_pred, y_scores):
         self.y_pred=y_pred
+        self.y_scores = y_scores
+
     def fit(self):
         pass
+
     def predict(self, X):
         return self.y_pred
+
     def predict_proba(self, X):
-        raise AttributeError("predict_proba is not implemented yet.")
-        return self.y_pred
+        return self.y_scores
 
 
 def evaluate_population(pipelines_population,X,y,scoring,n_jobs,timeout_pip_sec, N_SPLITS=5, verbose=1, RANDOM_STATE=42):
@@ -55,7 +59,6 @@ def evaluate_population(pipelines_population,X,y,scoring,n_jobs,timeout_pip_sec,
         predict_length=y.shape[0]
         
         pipelines_population=pipelines_population.split("|")
-
 
         temp_folder = tempfile.mkdtemp()
         filename_train = os.path.join(temp_folder, 'autocve_X_train.mmap')
@@ -104,8 +107,8 @@ def evaluate_population(pipelines_population,X,y,scoring,n_jobs,timeout_pip_sec,
                         predict_population_cv.append(None)
                         pipelines_population[pipe_id]=None
                     else:
-                        metric_population_cv.append([scoring(ScorerHandler(result_solution), None, y[test_index])])
-                        predict_population_cv.append(result_solution) 
+                        metric_population_cv.append([scoring(ScorerHandler(*result_solution), None, y[test_index])])
+                        predict_population_cv.append(result_solution[0])
             
             del result_pipeline
 
@@ -115,7 +118,6 @@ def evaluate_population(pipelines_population,X,y,scoring,n_jobs,timeout_pip_sec,
             else:
                 metric_population=[None if value is None or old_list is None else old_list+value for old_list, value in zip(metric_population, metric_population_cv)]
                 predict_population=[None if value is None or old_list is None else np.concatenate([old_list,value]) for old_list, value in zip(predict_population, predict_population_cv)]
-
 
         metric_population=[None if metrics is None else np.mean(metrics) for metrics in metric_population]
 
@@ -136,7 +138,7 @@ def evaluate_population(pipelines_population,X,y,scoring,n_jobs,timeout_pip_sec,
        return None, None, -1
     
 
-def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test,verbose=1):
+def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test, verbose=1):
     pipeline=make_pipeline_str(pipeline_str,verbose) 
     if pipeline is None:
         return None
@@ -148,10 +150,11 @@ def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test,verbose=1):
             print(str(e))
         return None
 
-    predict_data=[]
+    predict_data = []
     try:
+        # TODO change to probabilities
         predict_data=pipeline.predict(X_test)  # original line of code. commenting for replacing with probs
-        # predict_data = pipeline.predict_proba(X_test)  # TODO reactivate
+        predict_scores=pipeline.predict_proba(X_test)
 
     except Exception as e:
         if verbose>0:
@@ -159,8 +162,8 @@ def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test,verbose=1):
             print(str(e))
         return None
 
-    return predict_data
+    return predict_data, predict_scores
 
 
-def evaluate_predict_vector(predict_vector,scoring):
-    return scoring(ScorerHandler(predict_vector), None, y_last_test_set)
+def evaluate_predict_vector(predict_vector, predict_scores, scoring):
+    return scoring(ScorerHandler(predict_vector, predict_scores), None, y_last_test_set)
