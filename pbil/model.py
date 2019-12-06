@@ -12,7 +12,7 @@ from pbil.evaluations import EDAEvaluator
 from pbil.individuals import Skeleton, Individual
 from pbil.ptypes import process_update
 from pbil.registry import PBILLogger
-from utils import *
+from pbil.utils import *
 
 
 class EarlyStop(object):

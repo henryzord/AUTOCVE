@@ -3,6 +3,7 @@ import multiprocessing as mp
 import os
 
 from functools import reduce
+import itertools as it
 
 import numpy as np
 import pandas as pd
@@ -13,7 +14,8 @@ from weka.core.converters import Loader
 from weka.core.dataset import Instances
 
 from pbil.evaluations import evaluate_on_test, EDAEvaluation, collapse_metrics
-from utils import parse_open_ml, create_metadata_path
+from pbil.utils import parse_open_ml, create_metadata_path
+import javabridge
 
 GRACE_PERIOD = 0  # 60
 
@@ -33,9 +35,6 @@ def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_
     :param n_fold:
     :return: A tuple (train-data, test_data), where each object is an Instances object
     """
-    import javabridge
-    jvm.start()
-
     dataset_name = dataset_path.split('/')[-1]
 
     train_path = os.path.join(dataset_path, '-'.join([dataset_name, '10', '%dtra.arff' % n_fold]))
@@ -108,8 +107,6 @@ def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_
         'test_sample-%02.d_fold-%02.d.csv' % (id_trial, n_fold)), index=True
     )
 
-    jvm.stop()
-
     return test_pevaluation
 
 
@@ -138,6 +135,8 @@ def execute_exp(
         mutation_rate_pool, crossover_rate_pool, n_ensembles, mutation_rate_ensemble, crossover_rate_ensemble,
         n_jobs, results_path, context, seed=None, subsample=1):
 
+    jvm.start()
+
     p = AUTOCVEClassifier(
         generations=n_generations,
         population_size_components=pool_size,
@@ -146,7 +145,7 @@ def execute_exp(
         population_size_ensemble=n_ensembles,
         mutation_rate_ensemble=mutation_rate_ensemble,
         crossover_rate_ensemble=crossover_rate_ensemble,
-        grammar='grammarPBIL',
+        grammar='grammarTPOT',
         max_pipeline_time_secs=60,
         max_evolution_time_secs=time_per_task,
         n_jobs=n_jobs,
@@ -155,31 +154,44 @@ def execute_exp(
         verbose=1
     )
 
-    queue = context.Queue()
-    pro = mp.Process(
-        target=parse_open_ml, kwargs=dict(
-            datasets_path=datasets_path, d_id=d_id, n_fold=n_fold, queue=queue
-        )
+    X_train, X_test, y_train, y_test, df_types = parse_open_ml(
+        datasets_path=datasets_path, d_id=d_id, n_fold=n_fold
     )
-    pro.start()
-    pro.join()
-
-    X_train, X_test, y_train, y_test, df_types = queue.get()
 
     p.optimize(X_train, y_train, subsample_data=subsample)
 
     train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
     test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)
 
-    pro = mp.Process(
-        target=get_evaluation, kwargs=dict(
-            dataset_path=os.path.join(datasets_path, d_id), n_fold=n_fold,
-            seed=seed, train_probs=train_probs, test_probs=test_probs,
-            results_path=results_path, id_exp=d_id, id_trial=id_trial
-        )
+    get_evaluation(
+        dataset_path=os.path.join(datasets_path, d_id), n_fold=n_fold,
+        seed=seed, train_probs=train_probs, test_probs=test_probs,
+        results_path=results_path, id_exp=d_id, id_trial=id_trial
     )
-    pro.start()
-    pro.join()
+
+    jvm.stop()
+
+
+def __get_running_processes__(jobs, datasets_status, results_path, total_experiments, total_folds):
+    if len(jobs) > 0:
+        jobs[0].join()
+
+        for job in jobs:  # type: mp.Process
+            if not job.is_alive():
+                jobs.remove(job)
+
+    for dataset, finished in datasets_status.items():
+        if not finished:
+            if len(os.listdir(os.path.join(results_path, dataset))) == (total_experiments * total_folds):
+                try:
+                    summary = collapse_metrics(os.path.join(results_path, dataset), only_baselines=True)
+                    datasets_status[dataset] = True
+                    print('summary for dataset %s:' % dataset)
+                    print(summary)
+                except:
+                    pass
+
+    return jobs, datasets_status
 
 
 def main():
@@ -268,41 +280,66 @@ def main():
 
     datasets_names = some_args.datasets_names.split(',')
 
+    jvm.start()
     results_path = create_metadata_path(args=some_args)
     os.chdir(results_path)
 
     mp.set_start_method('spawn')
     context = mp.get_context('spawn')
 
-    for id_exp in datasets_names:
-        os.mkdir(os.path.join(results_path, id_exp))
+    datasets_status = {k: False for k in datasets_names}
 
-        print("Dataset " + id_exp)
-        for id_trial in range(1, N_TRIALS + 1):
-            print("Trial " + str(id_trial))
-            for n_fold in range(1, 10 + 1):  # iterates over folds
-                execute_exp(
-                    n_fold=n_fold,
-                    id_trial=id_trial,
-                    datasets_path=some_args.datasets_path,
-                    d_id=id_exp,
-                    seed=np.random.randint(np.iinfo(np.int32).max),
-                    n_generations=some_args.n_generations,
-                    n_jobs=some_args.n_jobs,
-                    time_per_task=some_args.time_per_task,
-                    pool_size=some_args.pool_size,
-                    mutation_rate_pool=some_args.mutation_rate_pool,
-                    crossover_rate_pool=some_args.crossover_rate_pool,
-                    n_ensembles=some_args.n_ensembles,
-                    mutation_rate_ensemble=some_args.mutation_rate_ensemble,
-                    crossover_rate_ensemble=some_args.crossover_rate_ensemble,
-                    results_path=results_path,
-                    context=context
-                )
+    queue_experiments = it.product(datasets_names, list(range(1, N_TRIALS + 1)), list(range(1, 10 + 1)))
 
-        summary = collapse_metrics(os.path.join(results_path, id_exp), only_baselines=True)
-        print('summary for dataset %s:' % id_exp)
-        print(summary)
+    jobs = []
+    for id_exp, id_trial, n_fold in queue_experiments:
+        print("Dataset %s, trial %d, fold %d" % (id_exp, id_trial, n_fold))
+        if not os.path.exists(os.path.join(results_path, id_exp)):
+            os.mkdir(os.path.join(results_path, id_exp))
+
+        if len(jobs) >= some_args.n_jobs:
+            jobs, datasets_status = __get_running_processes__(
+                jobs=jobs, datasets_status=datasets_status,
+                results_path=results_path,
+                total_experiments=N_TRIALS, total_folds=10,
+            )
+
+        job = mp.Process(
+            target=execute_exp,
+            kwargs=dict(
+                n_fold=n_fold,
+                id_trial=id_trial,
+                datasets_path=some_args.datasets_path,
+                d_id=id_exp,
+                seed=np.random.randint(np.iinfo(np.int32).max),
+                n_generations=some_args.n_generations,
+                n_jobs=1,
+                time_per_task=some_args.time_per_task,
+                pool_size=some_args.pool_size,
+                mutation_rate_pool=some_args.mutation_rate_pool,
+                crossover_rate_pool=some_args.crossover_rate_pool,
+                n_ensembles=some_args.n_ensembles,
+                mutation_rate_ensemble=some_args.mutation_rate_ensemble,
+                crossover_rate_ensemble=some_args.crossover_rate_ensemble,
+                results_path=results_path,
+                context=context
+            )
+        )
+        job.start()
+        jobs += [job]
+
+    # blocks everything
+    for job in jobs:
+        job.join()
+
+    # finishes everything
+    __get_running_processes__(
+        jobs=jobs, datasets_status=datasets_status,
+        results_path=results_path,
+        total_experiments=N_TRIALS, total_folds=10,
+    )
+
+    jvm.stop()
 
 
 if __name__ == '__main__':

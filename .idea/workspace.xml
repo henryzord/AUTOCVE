@@ -2,11 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/pbil/base_learners.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pbil/experiment_collapser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pbil/resources/classifiers.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pbil/resources/variables.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grammar/grammarPBIL" beforeDir="false" afterPath="$PROJECT_DIR$/grammar/grammarPBIL" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grammar/grammarTPOT" beforeDir="false" afterPath="$PROJECT_DIR$/grammar/grammarTPOT" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/evaluate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pbil/evaluations.py" beforeDir="false" afterPath="$PROJECT_DIR$/pbil/evaluations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pbil/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pbil/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/pbil/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/pbil/utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,7 +21,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1575637673865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1575657046404" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$base_learners.coverage" NAME="base_learners Coverage Results" MODIFIED="1575642438888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pbil" />
     <SUITE FILE_PATH="coverage/AUTOCVE$Nosetests_in_test_getAUC_py.coverage" NAME="Nosetests in test_getAUC.py Coverage Results" MODIFIED="1574970661350" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$old_script.coverage" NAME="old_script Coverage Results" MODIFIED="1575465746286" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script__module_.coverage" NAME="AUTOCVE[EACOMP]_script (module) Coverage Results" MODIFIED="1574965796672" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -35,92 +42,77 @@
     <expand />
     <select />
   </component>
-  <component name="DockManager">
-    <window id="6">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/src/main.cpp">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="705">
-                    <caret line="245" column="26" lean-forward="true" selection-start-line="245" selection-start-column="26" selection-end-line="245" selection-end-column="26" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
-  </component>
   <component name="FUSProjectUsageTrigger">
     <session id="375004058">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="4" />
           <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.3" value="2" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="7" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="LICENSE" value="1" />
           <entry key="c" value="2" />
-          <entry key="cpp" value="48" />
+          <entry key="cpp" value="51" />
           <entry key="gitignore" value="1" />
-          <entry key="grammarPBIL" value="5" />
+          <entry key="grammarPBIL" value="8" />
           <entry key="grammarTPOT" value="4" />
           <entry key="grammarTest" value="1" />
           <entry key="h" value="20" />
           <entry key="in" value="1" />
+          <entry key="json" value="5" />
           <entry key="md" value="2" />
-          <entry key="py" value="123" />
+          <entry key="py" value="137" />
           <entry key="pyi" value="1" />
           <entry key="txt" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="C++" value="70" />
+          <entry key="C++" value="73" />
           <entry key="Git file" value="1" />
+          <entry key="JSON" value="5" />
           <entry key="Markdown" value="2" />
-          <entry key="PLAIN_TEXT" value="13" />
-          <entry key="Python" value="123" />
+          <entry key="PLAIN_TEXT" value="16" />
+          <entry key="Python" value="137" />
           <entry key="PythonStub" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Python Console" value="1467" />
+          <entry key="Python Console" value="1549" />
           <entry key="cpp" value="6452" />
+          <entry key="grammarPBIL" value="441" />
           <entry key="grammarTPOT" value="7" />
           <entry key="h" value="5718" />
-          <entry key="py" value="10338" />
+          <entry key="py" value="12024" />
           <entry key="txt" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="C++" value="12170" />
-          <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="11805" />
+          <entry key="PLAIN_TEXT" value="455" />
+          <entry key="Python" value="13573" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="23" column="68" lean-forward="true" selection-start-line="23" selection-start-column="68" selection-end-line="23" selection-end-column="68" />
+            <state relative-caret-position="329">
+              <caret line="329" lean-forward="true" selection-start-line="329" selection-end-line="329" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -129,67 +121,97 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/util/evaluate.py">
+        <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/809528131/AUTOCVE/AUTOCVE.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="163" selection-start-line="163" selection-end-line="163" />
+            <state relative-caret-position="216">
+              <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pbil/model.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1949">
+              <caret line="265" column="41" selection-start-line="265" selection-start-column="41" selection-end-line="265" selection-end-column="41" />
               <folding>
-                <element signature="e#0#51#0" expanded="true" />
+                <element signature="e#0#11#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AUTOCVE.cpp">
+        <entry file="file://$PROJECT_DIR$/pbil/resources/classifiers.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
-              <caret line="109" selection-start-line="109" selection-end-line="109" />
+            <state relative-caret-position="468">
+              <caret line="26" column="23" lean-forward="true" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/population.cpp">
+        <entry file="file://$PROJECT_DIR$/pbil/base_learners.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-912">
-              <caret line="410" column="24" selection-start-line="410" selection-start-column="24" selection-end-line="410" selection-end-column="24" />
+            <state relative-caret-position="294">
+              <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
+              <folding>
+                <element signature="e#725#741#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grammar/grammarTPOT">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="28" column="26" selection-end-line="101" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/grammar/grammarPBIL">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="89" column="43" selection-start-line="89" selection-start-column="43" selection-end-line="89" selection-end-column="43" />
+            <state relative-caret-position="486">
+              <caret line="27" column="33" lean-forward="true" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/python_interface.h">
+        <entry file="file://$PROJECT_DIR$/pbil/resources/variables.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="38" column="30" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="30" />
+            <state relative-caret-position="-162">
+              <caret line="54" column="24" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/python_interface.cpp">
+        <entry file="file://$PROJECT_DIR$/pbil/evaluations.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="152" selection-start-line="152" selection-end-line="152" />
+            <state relative-caret-position="-2942">
+              <caret line="22" column="41" lean-forward="true" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pbil/experiment_collapser.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pbil/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="344">
+              <caret line="111" selection-start-line="111" selection-end-line="111" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -205,26 +227,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>unweighted</find>
-      <find>run_genetic_programming</find>
-      <find>gamma</find>
-      <find>predict</find>
-      <find>scoring</find>
-      <find>ScorerHandler</find>
-      <find>scorerhandler</find>
-      <find>grammarpbil</find>
-      <find>scorerhan</find>
-      <find>evaluate_predic</find>
-      <find>predict_ensemble</find>
-      <find>evaluate_predict_vector</find>
-      <find>scores_dimension</find>
-      <find>scores_ensemble</find>
-      <find>scores_dimension[0]</find>
-      <find>scores_dime</find>
-      <find>evaluate_ensemble</find>
-      <find>printing i</find>
-      <find>printing in</find>
-      <find>0.07407407</find>
       <find>scores</find>
       <find>int local_co</find>
       <find>bf2142</find>
@@ -235,6 +237,26 @@
       <find>optimize</find>
       <find>unweighted_a</find>
       <find>y_true_dims=PyArray_DIMS((PyArrayObject*)y_true);</find>
+      <find>xrange</find>
+      <find>helper</find>
+      <find>helper.print_title</find>
+      <find>weka.core</find>
+      <find>types</find>
+      <find>np.float32</find>
+      <find>pipeline</find>
+      <find>zero</find>
+      <find>-------</find>
+      <find>get_solution_pipeline_rank_i</find>
+      <find>get_solution_pipeline_rank_iget_solution_pipeline_rank_i</find>
+      <find>scaler</find>
+      <find>n_jobs</find>
+      <find>collpa</find>
+      <find>coll</find>
+      <find>colpa</find>
+      <find>collapse_me</find>
+      <find>EDAEvaluator</find>
+      <find>jvm.stop</find>
+      <find>from_commandline</find>
     </findStrings>
     <replaceStrings>
       <replace>some_args.experiment_name</replace>
@@ -254,6 +276,8 @@
       <replace>metricsMethods</replace>
       <replace>get_unweighted_area_under_roc</replace>
       <replace>y_true</replace>
+      <replace>range</replace>
+      <replace>print</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -275,7 +299,6 @@
         <option value="$PROJECT_DIR$/src/metrics.h" />
         <option value="$PROJECT_DIR$/old_script.py" />
         <option value="$PROJECT_DIR$/util/scoring_handler.py" />
-        <option value="$PROJECT_DIR$/pbil/evaluations.py" />
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/util/__ini__.py" />
         <option value="$PROJECT_DIR$/utils.py" />
@@ -286,10 +309,16 @@
         <option value="$PROJECT_DIR$/src/python_interface.cpp" />
         <option value="$PROJECT_DIR$/src/population.cpp" />
         <option value="$PROJECT_DIR$/grammar/grammarTPOT" />
-        <option value="$PROJECT_DIR$/grammar/grammarPBIL" />
         <option value="$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/AUTOCVE/util/evaluate.py" />
         <option value="$PROJECT_DIR$/util/evaluate.py" />
         <option value="$PROJECT_DIR$/src/main.cpp" />
+        <option value="$PROJECT_DIR$/pbil/main.py" />
+        <option value="$PROJECT_DIR$/pbil/individuals.py" />
+        <option value="$PROJECT_DIR$/pbil/base_learners.py" />
+        <option value="$PROJECT_DIR$/grammar/grammarPBIL" />
+        <option value="$PROJECT_DIR$/pbil/experiment_collapser.py" />
+        <option value="$PROJECT_DIR$/pbil/evaluations.py" />
+        <option value="$PROJECT_DIR$/pbil/utils.py" />
         <option value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
       </list>
     </option>
@@ -330,7 +359,13 @@
             <path>
               <item name="AUTOCVE" type="b2602c69:ProjectViewProjectNode" />
               <item name="AUTOCVE" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="pbil" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AUTOCVE" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AUTOCVE" type="462c0819:PsiDirectoryNode" />
+              <item name="pbil" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="AUTOCVE" type="b2602c69:ProjectViewProjectNode" />
@@ -349,20 +384,22 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/util/evaluate.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../eacomp" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/util/evaluate.py" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/grammar" />
+      <recent name="$PROJECT_DIR$/pbil" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pbil" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -392,7 +429,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
-      <option name="PARAMETERS" value="--metadata-path $PROJECT_DIR$/../AUTOCVE_GECCO19/.metadata --datasets-path $PROJECT_DIR$/../eacomp/keel_datasets_10fcv --datasets-names balancescale --n-generations 10 --n-samples 1 --n-jobs 1 --pool-size 10 --n-ensembles 10" />
+      <option name="PARAMETERS" value="--metadata-path $PROJECT_DIR$/../AUTOCVE_GECCO19/.metadata --datasets-path $PROJECT_DIR$/../eacomp/keel_datasets_10fcv --datasets-names balancescale --n-generations 4 --n-samples 1 --n-jobs 1 --pool-size 10 --n-ensembles 10" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -415,6 +452,28 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../AUTOCVE_GECCO19/AUTOCVE[EACOMP]_script.py" />
       <option name="PARAMETERS" value="--metadata-path $PROJECT_DIR$/../AUTOCVE_GECCO19/.metadata --datasets-path $PROJECT_DIR$/../AUTOCVE_GECCO19/datasets --datasets-names 11 --n-generations 2 --n-samples 1" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="base_learners" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="AUTOCVE" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/pbil" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pbil/base_learners.py" />
+      <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -463,11 +522,13 @@
     <list>
       <item itemvalue="Python.AUTOCVE[EACOMP]_script" />
       <item itemvalue="Python.old_script" />
+      <item itemvalue="Python.base_learners" />
       <item itemvalue="Python tests.Nosetests in /home/henry/Projects/AUTOCVE/test_getAUC.py" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.AUTOCVE[EACOMP]_script" />
+        <item itemvalue="Python.base_learners" />
         <item itemvalue="Python.old_script" />
         <item itemvalue="Python tests.Nosetests in /home/henry/Projects/AUTOCVE/test_getAUC.py" />
         <item itemvalue="Python.AUTOCVE[EACOMP]_script" />
@@ -497,17 +558,17 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.15422885" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.15588723" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.4859038" side_tool="true" visible="true" weight="0.31799164" />
+      <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.4859038" side_tool="true" weight="0.31732777" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="4" />
-      <window_info anchor="bottom" id="Python Console" order="5" sideWeight="0.52957433" side_tool="true" weight="0.28138074" />
+      <window_info anchor="bottom" id="Python Console" order="5" sideWeight="0.48756218" side_tool="true" visible="true" weight="0.31799164" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" sideWeight="0.498618" weight="0.3294979" />
-      <window_info active="true" anchor="bottom" id="Run" order="8" sideWeight="0.5140962" visible="true" weight="0.31799164" />
-      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.46932006" weight="0.28138074" />
+      <window_info active="true" anchor="bottom" id="Run" order="8" sideWeight="0.5124378" visible="true" weight="0.31799164" />
+      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.46821448" weight="0.28138074" />
       <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="12" />
@@ -518,7 +579,7 @@
       <window_info anchor="right" id="Commander" order="4" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="5" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="6" weight="0.25" />
-      <window_info anchor="right" id="Structure" order="7" sideWeight="0.50153375" side_tool="true" visible="true" weight="0.1448314" />
+      <window_info anchor="right" id="Structure" order="7" sideWeight="0.50153375" side_tool="true" visible="true" weight="0.11774461" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -629,6 +690,11 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
+        <expression-string>os.listdir(os.path.join(results_path, dataset))</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>getattr(pipeline, 'predict_proba', None)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
@@ -668,69 +734,9 @@
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>predict_scores.reshape(len(predict_vector), int(len(predict_scores)/len(predict_vector)))</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/utility.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Desktop/cpu_code.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="93" selection-start-line="93" selection-end-line="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/auc_metric.h" />
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="196">
-            <caret line="64" column="2" selection-start-line="64" selection-start-column="2" selection-end-line="64" selection-end-column="2" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/grammar.cpp">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/grammar.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/multiprocessing/semaphore_tracker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2144">
-          <caret line="153" column="53" selection-start-line="153" selection-start-column="53" selection-end-line="153" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/some_name/log_exp.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="492">
-          <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/old_evaluate.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LICENSE">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/util/make_pipeline.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1913">
@@ -778,20 +784,8 @@
     <entry file="file://$PROJECT_DIR$/util/custom_methods/TPOT/zero_count.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/metrics.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/old_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/metrics.cpp" />
+    <entry file="file://$PROJECT_DIR$/old_script.py" />
     <entry file="file://$PROJECT_DIR$/util/scoring_handler.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -803,13 +797,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="402">
           <caret line="82" column="34" selection-start-line="82" selection-start-column="34" selection-end-line="82" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pbil/evaluations.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="149" column="14" selection-start-line="149" selection-start-column="14" selection-end-line="149" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -868,23 +855,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="39" column="37" selection-start-line="39" selection-start-column="37" selection-end-line="39" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/809528131/AUTOCVE/AUTOCVE.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grammar/grammarTest">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="486">
@@ -913,72 +883,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AUTOCVE.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="109" selection-start-line="109" selection-end-line="109" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/functools.pyi">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
           <caret line="46" column="8" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/python_interface.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="38" column="30" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/python_interface.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="152" selection-start-line="152" selection-end-line="152" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grammar/grammarTPOT">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="28" column="26" selection-end-line="101" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/population.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-912">
-          <caret line="410" column="24" selection-start-line="410" selection-start-column="24" selection-end-line="410" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/util/evaluate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="163" selection-start-line="163" selection-end-line="163" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grammar/grammarPBIL">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="89" column="43" selection-start-line="89" selection-start-column="43" selection-end-line="89" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pbil/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2322">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -989,20 +897,191 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/util/evaluate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2934">
+          <caret line="163" selection-start-line="163" selection-end-line="163" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grammar/grammarTPOT">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="28" column="26" selection-end-line="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python_interface.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="684">
+          <caret line="38" column="30" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/ptypes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python_interface.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="152" selection-start-line="152" selection-end-line="152" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/integration.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/registry.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="30" column="47" selection-start-line="30" selection-start-column="47" selection-end-line="30" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/individuals.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1656">
+          <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="245" column="26" lean-forward="true" selection-start-line="245" selection-start-column="26" selection-end-line="245" selection-end-column="26" />
+        <state relative-caret-position="543">
+          <caret line="236" column="29" selection-start-line="236" selection-start-column="29" selection-end-line="236" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1949">
+          <caret line="265" column="41" selection-start-line="265" selection-start-column="41" selection-end-line="265" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/resources/variables.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-162">
+          <caret line="54" column="24" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/809528131/AUTOCVE/AUTOCVE.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/population.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1282">
+          <caret line="588" selection-start-line="588" selection-end-line="588" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AUTOCVE.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="151" column="57" selection-start-line="151" selection-start-column="57" selection-end-line="151" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/resources/classifiers.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="26" column="23" lean-forward="true" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/experiment_collapser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/evaluations.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2942">
+          <caret line="22" column="41" lean-forward="true" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="111" selection-start-line="111" selection-end-line="111" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/base_learners.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
+          <folding>
+            <element signature="e#725#741#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="23" column="68" lean-forward="true" selection-start-line="23" selection-start-column="68" selection-end-line="23" selection-end-column="68" />
+        <state relative-caret-position="329">
+          <caret line="329" lean-forward="true" selection-start-line="329" selection-end-line="329" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grammar/grammarPBIL">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="27" column="33" lean-forward="true" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
         </state>
       </provider>
     </entry>

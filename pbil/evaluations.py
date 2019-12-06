@@ -2,57 +2,10 @@ import itertools as it
 import os
 from functools import reduce
 
-import javabridge
 import numpy as np
 import pandas as pd
+import javabridge
 from weka.classifiers import Evaluation
-from weka.core.classes import Random
-
-from pbil.registry import generate_probability_averager_script
-from utils import from_python_stringlist_to_java_stringlist
-
-
-class EDAEvaluator(object):
-    def __init__(self, n_folds, train_data, test_data=None):
-        self.n_classes = len(train_data.attribute(train_data.class_index).values)
-        self.train_data = train_data
-        self.test_data = test_data
-        self.n_folds = n_folds
-
-        self.evaluator = javabridge.make_instance(
-            "Leda/EDAEvaluator;", "(ILweka/core/Instances;Lweka/core/Instances;)V",
-            self.n_folds,
-            self.train_data.jobject,
-            self.test_data.jobject if self.test_data is not None else None
-        )
-
-    def get_unweighted_aucs(self, seed, parameters):
-
-        res = javabridge.call(
-            self.evaluator, "evaluateEnsembles", "(I" + 7 * "[[Ljava/lang/String;" + ")[[D", seed,
-            from_python_stringlist_to_java_stringlist(parameters['J48']),
-            from_python_stringlist_to_java_stringlist(parameters['SimpleCart']),
-            from_python_stringlist_to_java_stringlist(parameters['REPTree']),
-            from_python_stringlist_to_java_stringlist(parameters['PART']),
-            from_python_stringlist_to_java_stringlist(parameters['JRip']),
-            from_python_stringlist_to_java_stringlist(parameters['DecisionTable']),
-            from_python_stringlist_to_java_stringlist(parameters['Aggregator'])
-        )
-
-        env = javabridge.get_env()  # type: javabridge.JB_Env
-        train_objs, test_objs = env.get_object_array_elements(res)
-        train_aucs = env.get_double_array_elements(train_objs)
-        test_aucs = env.get_double_array_elements(test_objs)
-
-        return train_aucs, test_aucs
-
-    def broadcastEvaluationBack(self, seeds, parameters):
-        # broadcastEvaluationBack(int[] seeds,
-        #             String[] j48Parameters, String[] simpleCartParameters, String[] reptreeParameters,
-        #             String[] partParameters, String[] jripParameters, String[] decisionTableParameters,
-        #             String[] aggregatorParameters) throws Exception {
-
-        pass
 
 
 class EDAEvaluation(Evaluation):
@@ -159,6 +112,35 @@ def evaluate_on_test(jobject, test_data):
     return test_evaluation_obj
 
 
+def __get_relation__(path):
+    files = os.listdir(path)
+    df = pd.DataFrame(list(map(lambda x: x[:-len('.txt')].split('_'), files)),
+                      columns=['dataset', 'sample', 'fold']).dropna()
+    return df
+
+
+def __check_missing__(path=None, relation=None):
+    assert ((path is not None) or (relation is not None)), ValueError('either path or relation must be valid!')
+
+    if path is not None:
+        df = __get_relation__(path)
+    else:
+        df = relation
+
+    folds = range(1, int(max(df['fold'].unique()).split('-')[-1]) + 1)
+    samples = range(1, int(max(df['sample'].unique()).split('-')[-1]) + 1)
+
+    missing = []
+    combs = it.product(samples, folds)
+    for sample, fold in combs:
+        if df.loc[
+            (df['dataset'] == 'test') & (df['sample'] == 'sample-%02.d' % sample) & (df['fold'] == 'fold-%02.d' % fold)
+        ].empty:
+            missing += [(sample, fold)]
+
+    return missing
+
+
 def collapse_metrics(metadata_path, write=True, only_baselines=False):
     # y_test = pd.read_csv(os.path.join(metadata_path, 'y_test.txt'))
 
@@ -230,35 +212,4 @@ def collapse_metrics(metadata_path, write=True, only_baselines=False):
     to_return.loc[:, (slice(None), 'mean')] = to_return.loc[:, (slice(None), 'mean')].applymap('{:,.4f}'.format)
     to_return.loc[:, (slice(None), 'std')] = to_return.loc[:, (slice(None), 'std')].applymap('{:,.2f}'.format)
 
-    if not only_baselines:
-        generate_probability_averager_script(dataset_path=os.sep.join(metadata_path.split(os.sep)[:-1]))
     return to_return
-
-
-def __get_relation__(path):
-    files = os.listdir(path)
-    df = pd.DataFrame(list(map(lambda x: x[:-len('.txt')].split('_'), files)),
-                      columns=['dataset', 'sample', 'fold']).dropna()
-    return df
-
-
-def __check_missing__(path=None, relation=None):
-    assert ((path is not None) or (relation is not None)), ValueError('either path or relation must be valid!')
-
-    if path is not None:
-        df = __get_relation__(path)
-    else:
-        df = relation
-
-    folds = range(1, int(max(df['fold'].unique()).split('-')[-1]) + 1)
-    samples = range(1, int(max(df['sample'].unique()).split('-')[-1]) + 1)
-
-    missing = []
-    combs = it.product(samples, folds)
-    for sample, fold in combs:
-        if df.loc[
-            (df['dataset'] == 'test') & (df['sample'] == 'sample-%02.d' % sample) & (df['fold'] == 'fold-%02.d' % fold)
-        ].empty:
-            missing += [(sample, fold)]
-
-    return missing

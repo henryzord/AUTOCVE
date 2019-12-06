@@ -78,8 +78,6 @@ def parse_open_ml(datasets_path, d_id, n_fold, queue=None):
     Returns:
         A tuple of the train / test split data along with the column types
     """
-    jvm.start()
-
     # X_train, X_test, y_train, y_test, df_types
     train = path_to_dataframe('{0}-10-{1}tra.arff'.format(os.path.join(datasets_path, str(d_id), str(d_id)), n_fold))
     test = path_to_dataframe('{0}-10-{1}tst.arff'.format(os.path.join(datasets_path, str(d_id), str(d_id)), n_fold))
@@ -111,8 +109,6 @@ def parse_open_ml(datasets_path, d_id, n_fold, queue=None):
     y_test = test[test.columns[-1]]
 
     # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=seed)
-
-    jvm.stop()
 
     if queue is not None:
         queue.put((X_train, X_test, y_train, y_test, df_types))
