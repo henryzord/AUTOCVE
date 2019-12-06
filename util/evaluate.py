@@ -12,7 +12,7 @@ import warnings
 import time
 import tempfile
 import os
-
+from collections import Counter
 
 y_last_test_set=None
 
@@ -153,8 +153,14 @@ def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test, verbose=1)
     predict_data = []
     try:
         # TODO change to probabilities
-        predict_data=pipeline.predict(X_test)  # original line of code. commenting for replacing with probs
-        predict_scores=pipeline.predict_proba(X_test)
+        predict_data = pipeline.predict(X_test)  # original line of code. commenting for replacing with probs
+        if getattr(pipeline, 'predict_proba', None) is not None:
+            predict_scores = pipeline.predict_proba(X_test)
+        else:
+            n_classes = len(Counter(y_train))
+            predict_scores = np.zeros((len(X_test), n_classes), dtype=np.float64)
+            indices = np.arange(len(X_test))
+            predict_scores[indices, predict_data] = 1.
 
     except Exception as e:
         if verbose>0:

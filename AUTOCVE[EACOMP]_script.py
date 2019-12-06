@@ -19,13 +19,10 @@ GRACE_PERIOD = 0  # 60
 
 
 def unweighted_area_under_roc(score_handler, some_arg, y_true):
-    try:
-        score = AUTOCVEClassifier.get_unweighted_area_under_roc(
-        y_true=y_true,
-        y_score=score_handler.y_scores
+    score = AUTOCVEClassifier.get_unweighted_area_under_roc(
+        y_true=np.array(y_true, copy=False, order='C', dtype=np.int64),
+        y_score=np.array(score_handler.y_scores, copy=False, order='C', dtype=np.float64)
     )
-    except Exception:
-        score = 0
     return score
 
 

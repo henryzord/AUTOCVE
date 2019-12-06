@@ -203,14 +203,27 @@ static PyObject *PyAUTOCVE_get_unweighted_area_under_roc(PyObject *self, PyObjec
     }
 
     if(PyArray_NDIM((PyArrayObject*)y_score) > 2) {
-        PyErr_SetString(PyExc_ValueError, "Probability matrix should have two dimensions.");
+        PyErr_SetString(PyExc_ValueError, "y_score must be an array with two dimensions.");
+        return NULL;
+    }
+
+    if(PyArray_NDIM((PyArrayObject*)y_true) > 1) {
+        PyErr_SetString(PyExc_ValueError, "y_true should be a one-dimensional array.");
         return NULL;
     }
 
     y_true = (PyObject*)PyArray_GETCONTIGUOUS((PyArrayObject*)y_true);
     y_score = (PyObject*)PyArray_GETCONTIGUOUS((PyArrayObject*)y_score);
 
-    npy_intp *y_pred_dims = PyArray_DIMS((PyArrayObject*)y_score);
+    npy_intp
+        *y_pred_dims = PyArray_DIMS((PyArrayObject*)y_score),
+        *y_true_dims = PyArray_DIMS((PyArrayObject*)y_true);
+
+    if(y_pred_dims[0] != y_true_dims[0]) {
+        PyErr_SetString(PyExc_ValueError, "y_true and y_score must have the same number of instances.");
+        return NULL;
+    }
+
     int n_instances = (int)y_pred_dims[0], n_classes = (int)y_pred_dims[1];
 
     roc_point_t *curve;

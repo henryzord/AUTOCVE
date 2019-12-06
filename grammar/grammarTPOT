@@ -31,7 +31,7 @@
 <weights> ::= "'uniform'" | "'distance'"
 <p_knn> ::= "1" | "2"
 
-#<LinearClassifier> ::= "sklearn.svm/LinearSVC(penalty=" <penalty> ", loss=" <loss> ", dual=" <dual> ", tol=" <tol> ", C=" <C> ", random_state=" <RANDOM_STATE> ")"
+<LinearClassifier> ::= "sklearn.svm/LinearSVC(penalty=" <penalty> ", loss=" <loss> ", dual=" <dual> ", tol=" <tol> ", C=" <C> ", random_state=" <RANDOM_STATE> ")"
 <LinearClassifier> ::= "sklearn.linear_model/LogisticRegression(penalty=" <penalty> ", C=" <C> ", dual=" <dual> ", random_state=" <RANDOM_STATE> ")"
 <penalty> ::= "'l1'" | "'l2'"
 <loss> ::= "'hinge'" | "'squared_hinge'"
