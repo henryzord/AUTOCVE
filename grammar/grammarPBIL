@@ -14,11 +14,11 @@
 #<min_samples_leaf> ::= "CONSTINT(1, 21)"
 
 # TODO add parameters
-<DecisionTree> ::= "weka.core.classes/from_commandline(classname='weka.classifiers.Classifier, cmdline='weka.classifiers.trees.J48')"
+<DecisionTree> ::= "weka.core.classes/from_commandline(classname='weka.classifiers.Classifier', cmdline='weka.classifiers.trees.J48')"
 
-<RuleBasedClassifier> ::= "weka.core.classes/from_commandline(classname='weka.classifiers.Classifier, cmdline='weka.classifiers.rules.JRip')"
+<RuleBasedClassifier> ::= "weka.core.classes/from_commandline(classname='weka.classifiers.Classifier', cmdline='weka.classifiers.rules.JRip')"
 
-<DecisionTable> ::= "weka.core.classes/from_commandline(classname='weka.classifiers.Classifier, cmdline='weka.classifiers.rules.DecisionTable')"
+<DecisionTable> ::= "weka.core.classes/from_commandline(classname='weka.classifiers.Classifier', cmdline='weka.classifiers.rules.DecisionTable')"
 
 # ----------------------------- #
 # ----------- scaler ---------- #

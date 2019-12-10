@@ -145,7 +145,7 @@ def execute_exp(
         population_size_ensemble=n_ensembles,
         mutation_rate_ensemble=mutation_rate_ensemble,
         crossover_rate_ensemble=crossover_rate_ensemble,
-        grammar='grammarTPOT',
+        grammar='grammarPBILV2',
         max_pipeline_time_secs=60,
         max_evolution_time_secs=time_per_task,
         n_jobs=n_jobs,

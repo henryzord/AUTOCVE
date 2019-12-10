@@ -1,0 +1,41 @@
+<pipeline> ::= <classifier>
+
+<classifier> ::= <DecisionTree>
+
+#<DecisionTree> ::= "pbil.generation/J48(jobject=None, options=[" <J48_confidenceFactor> ", " <J48_binarySplits> ", " <J48_useMDLcorrection> ", " <J48_useLaplace> ", " <J48_doNotMakeSplitPointActualValue> ", " <J48_collapseTree> ", " <J48_minNumObj> "])"
+
+#<J48_pruning> ::= <J48_confidenceFactor> | <J48_reducedErrorPruning> | <J48_unpruned>
+
+#<J48_confidenceFactor> ::= "'-C', " <J48_confidenceFactorValue> ", " <J48_subtreeRaising> ""
+#<J48_confidenceFactorValue> ::= "'" "CONSTFLOAT(0.01, 0.51, 0.01)" "'"
+
+#<J48_reducedErrorPruning> ::= "'-R', " <J48_numFolds> ", " <J48_subtreeRaising> ", '-Q', '1'" ""
+#<J48_numFolds> ::= "'-N', '" "CONSTINT(2, 11)" "'"
+
+#<J48_unpruned> ::= "'-U'"
+
+#<J48_subtreeRaising> ::= "'-S'" | "''"
+
+#<J48_binarySplits> ::= "'-B'" | "''"
+#<J48_useMDLcorrection> ::= "'-J'" | "''"
+#<J48_useLaplace> ::= "'-A'" | "''"
+#<J48_doNotMakeSplitPointActualValue> ::= "'-doNotMakeSplitPointActualValue'" | "''"
+#<J48_collapseTree> ::= "'-O'" | "''"
+
+#<J48_minNumObj> ::= "'-M', '" "CONSTINT(2, 11)"
+
+
+#<DecisionTree> ::= "pbil.generation/SimpleCart(jobject=None, options=[ <SimpleCart_usePrune> , <SimpleCart_minNumObj> , <SimpleCart_heuristic> ])"
+<DecisionTree> ::= "pbil.generation/SimpleCart(jobject=None, options=[ <SimpleCart_usePrune> , <SimpleCart_minNumObj> , <SimpleCart_heuristic> ])"
+
+#<SimpleCart_usePrune> ::= "'-U'" | "'-C', '1', '-S', '1', <SimpleCart_numFoldsPruning> , <SimpleCart_useOneSE>"
+
+#<SimpleCart_numFoldsPruning> ::= "'-N', '" "CONSTINT(2, 11)" "'" | "''"
+#<SimpleCart_useOneSE> ::= "'-A'" | "''"
+
+#<SimpleCart_heuristic> ::= "'-H'" | "''"
+#<SimpleCart_minNumObj> ::= "'-M', '" "CONSTINT(2, 11) "'"
+
+
+<RANDOM_STATE> ::= "42"
+

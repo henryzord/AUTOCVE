@@ -4,6 +4,8 @@ import javabridge
 import numpy as np
 import pandas as pd
 from weka.classifiers import Classifier
+from weka.core.dataset import create_instances_from_matrices
+from weka.filters import Filter
 
 from pbil.ptypes import process_sample
 
@@ -97,6 +99,7 @@ class ClassifierWrapper(Classifier):
     def __init__(self, jobject=None, options=None):
         super().__init__(classname=self.weka_name, options=options, jobject=jobject)
         self.log = None
+        self._class_attribute = None
 
     @staticmethod
     def sample_options(variables, classifiers):
@@ -117,6 +120,40 @@ class ClassifierWrapper(Classifier):
         # options_obj = javabridge.call(obj, 'getOptions', '()[Ljava/lang/String;')
         # inst.options = [javabridge.to_string(x) for x in env.get_object_array_elements(options_obj)]
         return inst
+
+    def fit(self, X, y):
+        dataset = create_instances_from_matrices(X, y)
+        dataset.class_is_last()
+        converter = Filter(classname='weka.filters.unsupervised.attribute.NumericToNominal', options=['-R', 'last'])
+        converter.inputformat(dataset)
+        dataset = converter.filter(dataset)
+
+        self.build_classifier(data=dataset)
+        self._class_attribute = dataset.attribute(dataset.class_index)
+
+    def predict(self, X):
+        # y = np.repeat(np.nan, len(X))
+        dataset = create_instances_from_matrices(X)
+        dataset.insert_attribute(att=self._class_attribute, index=dataset.num_attributes)
+        dataset.class_is_last()
+
+        # converter = Filter(classname='weka.filters.unsupervised.attribute.NumericToNominal', options=['-R', 'last'])
+        # converter.inputformat(dataset)
+        # dataset = converter.filter(dataset)
+
+        predictions = []
+        for i in range(len(X)):
+            predictions += [self.classify_instance(dataset.get_instance(i))]
+
+        return np.array(predictions)
+
+    def predict_proba(self, X):
+        dataset = create_instances_from_matrices(X)
+        dataset.insert_attribute(att=self._class_attribute, index=dataset.num_attributes)
+        dataset.class_is_last()
+
+        distribution = self.distributions_for_instances(dataset)
+        return distribution
 
 
 class J48(ClassifierWrapper):
