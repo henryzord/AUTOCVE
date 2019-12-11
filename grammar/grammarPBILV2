@@ -25,17 +25,15 @@
 #<J48_minNumObj> ::= "'-M', '" "CONSTINT(2, 11)"
 
 
-#<DecisionTree> ::= "pbil.generation/SimpleCart(jobject=None, options=[ <SimpleCart_usePrune> , <SimpleCart_minNumObj> , <SimpleCart_heuristic> ])"
-<DecisionTree> ::= "pbil.generation/SimpleCart(jobject=None, options=[ <SimpleCart_usePrune> , <SimpleCart_minNumObj> , <SimpleCart_heuristic> ])"
+<DecisionTree> ::= "pbil.generation/SimpleCart(jobject=None, options=["  <SimpleCart_usePrune>  ","  <SimpleCart_minNumObj>  ","  <SimpleCart_heuristic> "])"
 
-#<SimpleCart_usePrune> ::= "'-U'" | "'-C', '1', '-S', '1', <SimpleCart_numFoldsPruning> , <SimpleCart_useOneSE>"
+<SimpleCart_usePrune> ::= "'-U'" | "'-C', '1', '-S', '1'" ","  <SimpleCart_numFoldsPruning>  ","  <SimpleCart_useOneSE>
 
-#<SimpleCart_numFoldsPruning> ::= "'-N', '" "CONSTINT(2, 11)" "'" | "''"
-#<SimpleCart_useOneSE> ::= "'-A'" | "''"
+<SimpleCart_numFoldsPruning> ::= "'-N'," "'" "CONSTINT(2, 11)" "'" | "''"
+<SimpleCart_useOneSE> ::= "'-A'" | "''"
 
-#<SimpleCart_heuristic> ::= "'-H'" | "''"
-#<SimpleCart_minNumObj> ::= "'-M', '" "CONSTINT(2, 11) "'"
-
+<SimpleCart_heuristic> ::= "'-H'" | "''"
+<SimpleCart_minNumObj> ::= "'-M', " "'" "CONSTINT(2, 11)" "'"
 
 <RANDOM_STATE> ::= "42"
 
