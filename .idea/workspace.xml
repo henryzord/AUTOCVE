@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/grammar/grammarPBILV2" beforeDir="false" afterPath="$PROJECT_DIR$/grammar/grammarPBILV2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grammar/grammarPBIL" beforeDir="false" afterPath="$PROJECT_DIR$/grammar/grammarPBIL" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grammar/grammarPBILV1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/grammar/grammarPBILV2" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,7 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1576073695726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1576090510297" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$base_learners.coverage" NAME="base_learners Coverage Results" MODIFIED="1575642438888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pbil" />
     <SUITE FILE_PATH="coverage/AUTOCVE$Nosetests_in_test_getAUC_py.coverage" NAME="Nosetests in test_getAUC.py Coverage Results" MODIFIED="1574970661350" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$old_script.coverage" NAME="old_script Coverage Results" MODIFIED="1575465746286" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -31,43 +34,6 @@
     </option>
     <expand />
     <select />
-  </component>
-  <component name="DockManager">
-    <window id="2">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/grammar/grammarTPOT">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="450">
-                    <caret line="25" column="47" selection-start-line="25" selection-start-column="47" selection-end-line="25" selection-end-column="47" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file pinned="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/pbil/resources/variables.json">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="544">
-                    <caret line="383" column="25" selection-start-line="383" selection-start-column="25" selection-end-line="383" selection-end-column="25" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file pinned="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/pbil/resources/classifiers.json">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="813">
-                    <caret line="205" column="1" selection-start-line="177" selection-start-column="2" selection-end-line="205" selection-end-column="1" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="375004058">
@@ -142,22 +108,22 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Python Console" value="288" />
+          <entry key="Python Console" value="322" />
           <entry key="grammarPBIL" value="8" />
-          <entry key="grammarPBILV2" value="952" />
-          <entry key="py" value="1431" />
+          <entry key="grammarPBILV2" value="1947" />
+          <entry key="py" value="1432" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="960" />
-          <entry key="Python" value="1719" />
+          <entry key="PLAIN_TEXT" value="1955" />
+          <entry key="Python" value="1754" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="cpp" value="2" />
-          <entry key="grammarPBIL" value="1" />
+          <entry key="grammarPBIL" value="2" />
           <entry key="grammarPBILV2" value="3" />
           <entry key="grammarPBILV3" value="1" />
           <entry key="grammarTPOT" value="2" />
@@ -169,7 +135,7 @@
         <counts>
           <entry key="C++" value="2" />
           <entry key="JSON" value="4" />
-          <entry key="PLAIN_TEXT" value="7" />
+          <entry key="PLAIN_TEXT" value="8" />
           <entry key="Python" value="21" />
         </counts>
       </usages-collector>
@@ -180,8 +146,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="298" selection-start-line="298" selection-end-line="298" />
+            <state relative-caret-position="420">
+              <caret line="147" column="29" selection-start-line="147" selection-start-column="29" selection-end-line="147" selection-end-column="29" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -199,19 +165,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/AUTOCVE/util/evaluate.py">
+        <entry file="file://$PROJECT_DIR$/grammar/grammarPBIL">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="60" selection-start-line="60" selection-end-line="60" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/AUTOCVE/util/make_pipeline.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+            <state relative-caret-position="589">
+              <caret line="118" column="23" selection-start-line="118" selection-start-column="23" selection-end-line="118" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -234,7 +191,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pbil/generation.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="432">
@@ -247,25 +204,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/grammar/grammarPBILV2">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="648">
-              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grammar/grammarPBILV1">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/grammar.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="588">
-              <caret line="280" column="23" selection-start-line="280" selection-start-column="14" selection-end-line="280" selection-end-column="23" />
+            <state relative-caret-position="324">
+              <caret line="205" column="28" selection-start-line="205" selection-start-column="28" selection-end-line="205" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -281,40 +224,38 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>split</find>
-      <find>\},</find>
-      <find>&quot;presenceMeans&quot;: (.*)\n</find>
-      <find>&quot;presencemeans&quot;: (.*)\n},</find>
-      <find>\&quot;(.*)\&quot;: \{</find>
-      <find>\&quot;optionname\&quot;: (.*),</find>
-      <find>simplecart</find>
-      <find>(.*) ::= (.*)\n</find>
-      <find>pbilv2</find>
-      <find>\'</find>
-      <find>evaluate_population</find>
-      <find>CONSTINT(2, 10)</find>
-      <find>constint</find>
-      <find>_</find>
-      <find>j48</find>
-      <find>&quot;&quot;</find>
-      <find>subtreeRaising</find>
-      <find>Cannot find the end of terminal in</find>
-      <find>&quot;''&quot;</find>
-      <find>J48_subtreeRaising</find>
-      <find>&quot;' '&quot;</find>
-      <find>J48_subtreeraising</find>
-      <find>'1'</find>
-      <find>sizeper</find>
-      <find>j48_seed</find>
-      <find>fit_predict_proba</find>
-      <find>minnumobj</find>
-      <find>&lt;SimpleCart_minNumObj&gt;</find>
       <find>&lt;SimpleCart_heuristic&gt;</find>
       <find>-n</find>
+      <find>constfloat</find>
+      <find>process_interval_Float</find>
+      <find>part</find>
+      <find>&quot;optionName&quot;: &quot;(.*)&quot;,</find>
+      <find>&quot;(.*)&quot;: \{</find>
+      <find>jrip_seed</find>
+      <find>seed</find>
+      <find>JRip_optimizationsJRip_optimizations</find>
+      <find>JRip_optimizations</find>
+      <find>confidencefactor</find>
+      <find>a_min</find>
+      <find>decisionta</find>
+      <find>&quot;presenceMeans&quot;: true\n</find>
+      <find>&quot;optionName&quot;: &quot;(.*)&quot;,\n\},</find>
+      <find>::= \n</find>
+      <find>::=</find>
+      <find>greedystepwise_threso</find>
+      <find>numtoselect</find>
+      <find>DecisionTable</find>
+      <find>threshold</find>
+      <find>#</find>
+      <find>&lt;threshold&gt;</find>
+      <find>criterion</find>
+      <find>&lt;criterion&gt;</find>
+      <find>&lt;max_features&gt;</find>
+      <find>max_features</find>
+      <find>crossval</find>
+      <find>bestfirst_direc</find>
     </findStrings>
     <replaceStrings>
-      <replace>some_args.experiment_name</replace>
-      <replace>some_args.experiment_description</replace>
       <replace>some_args.n_samples</replace>
       <replace>test</replace>
       <replace>jtest_probs</replace>
@@ -342,6 +283,9 @@
       <replace>&quot;''&quot;</replace>
       <replace>&quot;' '&quot;</replace>
       <replace>&quot;None&quot;</replace>
+      <replace>&lt;$1&gt; ::=</replace>
+      <replace>&quot;'$1'&quot; | &quot;''&quot;</replace>
+      <replace>::=</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -380,12 +324,12 @@
         <option value="$PROJECT_DIR$/pbil/experiment_collapser.py" />
         <option value="$PROJECT_DIR$/pbil/evaluations.py" />
         <option value="$PROJECT_DIR$/pbil/utils.py" />
-        <option value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
         <option value="$PROJECT_DIR$/util/evaluate.py" />
         <option value="$PROJECT_DIR$/pbil/generation.py" />
         <option value="$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/AUTOCVE/util/evaluate.py" />
-        <option value="$PROJECT_DIR$/grammar/grammarPBIL" />
         <option value="$PROJECT_DIR$/grammar/grammarPBILV2" />
+        <option value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
+        <option value="$PROJECT_DIR$/grammar/grammarPBIL" />
       </list>
     </option>
   </component>
@@ -624,7 +568,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.15920398" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.15920398" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.4859038" side_tool="true" weight="0.31732777" />
@@ -633,7 +577,7 @@
       <window_info anchor="bottom" id="Python Console" order="5" sideWeight="0.49253732" side_tool="true" visible="true" weight="0.31799164" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" sideWeight="0.498618" weight="0.3294979" />
-      <window_info active="true" anchor="bottom" id="Run" order="8" sideWeight="0.5074627" visible="true" weight="0.31799164" />
+      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.5074627" visible="true" weight="0.31799164" />
       <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.46379215" weight="0.3671548" />
       <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
@@ -1032,54 +976,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grammar/grammarPBIL">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="25" column="53" selection-start-line="25" selection-start-column="53" selection-end-line="25" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pbil/resources/classifiers.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="813">
-          <caret line="205" column="1" selection-start-line="177" selection-start-column="2" selection-end-line="205" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pbil/resources/variables.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="420" column="4" selection-start-line="420" selection-start-column="4" selection-end-line="420" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grammar/grammarPBILV1">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/pbil/base_learners.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
           <caret line="34" column="31" selection-start-line="34" selection-start-column="31" selection-end-line="34" selection-end-column="31" />
           <folding>
             <element signature="e#725#741#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/grammar.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="280" column="23" selection-start-line="280" selection-start-column="14" selection-end-line="280" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pbil/generation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="153" selection-start-line="153" selection-end-line="153" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-            <marker date="1575986685037" expanded="true" signature="5371:5377" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1112,27 +1014,69 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/grammar.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="205" column="28" selection-start-line="205" selection-start-column="28" selection-end-line="205" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/resources/classifiers.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="65" column="25" selection-start-line="65" selection-start-column="17" selection-end-line="65" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/resources/variables.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="420" column="4" selection-start-line="420" selection-start-column="4" selection-end-line="420" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grammar/grammarPBILV1">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grammar/grammarTPOT">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="648">
+          <caret line="36" column="40" lean-forward="true" selection-start-line="36" selection-start-column="40" selection-end-line="36" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="298" selection-start-line="298" selection-end-line="298" />
+        <state relative-caret-position="420">
+          <caret line="147" column="29" selection-start-line="147" selection-start-column="29" selection-end-line="147" selection-end-column="29" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grammar/grammarTPOT">
+    <entry file="file://$PROJECT_DIR$/grammar/grammarPBIL">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="25" column="47" selection-start-line="25" selection-start-column="47" selection-end-line="25" selection-end-column="47" />
+        <state relative-caret-position="589">
+          <caret line="118" column="23" selection-start-line="118" selection-start-column="23" selection-end-line="118" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/grammar/grammarPBILV2">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+        <state relative-caret-position="342">
+          <caret line="19" lean-forward="true" selection-end-line="118" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pbil/generation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="153" selection-start-line="153" selection-end-line="153" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <marker date="1575986685037" expanded="true" signature="5371:5377" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
