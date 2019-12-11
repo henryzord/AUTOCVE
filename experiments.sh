@@ -1,0 +1,1 @@
+python AUTOCVE[EACOMP]_script.py --metadata-path /home/henry/Projects/AUTOCVE/.metadata --datasets-path /home/henry/Projects/eacomp/keel_datasets_10fcv --datasets-names balancescale --n-generations 200 --n-samples 10 --n-jobs 8 --pool-size 75 --n-ensembles 75

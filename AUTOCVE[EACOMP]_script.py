@@ -1,6 +1,7 @@
 import argparse
 import multiprocessing as mp
 import os
+import time
 
 from functools import reduce
 import itertools as it
@@ -327,6 +328,7 @@ def main():
         )
         job.start()
         jobs += [job]
+        time.sleep(60)
 
     # blocks everything
     for job in jobs:
