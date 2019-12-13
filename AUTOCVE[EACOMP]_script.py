@@ -134,9 +134,9 @@ def fit_predict_proba(estimator, X, y, X_test):
 def execute_exp(
         id_trial, n_fold, datasets_path, d_id, n_generations, time_per_task, pool_size,
         mutation_rate_pool, crossover_rate_pool, n_ensembles, mutation_rate_ensemble, crossover_rate_ensemble,
-        n_jobs, results_path, context, seed=None, subsample=1):
+        n_jobs, results_path, context, max_heap_size='2G', seed=None, subsample=1):
 
-    jvm.start()
+    jvm.start(max_heap_size=max_heap_size)
 
     p = AUTOCVEClassifier(
         generations=n_generations,
@@ -272,6 +272,13 @@ def main():
         help='Crossover rate for ensembles'
     )
 
+    parser.add_argument(
+        '--heap-size', action='store', required=False, default='2G',
+        help='string that specifies the maximum size, in bytes, of the memory allocation pool. '
+             'This value must be a multiple of 1024 greater than 2MB. Append the letter k or K to indicate kilobytes, '
+             'or m or M to indicate megabytes. Defaults to 2G'
+    )
+
     some_args = parser.parse_args()
 
     if 0 < some_args.n_samples <= 20:
@@ -323,7 +330,8 @@ def main():
                 mutation_rate_ensemble=some_args.mutation_rate_ensemble,
                 crossover_rate_ensemble=some_args.crossover_rate_ensemble,
                 results_path=results_path,
-                context=context
+                context=context,
+                max_heap_size=some_args.heap_size
             )
         )
         job.start()
