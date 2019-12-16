@@ -101,7 +101,8 @@ venv.bak/
 /site
 
 # mypy
-.idea/
 .mypy_cache/
 .metadata
 src/cmake-build-debug
+.idea
+workspace.xml

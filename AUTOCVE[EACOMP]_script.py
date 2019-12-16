@@ -137,6 +137,7 @@ def execute_exp(
         n_jobs, results_path, context, max_heap_size='2G', seed=None, subsample=1):
 
     jvm.start(max_heap_size=max_heap_size)
+    jvm.start()
 
     p = AUTOCVEClassifier(
         generations=n_generations,
@@ -302,8 +303,6 @@ def main():
     jobs = []
     for id_exp, id_trial, n_fold in queue_experiments:
         print("Dataset %s, trial %d, fold %d" % (id_exp, id_trial, n_fold))
-        if not os.path.exists(os.path.join(results_path, id_exp)):
-            os.mkdir(os.path.join(results_path, id_exp))
 
         if len(jobs) >= some_args.n_jobs:
             jobs, datasets_status = __get_running_processes__(

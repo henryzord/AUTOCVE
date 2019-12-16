@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 import psutil as psutil
 from scipy.io import arff
-from weka.core import jvm
 
 
 def create_metadata_path(args):
@@ -22,6 +21,9 @@ def create_metadata_path(args):
         joined = os.path.join(joined, path)
         if not os.path.exists(joined):
             os.mkdir(joined)
+
+    for dataset_name in args.datasets_names.split(','):
+        os.mkdir(os.path.join(joined, dataset_name))
 
     with open(os.path.join(joined, 'parameters.json'), 'w') as f:
         json.dump({k: getattr(args, k) for k in args.__dict__}, f, indent=2)
