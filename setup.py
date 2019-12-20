@@ -5,7 +5,7 @@ AUTOCVE_modulename=Extension('AUTOCVE.AUTOCVE',
                           sources=['src/main.cpp',"src/AUTOCVE.cpp","src/grammar.cpp","src/solution.cpp","src/population.cpp","src/python_interface.cpp","src/population_ensemble.cpp","src/utility.cpp"],
                           include_dirs=[numpy.get_include()],
                           language='c++',
-                          extra_compile_args=['-O0']  # TODO remove when deploying
+                          # extra_compile_args=['-O0']  # TODO remove when deploying
                          )
 
 

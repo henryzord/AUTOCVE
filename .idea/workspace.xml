@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments.sh" beforeDir="false" afterPath="$PROJECT_DIR$/experiments.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pbil/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/pbil/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/.idea/src.iml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/src.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -104,12 +101,14 @@
     <session id="2135678147">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="6" />
+          <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.5" value="2" />
-          <entry key="project.open.time.6" value="1" />
+          <entry key="project.open.time.6" value="2" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -118,16 +117,16 @@
           <entry key="gitignore" value="16" />
           <entry key="grammarPBIL" value="8" />
           <entry key="grammarPBILV2" value="1947" />
-          <entry key="py" value="1559" />
-          <entry key="sh" value="50" />
+          <entry key="py" value="1561" />
+          <entry key="sh" value="55" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Bash" value="50" />
+          <entry key="Bash" value="55" />
           <entry key="Git file" value="16" />
           <entry key="PLAIN_TEXT" value="1955" />
-          <entry key="Python" value="1884" />
+          <entry key="Python" value="1886" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -139,7 +138,7 @@
           <entry key="grammarPBILV3" value="1" />
           <entry key="grammarTPOT" value="2" />
           <entry key="json" value="4" />
-          <entry key="py" value="27" />
+          <entry key="py" value="28" />
           <entry key="sh" value="1" />
         </counts>
       </usages-collector>
@@ -150,25 +149,13 @@
           <entry key="Git file" value="1" />
           <entry key="JSON" value="4" />
           <entry key="PLAIN_TEXT" value="8" />
-          <entry key="Python" value="27" />
+          <entry key="Python" value="28" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="140" lean-forward="true" selection-start-line="140" selection-end-line="140" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/javabridge/jutil.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -190,11 +177,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pbil/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="360">
+              <caret line="53" column="13" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/setup.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="378">
+              <caret line="22" column="34" lean-forward="true" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -203,7 +199,7 @@
         <entry file="file://$PROJECT_DIR$/experiments.sh">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="20" selection-start-column="20" selection-end-column="20" />
+              <caret column="413" selection-start-column="413" selection-end-column="413" />
             </state>
           </provider>
         </entry>
@@ -238,7 +234,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pbil/generation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2592">
+            <state relative-caret-position="2754">
               <caret line="153" selection-start-line="153" selection-end-line="153" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
@@ -267,7 +263,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&quot;optionName&quot;: &quot;(.*)&quot;,</find>
       <find>&quot;(.*)&quot;: \{</find>
       <find>jrip_seed</find>
       <find>seed</find>
@@ -297,6 +292,7 @@
       <find>sleep</find>
       <find>n_jo</find>
       <find>n_jobs</find>
+      <find>grammar</find>
     </findStrings>
     <replaceStrings>
       <replace>some_args.n_samples</replace>
@@ -348,7 +344,6 @@
         <option value="$PROJECT_DIR$/src/metrics.h" />
         <option value="$PROJECT_DIR$/old_script.py" />
         <option value="$PROJECT_DIR$/util/scoring_handler.py" />
-        <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/util/__ini__.py" />
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/src/population.h" />
@@ -369,10 +364,11 @@
         <option value="$USER_HOME$/anaconda2/envs/eda3/lib/python3.7/site-packages/AUTOCVE/util/evaluate.py" />
         <option value="$PROJECT_DIR$/grammar/grammarPBILV2" />
         <option value="$PROJECT_DIR$/grammar/grammarPBIL" />
-        <option value="$PROJECT_DIR$/experiments.sh" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/pbil/utils.py" />
         <option value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
+        <option value="$PROJECT_DIR$/experiments.sh" />
+        <option value="$PROJECT_DIR$/setup.py" />
       </list>
     </option>
   </component>
@@ -383,10 +379,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="65" />
-    <option name="y" value="-4" />
-    <option name="width" value="1855" />
-    <option name="height" value="1084" />
+    <option name="x" value="64" />
+    <option name="y" value="-11" />
+    <option name="width" value="1857" />
+    <option name="height" value="1092" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -396,7 +392,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -433,11 +428,12 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../eacomp" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
@@ -617,10 +613,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.16583748" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.1708126" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.4859038" side_tool="true" weight="0.31732777" />
@@ -1026,10 +1021,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
+    <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="21" column="25" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
+        <state relative-caret-position="310">
+          <caret line="154" column="41" selection-start-line="154" selection-start-column="41" selection-end-line="154" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1050,7 +1048,7 @@
     <entry file="file://$PROJECT_DIR$/experiments.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="20" selection-start-column="20" selection-end-column="20" />
+          <caret column="413" selection-start-column="413" selection-end-column="413" />
         </state>
       </provider>
     </entry>
@@ -1077,7 +1075,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pbil/generation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2592">
+        <state relative-caret-position="2754">
           <caret line="153" selection-start-line="153" selection-end-line="153" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
@@ -1094,21 +1092,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pbil/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+        <state relative-caret-position="360">
+          <caret line="53" column="13" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py">
+    <entry file="file://$PROJECT_DIR$/setup.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="140" lean-forward="true" selection-start-line="140" selection-end-line="140" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="378">
+          <caret line="22" column="34" lean-forward="true" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
         </state>
       </provider>
     </entry>
