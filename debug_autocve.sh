@@ -1,11 +1,9 @@
 # first, activate the environment in the CONSOLE that will run this script
-source activate eda3
-
-# install package with debugging information
+conda activate autocve
 
 # installing package with debug information:
 # pip install --no-binary :all: --global-option build --global-option --debug PACKAGE  # TODO example
-cd ~/Projects/AUTOCVE
+cd AUTOCVE
 pip install --no-binary :all: --global-option build --global-option --debug .
 
 # debugging

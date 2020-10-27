@@ -462,8 +462,12 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
         this->next_gen[i]=this->population[i]->copy();
 
 
-    int choice_mask[this->population_size];
-    for(int i=0;i<this->population_size;i++)choice_mask[i]=0;
+//    int choice_mask[this->population_size];
+    int *choice_mask = new int [this->population_size];
+
+    for(int i=0;i<this->population_size;i++) {
+        choice_mask[i] = 0;
+    }
 
     for(int i=this->population_size;i<this->next_gen_size; i+=2){
         int parent1, parent2;

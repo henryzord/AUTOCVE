@@ -80,7 +80,7 @@ roc_point_t *getCurve(PyObject *y_score, int *y_true_int, int classIndex, int *c
             fp = fp - cumulativeNeg;  // false positive
             tn = tn + cumulativeNeg;  // true negative
             threshold = pairedArray[i].value;
-            points[*count_vec] = {.tp = tp, .fp = fp, .threshold = threshold};
+            points[*count_vec] = {.tp = (double)tp, .fp = (double)fp, .threshold = threshold};
             *count_vec = *count_vec + 1;
             cumulativeNeg = 0;
             cumulativePos = 0;
@@ -103,7 +103,7 @@ roc_point_t *getCurve(PyObject *y_score, int *y_true_int, int classIndex, int *c
     tn = totNeg;
     fn = totPos;
     threshold = pairedArray[n_instances - 1].value + 10e-6;
-    points[*count_vec] = {.tp = tp, .fp = fp, .threshold = threshold};
+    points[*count_vec] = {.tp = (double)tp, .fp = (double)fp, .threshold = threshold};
 
     free(pairedArray);
 

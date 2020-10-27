@@ -67,8 +67,11 @@ int PopulationEnsemble::next_generation_similarity(Population *population_compon
     }
 
     this->quick_sort_population();
-    int choice_mask[this->population_size];
-    for(int i=0;i<this->population_size;i++)choice_mask[i]=0;
+//    int choice_mask[this->population_size];
+    int *choice_mask = new int [this->population_size];
+    for(int i=0;i<this->population_size;i++) {
+        choice_mask[i] = 0;
+    }
 
     for(int i=0;i<this->next_gen_size;i+=2){
         int parent1, parent2;
@@ -76,19 +79,24 @@ int PopulationEnsemble::next_generation_similarity(Population *population_compon
         parent1=randInt(0,this->population_size-1-i);
         int sort_position=0;
         for(int count_position=0;count_position<=parent1;sort_position++)
-            if(!choice_mask[sort_position])count_position++;
-        parent1=sort_position-1;
-        choice_mask[parent1]=1;
+            if(!choice_mask[sort_position]) {
+                count_position++;
+            }
+        parent1 = sort_position - 1;
+        choice_mask[parent1] = 1;
 
         if(i<this->next_gen_size-1){
            parent2=randInt(0,this->population_size-1-i-1);                
            sort_position=0;
            for(int count_position=0;count_position<=parent2;sort_position++)
-               if(!choice_mask[sort_position])count_position++;
+               if(!choice_mask[sort_position]) {
+                    count_position++;
+               }
            parent2=sort_position-1;
            choice_mask[parent2]=1;
-        }else //If size of population is odd, a solution of population is sorted to complete the pairing procedure
-           parent2=randInt(0,this->population_size-1);                
+        } else { // If size of population is odd, a solution of population is sorted to complete the pairing procedure
+           parent2=randInt(0,this->population_size-1);
+        }
 
         int *child1, *child2;
 
@@ -149,6 +157,8 @@ int PopulationEnsemble::next_generation_similarity(Population *population_compon
 
     this->update_length_population();
     this->quick_sort_population();
+
+    delete [] choice_mask;
 
     return 1;
 }

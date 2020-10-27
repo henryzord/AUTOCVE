@@ -8,6 +8,7 @@
 #include <stdlib.h>  
 #include <fstream>
 #include <string.h>
+#include <time.h>
 
 #define BUFFER_SIZE 10000
 
@@ -81,8 +82,10 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
     if(!evolution_ensemble_log.is_open())
         throw "Cannot create evolution_ensemble.log file\n";
 
-    struct timeval start, end;
-    gettimeofday(&start, NULL);
+    time_t start, end;
+    time(&start);
+//    struct timeval start, end;
+//    gettimeofday(&start, NULL);
 
     PySys_WriteStdout("GENERATION %d\n",0);
     this->population=new Population(this->interface, this->size_pop_components, this->elite_portion_components, this->mut_rate_components, this->cross_rate_components);
@@ -105,25 +108,33 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
     evolution_ensemble_log<<"Generation;Length;Score\n";
     this->population_ensemble->write_population(0,&evolution_ensemble_log);
 
-    gettimeofday(&end, NULL);
+//    gettimeofday(&end, NULL);
+    time(&end);
     int control_flag;
 
     double generation_time=0;
     for(int i=0;i<this->generations;i++){
-        PySys_WriteStdout("GENERATION %d (%d secs)\n",i+1,(int)(end.tv_sec-start.tv_sec));
+//        PySys_WriteStdout("GENERATION %d (%d secs)\n",i+1,(int)(end.tv_sec-start.tv_sec));
+        PySys_WriteStdout("GENERATION %d (%d secs)\n",i+1,(int)difftime(end, start));
 
         if(!(control_flag=this->population->next_generation_selection_similarity(this->population_ensemble)))
             return NULL;
 
         this->population_ensemble->next_generation_similarity(this->population);
 
-        struct timeval auxiliar_time;
-        gettimeofday(&auxiliar_time, NULL);
-        generation_time=auxiliar_time.tv_sec-end.tv_sec;
+//        struct timeval auxiliar_time;
+//        gettimeofday(&auxiliar_time, NULL);
+//        generation_time=auxiliar_time.tv_sec-end.tv_sec;
 
-        gettimeofday(&end, NULL);
+        time_t auxiliar_time;
+        time(&auxiliar_time);
+        generation_time=(double)difftime(auxiliar_time, end);
 
-        if(this->timeout_evolution_process_sec && (end.tv_sec-start.tv_sec)>=this->timeout_evolution_process_sec-generation_time) control_flag=-1;
+//        gettimeofday(&end, NULL);
+        time(&end);
+
+//        if(this->timeout_evolution_process_sec && (end.tv_sec-start.tv_sec)>=this->timeout_evolution_process_sec-generation_time) control_flag=-1;
+        if(this->timeout_evolution_process_sec && (difftime(end, start))>=this->timeout_evolution_process_sec-generation_time) control_flag=-1;
 
         this->population->write_population(i+1,&evolution_log);
         this->population->write_similarity_matrix(i+1,&matrix_sim_log);
@@ -133,7 +144,8 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
             break;
     }
 
-    PySys_WriteStdout("END PROCESS (%d secs)\n",(int)(end.tv_sec-start.tv_sec));
+//    PySys_WriteStdout("END PROCESS (%d secs)\n",(int)(end.tv_sec-start.tv_sec));
+    PySys_WriteStdout("END PROCESS (%d secs)\n",(int)difftime(end, start));
 
     evolution_log.close();
     matrix_sim_log.close();

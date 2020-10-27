@@ -1,0 +1,4 @@
+python-weka-wrapper3==0.1.7
+javabridge==1.0.19
+PyHamcrest==1.9.0
+xgboost==0.80
