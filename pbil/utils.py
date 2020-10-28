@@ -12,7 +12,7 @@ from scipy.io import arff
 def create_metadata_path(args):
     now = dt.now()
 
-    str_time = now.strftime('%d-%m-%Y-%H:%M:%S')
+    str_time = now.strftime('%Y-%m-%d-%H-%M-%S')
 
     joined = os.getcwd() if not os.path.isabs(args.metadata_path) else ''
     to_process = [args.metadata_path, str_time]
@@ -41,10 +41,9 @@ def path_to_dataframe(dataset_path):
 
     value, metadata = path_to_arff(dataset_path)
 
-    df = pd.DataFrame(value, columns=metadata._attrnames)
+    df = pd.DataFrame(value, columns=metadata.names())
 
-    attributes = metadata._attributes
-    for attr_name, (attr_type, rang_vals) in attributes.items():
+    for attr_name, attr_type in zip(metadata.names(), metadata.types()):
         if attr_type in ('nominal', 'string'):
             df[attr_name] = df[attr_name].apply(lambda x: x.decode('utf-8'))
 

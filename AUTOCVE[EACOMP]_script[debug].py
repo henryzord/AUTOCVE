@@ -1,7 +1,5 @@
 import argparse
-import multiprocessing as mp
 import os
-import time
 
 from functools import reduce
 import itertools as it
@@ -116,16 +114,16 @@ def fit_predict_proba(estimator, X, y, X_test):
         return None
     try:
         if np.any(np.isnan(X.values)) or np.any(np.isnan(X_test.values)):
-            imputer=SimpleImputer(strategy="median")
+            imputer = SimpleImputer(strategy="median")
             imputer.fit(X)
-            X=imputer.transform(X)
-            X_test=imputer.transform(X_test)
+            X = imputer.transform(X)
+            X_test = imputer.transform(X_test)
         else:
-            X=X.values  # TPOT operators need numpy format for been applied
-            X_test=X_test.values
-            y=y.values
+            X = X.values  # TPOT operators need numpy format for been applied
+            X_test = X_test.values
+            y = y.values
 
-        estimator.fit(X,y)
+        estimator.fit(X, y)
         return estimator.predict_proba(X_test)
     except Exception as e:
         return None
@@ -134,11 +132,9 @@ def fit_predict_proba(estimator, X, y, X_test):
 def execute_exp(
         id_trial, n_fold, datasets_path, d_id, n_generations, time_per_task, pool_size,
         mutation_rate_pool, crossover_rate_pool, n_ensembles, mutation_rate_ensemble, crossover_rate_ensemble,
-        n_jobs, results_path, context, max_heap_size='2G', seed=None, subsample=1):
+        n_jobs, results_path, seed=None, subsample=1):
 
-    jvm.start(max_heap_size=max_heap_size)
-    # jvm.start()
-
+    # TODO the error is here
     p = AUTOCVEClassifier(
         generations=n_generations,
         population_size_components=pool_size,
@@ -156,11 +152,17 @@ def execute_exp(
         verbose=1
     )
 
+    print('parsing!')
+
     X_train, X_test, y_train, y_test, df_types = parse_open_ml(
         datasets_path=datasets_path, d_id=d_id, n_fold=n_fold
     )
 
+    print('optimizing!')
+
     p.optimize(X_train, y_train, subsample_data=subsample)
+
+    print('predicting!')
 
     train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
     test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)
@@ -174,28 +176,6 @@ def execute_exp(
     )
 
     jvm.stop()
-
-
-def __get_running_processes__(jobs, datasets_status, results_path, total_experiments, total_folds):
-    if len(jobs) > 0:
-        jobs[0].join()
-
-        for job in jobs:  # type: mp.Process
-            if not job.is_alive():
-                jobs.remove(job)
-
-    for dataset, finished in datasets_status.items():
-        if not finished:
-            if len(os.listdir(os.path.join(results_path, dataset))) == (total_experiments * total_folds):
-                try:
-                    summary = collapse_metrics(os.path.join(results_path, dataset), only_baselines=True)
-                    datasets_status[dataset] = True
-                    print('summary for dataset %s:' % dataset)
-                    print(summary)
-                except:
-                    pass
-
-    return jobs, datasets_status
 
 
 def main():
@@ -291,63 +271,30 @@ def main():
 
     datasets_names = some_args.datasets_names.split(',')
 
-    jvm.start()
+    jvm.start(max_heap_size=some_args.heap_size)
     results_path = create_metadata_path(args=some_args)
     os.chdir(results_path)
 
-    mp.set_start_method('spawn')
-    context = mp.get_context('spawn')
+    # datasets_status = {k: False for k in datasets_names}
 
-    datasets_status = {k: False for k in datasets_names}
+    # queue_experiments = it.product(datasets_names, list(range(1, N_TRIALS + 1)), list(range(1, 10 + 1)))
 
-    queue_experiments = it.product(datasets_names, list(range(1, N_TRIALS + 1)), list(range(1, 10 + 1)))
-
-    jobs = []
-    for id_exp, id_trial, n_fold in queue_experiments:
-        print("Dataset %s, trial %d, fold %d" % (id_exp, id_trial, n_fold))
-
-        if len(jobs) >= some_args.n_jobs:
-            jobs, datasets_status = __get_running_processes__(
-                jobs=jobs, datasets_status=datasets_status,
-                results_path=results_path,
-                total_experiments=N_TRIALS, total_folds=10,
-            )
-
-        job = mp.Process(
-            target=execute_exp,
-            kwargs=dict(
-                n_fold=n_fold,
-                id_trial=id_trial,
-                datasets_path=some_args.datasets_path,
-                d_id=id_exp,
-                seed=np.random.randint(np.iinfo(np.int32).max),
-                n_generations=some_args.n_generations,
-                n_jobs=1,
-                time_per_task=some_args.time_per_task,
-                pool_size=some_args.pool_size,
-                mutation_rate_pool=some_args.mutation_rate_pool,
-                crossover_rate_pool=some_args.crossover_rate_pool,
-                n_ensembles=some_args.n_ensembles,
-                mutation_rate_ensemble=some_args.mutation_rate_ensemble,
-                crossover_rate_ensemble=some_args.crossover_rate_ensemble,
-                results_path=results_path,
-                context=context,
-                max_heap_size=some_args.heap_size
-            )
-        )
-        job.start()
-        jobs += [job]
-        time.sleep(60)
-
-    # blocks everything
-    for job in jobs:
-        job.join()
-
-    # finishes everything
-    __get_running_processes__(
-        jobs=jobs, datasets_status=datasets_status,
-        results_path=results_path,
-        total_experiments=N_TRIALS, total_folds=10,
+    execute_exp(
+        n_fold=1,
+        id_trial=1,
+        datasets_path=some_args.datasets_path,
+        d_id=datasets_names[0],
+        seed=np.random.randint(np.iinfo(np.int32).max),
+        n_generations=some_args.n_generations,
+        n_jobs=1,
+        time_per_task=some_args.time_per_task,
+        pool_size=some_args.pool_size,
+        mutation_rate_pool=some_args.mutation_rate_pool,
+        crossover_rate_pool=some_args.crossover_rate_pool,
+        n_ensembles=some_args.n_ensembles,
+        mutation_rate_ensemble=some_args.mutation_rate_ensemble,
+        crossover_rate_ensemble=some_args.crossover_rate_ensemble,
+        results_path=results_path
     )
 
     jvm.stop()

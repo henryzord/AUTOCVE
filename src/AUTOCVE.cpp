@@ -14,13 +14,31 @@
 
 
 AUTOCVEClass::AUTOCVEClass(int seed, int n_jobs, PyObject* timeout_pip_sec, int timeout_evolution_process_sec, char *grammar_file, int generations, int size_pop_components, double elite_portion_components, double mut_rate_components, double cross_rate_components, int size_pop_ensemble, double elite_portion_ensemble, double mut_rate_ensemble, double cross_rate_ensemble,  PyObject *scoring, int cv_folds, int verbose){
-    this->seed=seed, this->n_jobs=n_jobs, this->timeout_pip_sec=timeout_pip_sec, this->timeout_evolution_process_sec=timeout_evolution_process_sec, this->grammar_file=AUTOCVEClass::grammar_file_handler(grammar_file), this->generations=generations, this->scoring=scoring, this->verbose=verbose;
-    this->size_pop_components=size_pop_components, this->elite_portion_components=elite_portion_components, this->mut_rate_components=mut_rate_components, this->cross_rate_components=cross_rate_components;
-    this->size_pop_ensemble=size_pop_ensemble, this->elite_portion_ensemble=elite_portion_ensemble, this->mut_rate_ensemble=mut_rate_ensemble, this->cross_rate_ensemble=cross_rate_ensemble;
+
+    this->seed=seed;
+    this->n_jobs=n_jobs;
+    this->timeout_pip_sec=timeout_pip_sec;
+    this->timeout_evolution_process_sec=timeout_evolution_process_sec;
+    this->grammar_file=AUTOCVEClass::grammar_file_handler(grammar_file);
+    this->generations=generations;
+    this->scoring=scoring;
+    this->verbose=verbose;
+    this->size_pop_components=size_pop_components;
+    this->elite_portion_components=elite_portion_components;
+    this->mut_rate_components=mut_rate_components;
+    this->cross_rate_components=cross_rate_components;
+    this->size_pop_ensemble=size_pop_ensemble;
+    this->elite_portion_ensemble=elite_portion_ensemble;
+    this->mut_rate_ensemble=mut_rate_ensemble;
+    this->cross_rate_ensemble=cross_rate_ensemble;
 
     this->cv_folds=cv_folds;
-    this->population=NULL, this->grammar=NULL, this->interface=NULL, this->population_ensemble=NULL;
-    this->interface=new PythonInterface(this->n_jobs, this->timeout_pip_sec, this->scoring, this->cv_folds, this->verbose);
+    this->population=NULL;
+    this->grammar=NULL;
+    this->interface=NULL;
+    this->population_ensemble=NULL;
+
+    this->interface = new PythonInterface(this->n_jobs, this->timeout_pip_sec, this->scoring, this->cv_folds, this->verbose);
 }
 
 AUTOCVEClass::~AUTOCVEClass(){
@@ -112,10 +130,10 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
     time(&end);
     int control_flag;
 
-    double generation_time=0;
-    for(int i=0;i<this->generations;i++){
+    double generation_time = 0;
+    for(int i=0;i< this->generations; i++) {
 //        PySys_WriteStdout("GENERATION %d (%d secs)\n",i+1,(int)(end.tv_sec-start.tv_sec));
-        PySys_WriteStdout("GENERATION %d (%d secs)\n",i+1,(int)difftime(end, start));
+        PySys_WriteStdout("GENERATION %d (%d secs)\n", i+1, (int)difftime(end, start));
 
         if(!(control_flag=this->population->next_generation_selection_similarity(this->population_ensemble)))
             return NULL;
@@ -256,23 +274,41 @@ char *AUTOCVEClass::get_parameters_char(){
 char* AUTOCVEClass::grammar_file_handler(char *grammar_file_param){
     char *grammar_file_return;
 
-    if(!strchr(grammar_file_param,'/') && !strchr(grammar_file_param,'\\')){
+    char sep;
+
+    #ifdef _WIN32
+    sep = '\\';  // on windows
+    #else
+    sep = '/';  // on linux
+    #endif
+
+    // if only the name of the grammar is passed, then it will search in the default directory of grammars
+    if(!strchr(grammar_file_param, '/') && !strchr(grammar_file_param, '\\')){
+
         PyObject *autocve_module = PyImport_ImportModule("AUTOCVE.AUTOCVE");
         PyObject *path = PyObject_GetAttrString(autocve_module, "__file__");
-        const char *path_char= PyUnicode_AsUTF8(path);
+        const char *path_char = PyUnicode_AsUTF8(path);
 
-        grammar_file_return=(char*)malloc(sizeof(char)*(strlen(path_char)+1));
-        strcpy(grammar_file_return,path_char);
-        char *last_bar=strrchr(grammar_file_return,'/');    
-        *last_bar='\0';
-        grammar_file_return=char_concat(grammar_file_return,"/grammar/");
+        grammar_file_return = (char*)malloc(sizeof(char)*(strlen(path_char)+1));
+
+        strcpy(grammar_file_return, path_char);
+        // char *last_bar=strrchr(grammar_file_return, '/');
+        char *last_bar = strrchr(grammar_file_return, sep);
+        *last_bar = '\0';  // truncates string
+
+//        grammar_file_return = char_concat(grammar_file_return, "/grammar/");
+        #ifdef _WIN32
+        grammar_file_return = char_concat(grammar_file_return, "\\grammar\\");
+        #else
+        grammar_file_return = char_concat(grammar_file_return, "/grammar/");
+        #endif
         grammar_file_return=char_concat(grammar_file_return, grammar_file_param);
 
         Py_XDECREF(path);
         Py_XDECREF(autocve_module); 
 
-    }else{
-        grammar_file_return=(char*)malloc(sizeof(char)*(strlen(grammar_file_param)+1));
+    } else {
+        grammar_file_return = (char*)malloc(sizeof(char)*(strlen(grammar_file_param)+1));
         strcpy(grammar_file_return, grammar_file_param);
     }
 

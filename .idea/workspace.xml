@@ -2,20 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/installation/conda_libraries.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/installation/pip_libraries.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/installation/weka.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/AUTOCVE.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/AUTOCVE.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script[debug].py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/debug_autocve.sh" beforeDir="false" afterPath="$PROJECT_DIR$/debug_autocve.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments.sh" beforeDir="false" afterPath="$PROJECT_DIR$/experiments.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/installation/conda_libraries.txt" beforeDir="false" afterPath="$PROJECT_DIR$/installation/conda_libraries.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pbil/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/pbil/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AUTOCVE.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/AUTOCVE.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/metrics.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/metrics.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/population.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/population.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/population_ensemble.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/population_ensemble.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/dataset_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/dataset_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/evaluate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/scoring_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/scoring_handler.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +77,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\henry\Projects\AUTOCVE" />
       <recent name="$PROJECT_DIR$/grammar" />
       <recent name="$PROJECT_DIR$/pbil" />
       <recent name="$PROJECT_DIR$" />
@@ -90,7 +89,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.AUTOCVE[EACOMP]_script">
+  <component name="RunManager" selected="Python.AUTOCVE[EACOMP]_script[debug]">
     <configuration name="AUTOCVE[EACOMP]_script" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="AUTOCVE" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -105,7 +104,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
-      <option name="PARAMETERS" value="--metadata-path $PROJECT_DIR$/../trash/autocve --datasets-path $PROJECT_DIR$/../ednel/keel_datasets_10fcv --datasets-names australian --n-generations 2 --n-samples 10 --n-jobs 1 --pool-size 10 --n-ensembles 10 --heap-size 3G" />
+      <option name="PARAMETERS" value="--metadata-path C:\Users\henry\Projects\trash\autocve --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --datasets-names iris --n-generations 5 --n-samples 1 --n-jobs 1 --pool-size 10 --n-ensembles 10 --time-per-task 300 --heap-size 3G" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -128,6 +127,28 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../AUTOCVE_GECCO19/AUTOCVE[EACOMP]_script.py" />
       <option name="PARAMETERS" value="--metadata-path $PROJECT_DIR$/../AUTOCVE_GECCO19/.metadata --datasets-path $PROJECT_DIR$/../AUTOCVE_GECCO19/datasets --datasets-names 11 --n-generations 2 --n-samples 1" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="AUTOCVE[EACOMP]_script[debug]" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="AUTOCVE" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script[debug].py" />
+      <option name="PARAMETERS" value="--metadata-path C:\Users\henry\Projects\trash\autocve --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --datasets-names iris --n-generations 2 --n-samples 1 --n-jobs 1 --pool-size 10 --n-ensembles 10 --time-per-task 300 --heap-size 3G" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -199,15 +220,16 @@
       <item itemvalue="Python.AUTOCVE[EACOMP]_script" />
       <item itemvalue="Python.old_script" />
       <item itemvalue="Python.base_learners" />
+      <item itemvalue="Python.AUTOCVE[EACOMP]_script[debug]" />
       <item itemvalue="Python tests.Nosetests in C:/Users/henry/Projects/AUTOCVE/test_getAUC.py" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.AUTOCVE[EACOMP]_script[debug]" />
         <item itemvalue="Python.AUTOCVE[EACOMP]_script" />
         <item itemvalue="Python.base_learners" />
         <item itemvalue="Python.old_script" />
         <item itemvalue="Python tests.Nosetests in C:/Users/henry/Projects/AUTOCVE/test_getAUC.py" />
-        <item itemvalue="Python.AUTOCVE[EACOMP]_script" />
       </list>
     </recent_temporary>
   </component>
@@ -221,7 +243,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1574275796564</updated>
-      <workItem from="1603815710264" duration="11335000" />
+      <workItem from="1603815710264" duration="15213000" />
+      <workItem from="1603841023391" duration="6945000" />
+      <workItem from="1603885985000" duration="5428000" />
+      <workItem from="1603897396041" duration="467000" />
+      <workItem from="1603899894876" duration="1094000" />
+      <workItem from="1603902998759" duration="751000" />
     </task>
     <servers />
   </component>
@@ -238,22 +265,62 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603821324985">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603905481503">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1603821324985" />
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1603905481503" />
+    <state x="715" y="227" key="#xdebugger.evaluate" timestamp="1603886256591">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="715" y="227" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1603886256591" />
+    <state width="1467" height="466" key="DebuggerActiveHint" timestamp="1603886273494">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1467" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1603886273494" />
     <state x="739" y="274" key="FileChooserDialogImpl" timestamp="1603816154093">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="739" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1603816154093" />
+    <state width="942" height="270" key="GridCell.Tab.0.bottom" timestamp="1603905463340">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="942" height="270" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603905463340" />
+    <state width="942" height="270" key="GridCell.Tab.0.center" timestamp="1603905463340">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="942" height="270" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603905463340" />
+    <state width="942" height="270" key="GridCell.Tab.0.left" timestamp="1603905463339">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="942" height="270" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603905463339" />
+    <state width="942" height="270" key="GridCell.Tab.0.right" timestamp="1603905463340">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="942" height="270" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603905463340" />
+    <state width="868" height="317" key="GridCell.Tab.1.bottom" timestamp="1603896184863">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="868" height="317" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603896184863" />
+    <state width="868" height="317" key="GridCell.Tab.1.center" timestamp="1603896184863">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="868" height="317" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603896184863" />
+    <state width="868" height="317" key="GridCell.Tab.1.left" timestamp="1603896184863">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="868" height="317" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603896184863" />
+    <state width="868" height="317" key="GridCell.Tab.1.right" timestamp="1603896184863">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="868" height="317" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603896184863" />
     <state x="461" y="162" key="SettingsEditor" timestamp="1603816158197">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603816158197" />
-    <state x="656" y="252" width="607" height="536" key="find.popup" timestamp="1603828179309">
+    <state x="656" y="252" width="607" height="536" key="find.popup" timestamp="1603887823545">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="656" y="252" width="607" height="536" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603828179309" />
+    <state x="656" y="252" width="607" height="536" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603887823545" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -265,142 +332,23 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/util/evaluate.py</url>
-          <line>169</line>
+          <line>185</line>
           <option name="timeStamp" value="114" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/Anaconda3/envs/autocve/Lib/site-packages/autocve/util/evaluate.py</url>
+          <option name="timeStamp" value="122" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/Anaconda3/envs/autocve/Lib/site-packages/autocve/util/evaluate.py</url>
+          <line>123</line>
+          <option name="timeStamp" value="123" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1603821277191" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="evaluateCodeFragment">
-      <expression>
-        <expression-string>AUTOCVEClassifier.get_unweighted_area_under_roc(
-        y_true=y_true,
-        y_score=score_handler.y_scores
-    )</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>score = AUTOCVEClassifier.get_unweighted_area_under_roc(
-        y_true=y_true,
-        y_score=score_handler.y_scores
-    )</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>AUTOCVEClassifier.get_unweighted_area_under_roc(
-        y_true=y_true,
-        y_score=score_handler.y_pred
-    )</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>os.path.join(
-                    some_args.metadata_path, 'overall',
-                    'test_sample-%02.d_fold-%02.d.csv' % (id_trial, n_fold))</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>javabridge.call(
-        test_evaluation_obj, &quot;evaluateModel&quot;,
-        &quot;(Lweka/classifiers/Classifier;Lweka/core/Instances;[Ljava/lang/Object;)[D&quot;,
-        jobject, test_data.jobject, []
-    )</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>train_evaluation, test_evaluation = Skeleton.from_sets(
-                jobject_ensemble=clf, train_data=jtrain_data, test_data=jtest_data, seed=seed  # TODO use test data!
-            )</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>clf = javabridge.make_instance(
-                'Leda/NonJavaClassifier;',
-                '([[D[[DLweka/core/Instances;Lweka/core/Instances;)V',
-                jtrain_probs,
-                jtest_probs,
-                jtrain_data.jobject,
-                jtest_data.jobject
-            )</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>train_evaluation, test_evaluation = Skeleton.from_sets(
-                jobject_ensemble=clf, train_data=jtrain_data, test_data=None, seed=seed  # TODO use test data!
-            )</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>train_evaluation, test_evaluation = Skeleton.from_sets(
-                jobject_ensemble=clf.jobject, train_data=jtrain_data, test_data=None, seed=seed  # TODO use test data!
-            )</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-    </expressions>
-    <expressions id="evaluateExpression">
-      <expression>
-        <expression-string>joine</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>args.datasets_names</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>args.dataset_names</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>queue_experiments</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>type(queue_experiments)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>queue_experiments = list(queue_experiments)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>list(queue_experiments)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>attr[1]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>ast.literal_eval(attr[1])</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>attr[0].strip()</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script_debug_.coverage" NAME="AUTOCVE[EACOMP]_script[debug] Coverage Results" MODIFIED="1603905463294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1603831374957" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

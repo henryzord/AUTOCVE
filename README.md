@@ -28,6 +28,9 @@ For EDNEL, it is required to have a Weka installation.
 
 ## Installing
 
+**NOTE TO MYSELF:** If you're having problems compiling the library with `pip` (e.g. could not find Visual Studio 14.0, 
+even though it is installed), check if Avast is not moving `vcvarsall.bat` to quarantine.
+
 ### For development
 
 This repository uses Anaconda as the default Python. You can download Anaconda [here](https://www.anaconda.com/products/individual).
