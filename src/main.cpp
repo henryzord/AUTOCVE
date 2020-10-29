@@ -192,7 +192,7 @@ static PyObject *PyAUTOCVE_get_parameters_char(PyAUTOCVE* self, PyObject* args){
 }
 
 
-static PyObject *PyAUTOCVE_get_unweighted_area_under_roc(PyObject *self, PyObject *args, PyObject *kwargs) {
+static PyObject *Py_get_unweighted_area_under_roc(PyObject *self, PyObject *args, PyObject *kwargs) {
 
     static char *kwds[] = {"y_true", "y_score", NULL};
     PyObject *y_true, *y_score;
@@ -261,7 +261,6 @@ static PyMethodDef PyAUTOCVE_methods[] = {
     { "get_voting_ensemble_all", (PyCFunction)PyAUTOCVE_get_voting_ensemble_all,METH_VARARGS,"Get the ensemble compound by all the pipelines defined in the last generation." },
     { "get_grammar", (PyCFunction)PyAUTOCVE_get_grammar_char,METH_VARARGS,"Get as text the grammar used in the optimization procedure." },
     { "get_parameters", (PyCFunction)PyAUTOCVE_get_parameters_char,METH_VARARGS,"Get as text the parameters used in the optimization procedure." },
-    { "get_unweighted_area_under_roc", (PyCFunction)PyAUTOCVE_get_unweighted_area_under_roc, METH_VARARGS | METH_KEYWORDS | METH_CLASS, "Get unweighted area under the ROC curve for a set of predictions." },
     {NULL}  /* Sentinel */
 };
 
@@ -271,11 +270,9 @@ static PyTypeObject PyAUTOCVEType = {PyVarObject_HEAD_INIT(NULL, 0)
 
 
 
+// module functions
 static struct PyMethodDef AUTOCVEMethods[] = {
-    /* The cast of the function (PyCFunction) is necessary since PyCFunction values
-     * only take two PyObject* parameters, and keywdarg_parrot() takes
-     * three.
-     */
+    { "get_unweighted_area_under_roc", (PyCFunction)Py_get_unweighted_area_under_roc, METH_VARARGS | METH_KEYWORDS, "Get unweighted area under the ROC curve for a set of predictions." },
     {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
