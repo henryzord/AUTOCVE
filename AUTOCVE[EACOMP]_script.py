@@ -165,8 +165,6 @@ def execute_exp(
     train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
     test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)
 
-    print('getting evaluations!!!')
-
     get_evaluation(
         dataset_path=os.path.join(datasets_path, d_id), n_fold=n_fold,
         seed=seed, train_probs=train_probs, test_probs=test_probs,
@@ -188,7 +186,7 @@ def __get_running_processes__(jobs, datasets_status, results_path, total_experim
         if not finished:
             if len(os.listdir(os.path.join(results_path, dataset))) == (total_experiments * total_folds):
                 try:
-                    summary = collapse_metrics(os.path.join(results_path, dataset), only_baselines=True)
+                    summary = collapse_metrics(os.path.join(results_path, dataset))
                     datasets_status[dataset] = True
                     print('summary for dataset %s:' % dataset)
                     print(summary)

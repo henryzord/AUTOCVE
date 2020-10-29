@@ -2,18 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script[debug].py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/installation/conda_libraries.txt" beforeDir="false" afterPath="$PROJECT_DIR$/installation/conda_libraries.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pbil/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/pbil/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script[debug].py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script[debug].py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grammar/grammarPBIL" beforeDir="false" afterPath="$PROJECT_DIR$/grammar/grammarPBIL" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pbil/evaluations.py" beforeDir="false" afterPath="$PROJECT_DIR$/pbil/evaluations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AUTOCVE.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/AUTOCVE.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/dataset_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/dataset_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/evaluate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/scoring_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/scoring_handler.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +66,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Angular Template" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/util/evaluate.py" />
   </component>
   <component name="RecentsManager">
@@ -104,7 +98,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
-      <option name="PARAMETERS" value="--metadata-path C:\Users\henry\Projects\trash\autocve --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --datasets-names iris --n-generations 5 --n-samples 1 --n-jobs 1 --pool-size 10 --n-ensembles 10 --time-per-task 300 --heap-size 3G" />
+      <option name="PARAMETERS" value="--metadata-path C:\Users\henry\Projects\trash\autocve --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --datasets-names australian --n-generations 100 --n-samples 1 --n-jobs 1 --pool-size 50 --n-ensembles 200 --time-per-task 300 --heap-size 3G" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -148,7 +142,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script[debug].py" />
-      <option name="PARAMETERS" value="--metadata-path C:\Users\henry\Projects\trash\autocve --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --datasets-names iris --n-generations 2 --n-samples 1 --n-jobs 1 --pool-size 10 --n-ensembles 10 --time-per-task 300 --heap-size 3G" />
+      <option name="PARAMETERS" value="--metadata-path C:\Users\henry\Projects\trash\autocve --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --datasets-names australian --n-generations 100 --n-samples 1 --n-jobs 1 --pool-size 50 --n-ensembles 200 --time-per-task 300 --heap-size 3G" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -170,6 +164,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pbil/base_learners.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="classifiers_test_script" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="AUTOCVE" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/classifiers_test_script.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -200,36 +216,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Nosetests in C:/Users/henry/Projects/AUTOCVE/test_getAUC.py" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
-      <module name="AUTOCVE" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_regexPattern" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/test_getAUC.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python.AUTOCVE[EACOMP]_script" />
       <item itemvalue="Python.old_script" />
       <item itemvalue="Python.base_learners" />
       <item itemvalue="Python.AUTOCVE[EACOMP]_script[debug]" />
-      <item itemvalue="Python tests.Nosetests in C:/Users/henry/Projects/AUTOCVE/test_getAUC.py" />
+      <item itemvalue="Python.classifiers_test_script" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.AUTOCVE[EACOMP]_script[debug]" />
+        <item itemvalue="Python.classifiers_test_script" />
         <item itemvalue="Python.AUTOCVE[EACOMP]_script" />
         <item itemvalue="Python.base_learners" />
         <item itemvalue="Python.old_script" />
-        <item itemvalue="Python tests.Nosetests in C:/Users/henry/Projects/AUTOCVE/test_getAUC.py" />
       </list>
     </recent_temporary>
   </component>
@@ -248,7 +248,8 @@
       <workItem from="1603885985000" duration="5428000" />
       <workItem from="1603897396041" duration="467000" />
       <workItem from="1603899894876" duration="1094000" />
-      <workItem from="1603902998759" duration="751000" />
+      <workItem from="1603902998759" duration="16716000" />
+      <workItem from="1603971661723" duration="3903000" />
     </task>
     <servers />
   </component>
@@ -265,10 +266,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603905481503">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603909133900">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1603905481503" />
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1603909133900" />
     <state x="715" y="227" key="#xdebugger.evaluate" timestamp="1603886256591">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -281,22 +282,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="739" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1603816154093" />
-    <state width="942" height="270" key="GridCell.Tab.0.bottom" timestamp="1603905463340">
+    <state width="941" height="270" key="GridCell.Tab.0.bottom" timestamp="1603975433684">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="942" height="270" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603905463340" />
-    <state width="942" height="270" key="GridCell.Tab.0.center" timestamp="1603905463340">
+    <state width="941" height="270" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603975433684" />
+    <state width="941" height="270" key="GridCell.Tab.0.center" timestamp="1603975433684">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="942" height="270" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603905463340" />
-    <state width="942" height="270" key="GridCell.Tab.0.left" timestamp="1603905463339">
+    <state width="941" height="270" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603975433684" />
+    <state width="941" height="270" key="GridCell.Tab.0.left" timestamp="1603975433683">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="942" height="270" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603905463339" />
-    <state width="942" height="270" key="GridCell.Tab.0.right" timestamp="1603905463340">
+    <state width="941" height="270" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603975433683" />
+    <state width="941" height="270" key="GridCell.Tab.0.right" timestamp="1603975433684">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="942" height="270" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603905463340" />
+    <state width="941" height="270" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603975433684" />
     <state width="868" height="317" key="GridCell.Tab.1.bottom" timestamp="1603896184863">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -313,14 +314,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="868" height="317" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603896184863" />
-    <state x="461" y="162" key="SettingsEditor" timestamp="1603816158197">
+    <state x="461" y="162" key="SettingsEditor" timestamp="1603917609533">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603816158197" />
-    <state x="656" y="252" width="607" height="536" key="find.popup" timestamp="1603887823545">
+    <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603917609533" />
+    <state x="656" y="252" width="607" height="536" key="find.popup" timestamp="1603926963185">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="656" y="252" width="607" height="536" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603887823545" />
+    <state x="656" y="252" width="607" height="536" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603926963185" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -348,7 +349,8 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script_debug_.coverage" NAME="AUTOCVE[EACOMP]_script[debug] Coverage Results" MODIFIED="1603905463294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1603831374957" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script_debug_.coverage" NAME="AUTOCVE[EACOMP]_script[debug] Coverage Results" MODIFIED="1603975433677" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1603906410898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$classifiers_test_script.coverage" NAME="classifiers_test_script Coverage Results" MODIFIED="1603975031240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

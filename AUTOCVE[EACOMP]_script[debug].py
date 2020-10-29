@@ -12,7 +12,7 @@ from weka.core import jvm
 from weka.core.converters import Loader
 from weka.core.dataset import Instances
 
-from pbil.evaluations import evaluate_on_test, EDAEvaluation, collapse_metrics
+from pbil.evaluations import evaluate_on_test, EDAEvaluation
 from pbil.utils import parse_open_ml, create_metadata_path
 import javabridge
 
@@ -134,48 +134,43 @@ def execute_exp(
         mutation_rate_pool, crossover_rate_pool, n_ensembles, mutation_rate_ensemble, crossover_rate_ensemble,
         n_jobs, results_path, seed=None, subsample=1):
 
-    # TODO the error is here
-    p = AUTOCVEClassifier(
-        generations=n_generations,
-        population_size_components=pool_size,
-        mutation_rate_components=mutation_rate_pool,
-        crossover_rate_components=crossover_rate_pool,
-        population_size_ensemble=n_ensembles,
-        mutation_rate_ensemble=mutation_rate_ensemble,
-        crossover_rate_ensemble=crossover_rate_ensemble,
-        grammar='grammarPBIL',
-        max_pipeline_time_secs=60,
-        max_evolution_time_secs=time_per_task,
-        n_jobs=n_jobs,
-        random_state=seed,
-        scoring=unweighted_area_under_roc,
-        verbose=1
-    )
+    try:
+        p = AUTOCVEClassifier(
+            generations=n_generations,
+            population_size_components=pool_size,
+            mutation_rate_components=mutation_rate_pool,
+            crossover_rate_components=crossover_rate_pool,
+            population_size_ensemble=n_ensembles,
+            mutation_rate_ensemble=mutation_rate_ensemble,
+            crossover_rate_ensemble=crossover_rate_ensemble,
+            grammar='grammarPBIL',
+            max_pipeline_time_secs=60,
+            max_evolution_time_secs=time_per_task,
+            n_jobs=n_jobs,
+            random_state=seed,
+            scoring=unweighted_area_under_roc,
+            verbose=1
+        )
 
-    print('parsing!')
+        X_train, X_test, y_train, y_test, df_types = parse_open_ml(
+            datasets_path=datasets_path, d_id=d_id, n_fold=n_fold
+        )
 
-    X_train, X_test, y_train, y_test, df_types = parse_open_ml(
-        datasets_path=datasets_path, d_id=d_id, n_fold=n_fold
-    )
+        p.optimize(X_train, y_train, subsample_data=subsample)
 
-    print('optimizing!')
+        train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
+        test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)
 
-    p.optimize(X_train, y_train, subsample_data=subsample)
+        get_evaluation(
+            dataset_path=os.path.join(datasets_path, d_id), n_fold=n_fold,
+            seed=seed, train_probs=train_probs, test_probs=test_probs,
+            results_path=results_path, id_exp=d_id, id_trial=id_trial
+        )
 
-    print('predicting!')
-
-    train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
-    test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)
-
-    print('getting evaluations!!!')
-
-    get_evaluation(
-        dataset_path=os.path.join(datasets_path, d_id), n_fold=n_fold,
-        seed=seed, train_probs=train_probs, test_probs=test_probs,
-        results_path=results_path, id_exp=d_id, id_trial=id_trial
-    )
-
-    jvm.stop()
+        jvm.stop()
+    except Exception as e:
+        jvm.stop()
+        raise e
 
 
 def main():

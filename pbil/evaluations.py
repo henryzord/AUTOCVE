@@ -141,9 +141,7 @@ def __check_missing__(path=None, relation=None):
     return missing
 
 
-def collapse_metrics(metadata_path, write=True, only_baselines=False):
-    # y_test = pd.read_csv(os.path.join(metadata_path, 'y_test.txt'))
-
+def collapse_metrics(metadata_path, write=True):
     relation = __get_relation__(metadata_path)
 
     samples = relation['sample'].unique()
