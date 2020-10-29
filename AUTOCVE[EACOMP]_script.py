@@ -13,20 +13,13 @@ from sklearn.impute import SimpleImputer
 from weka.core import jvm
 from weka.core.converters import Loader
 from weka.core.dataset import Instances
+from AUTOCVE.util import unweighted_area_under_roc
 
 from pbil.evaluations import evaluate_on_test, EDAEvaluation, collapse_metrics
 from pbil.utils import parse_open_ml, create_metadata_path
 import javabridge
 
 GRACE_PERIOD = 0  # 60
-
-
-def unweighted_area_under_roc(score_handler, some_arg, y_true):
-    score = AUTOCVEClassifier.get_unweighted_area_under_roc(
-        y_true=np.array(y_true, copy=False, order='C', dtype=np.int64),
-        y_score=np.array(score_handler.y_scores, copy=False, order='C', dtype=np.float64)
-    )
-    return score
 
 
 def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_path, id_exp, id_trial):

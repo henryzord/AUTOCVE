@@ -1,12 +1,12 @@
 import argparse
 import os
-
 from functools import reduce
-import itertools as it
 
+import javabridge
 import numpy as np
 import pandas as pd
 from AUTOCVE.AUTOCVE import AUTOCVEClassifier
+from AUTOCVE.util import unweighted_area_under_roc
 from sklearn.impute import SimpleImputer
 from weka.core import jvm
 from weka.core.converters import Loader
@@ -14,17 +14,8 @@ from weka.core.dataset import Instances
 
 from pbil.evaluations import evaluate_on_test, EDAEvaluation
 from pbil.utils import parse_open_ml, create_metadata_path
-import javabridge
 
 GRACE_PERIOD = 0  # 60
-
-
-def unweighted_area_under_roc(score_handler, some_arg, y_true):
-    score = AUTOCVEClassifier.get_unweighted_area_under_roc(
-        y_true=np.array(y_true, copy=False, order='C', dtype=np.int64),
-        y_score=np.array(score_handler.y_scores, copy=False, order='C', dtype=np.float64)
-    )
-    return score
 
 
 def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_path, id_exp, id_trial):
@@ -134,43 +125,37 @@ def execute_exp(
         mutation_rate_pool, crossover_rate_pool, n_ensembles, mutation_rate_ensemble, crossover_rate_ensemble,
         n_jobs, results_path, seed=None, subsample=1):
 
-    try:
-        p = AUTOCVEClassifier(
-            generations=n_generations,
-            population_size_components=pool_size,
-            mutation_rate_components=mutation_rate_pool,
-            crossover_rate_components=crossover_rate_pool,
-            population_size_ensemble=n_ensembles,
-            mutation_rate_ensemble=mutation_rate_ensemble,
-            crossover_rate_ensemble=crossover_rate_ensemble,
-            grammar='grammarPBIL',
-            max_pipeline_time_secs=60,
-            max_evolution_time_secs=time_per_task,
-            n_jobs=n_jobs,
-            random_state=seed,
-            scoring=unweighted_area_under_roc,
-            verbose=1
-        )
+    p = AUTOCVEClassifier(
+        generations=n_generations,
+        population_size_components=pool_size,
+        mutation_rate_components=mutation_rate_pool,
+        crossover_rate_components=crossover_rate_pool,
+        population_size_ensemble=n_ensembles,
+        mutation_rate_ensemble=mutation_rate_ensemble,
+        crossover_rate_ensemble=crossover_rate_ensemble,
+        grammar='grammarPBIL',
+        max_pipeline_time_secs=60,  # TODO review
+        max_evolution_time_secs=time_per_task,  # TODO review
+        n_jobs=n_jobs,
+        random_state=seed,
+        scoring=unweighted_area_under_roc,  # TODO review
+        verbose=1
+    )
 
-        X_train, X_test, y_train, y_test, df_types = parse_open_ml(
-            datasets_path=datasets_path, d_id=d_id, n_fold=n_fold
-        )
+    X_train, X_test, y_train, y_test, df_types = parse_open_ml(
+        datasets_path=datasets_path, d_id=d_id, n_fold=n_fold
+    )
 
-        p.optimize(X_train, y_train, subsample_data=subsample)
+    p.optimize(X_train, y_train, subsample_data=subsample)
 
-        train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
-        test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)
+    train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
+    test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)
 
-        get_evaluation(
-            dataset_path=os.path.join(datasets_path, d_id), n_fold=n_fold,
-            seed=seed, train_probs=train_probs, test_probs=test_probs,
-            results_path=results_path, id_exp=d_id, id_trial=id_trial
-        )
-
-        jvm.stop()
-    except Exception as e:
-        jvm.stop()
-        raise e
+    get_evaluation(
+        dataset_path=os.path.join(datasets_path, d_id), n_fold=n_fold,
+        seed=seed, train_probs=train_probs, test_probs=test_probs,
+        results_path=results_path, id_exp=d_id, id_trial=id_trial
+    )
 
 
 def main():
@@ -274,25 +259,27 @@ def main():
 
     # queue_experiments = it.product(datasets_names, list(range(1, N_TRIALS + 1)), list(range(1, 10 + 1)))
 
-    execute_exp(
-        n_fold=1,
-        id_trial=1,
-        datasets_path=some_args.datasets_path,
-        d_id=datasets_names[0],
-        seed=np.random.randint(np.iinfo(np.int32).max),
-        n_generations=some_args.n_generations,
-        n_jobs=1,
-        time_per_task=some_args.time_per_task,
-        pool_size=some_args.pool_size,
-        mutation_rate_pool=some_args.mutation_rate_pool,
-        crossover_rate_pool=some_args.crossover_rate_pool,
-        n_ensembles=some_args.n_ensembles,
-        mutation_rate_ensemble=some_args.mutation_rate_ensemble,
-        crossover_rate_ensemble=some_args.crossover_rate_ensemble,
-        results_path=results_path
-    )
-
-    jvm.stop()
+    try:
+        execute_exp(
+            n_fold=1,
+            id_trial=1,
+            datasets_path=some_args.datasets_path,
+            d_id=datasets_names[0],
+            seed=np.random.randint(np.iinfo(np.int32).max),
+            n_generations=some_args.n_generations,
+            n_jobs=1,
+            time_per_task=some_args.time_per_task,
+            pool_size=some_args.pool_size,
+            mutation_rate_pool=some_args.mutation_rate_pool,
+            crossover_rate_pool=some_args.crossover_rate_pool,
+            n_ensembles=some_args.n_ensembles,
+            mutation_rate_ensemble=some_args.mutation_rate_ensemble,
+            crossover_rate_ensemble=some_args.crossover_rate_ensemble,
+            results_path=results_path
+        )
+    except Exception as e:
+        jvm.stop()
+        raise e
 
 
 if __name__ == '__main__':
