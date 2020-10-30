@@ -150,7 +150,7 @@ def execute_exp(
         datasets_path=datasets_path, d_id=dataset_name, n_fold=n_fold
     )
 
-    p.optimize(X_train, y_train, subsample_data=subsample)
+    p.optimize(X_train, y_train, subsample_data=subsample, n_classes=len(y_train.unique()))
 
     train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
     test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)

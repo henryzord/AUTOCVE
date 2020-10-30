@@ -21,7 +21,9 @@ class PopulationEnsemble{
     double *score_next_gen;
     int *length_population;
 
-    public: PopulationEnsemble(int population_size, int solution_size, double elite_portion, double mut_rate, double cross_rate);
+    int n_classes;
+
+    public: PopulationEnsemble(int population_size, int solution_size, double elite_portion, double mut_rate, double cross_rate, int n_classes);
     public: ~PopulationEnsemble();
     public: int init_population_random();
     public: int next_generation_similarity(Population *population_components);

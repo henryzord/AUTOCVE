@@ -5,7 +5,8 @@
 #define K_TOURNAMENT 2
 #define INVALID_ENSEMBLE_SCORE -1
 
-PopulationEnsemble::PopulationEnsemble(int population_size, int solution_size, double elite_portion, double mut_rate, double cross_rate){
+PopulationEnsemble::PopulationEnsemble(int population_size, int solution_size, double elite_portion, double mut_rate, double cross_rate, int n_classes) {
+    this->n_classes = n_classes;
     this->population_size=population_size;
     this->solution_size=solution_size;
     this->elite_size=this->population_size*elite_portion;
@@ -261,14 +262,11 @@ void PopulationEnsemble::write_population(int generation, std::ofstream *evoluti
     double min_fit, max_fit, median_fit;
     int count_valid, n_discarded;
 
-    // TODO fitness is the same for all ensembles. check it out
     get_min_median_max_double(&min_fit, &median_fit, &max_fit, &count_valid, &n_discarded, this->score_population, this->population_size, INVALID_ENSEMBLE_SCORE);
-
     (*evolution_log) << count_valid << "," << min_fit << "," << median_fit << "," << max_fit << "," << n_discarded;
 
     int min_size, max_size, median_size;
     get_min_median_max_int(&min_size, &median_size, &max_size, &count_valid, &n_discarded, this->length_population, this->population_size, INVALID_ENSEMBLE_SCORE);
-
     (*evolution_log) << "," << min_size << "," << median_size << "," << max_size << std::endl;
 
 

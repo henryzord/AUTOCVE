@@ -98,8 +98,8 @@ def parse_open_ml(datasets_path, d_id, n_fold, queue=None):
     categorical_columns = []
     dict_convs = []
 
-    for column in train.columns:
-        if str(train[column].dtype) == 'category':
+    for i, column in enumerate(train.columns):
+        if str(train[column].dtype) == 'category' or (i == len(train.columns) - 1):
             categories = train[column].dtype.categories
             dict_conv = dict(zip(categories, range(len(categories))))
             train.loc[:, column] = train.loc[:, column].replace(dict_conv).astype(np.int32)

@@ -23,9 +23,10 @@ class Population{
     double *similarity_matrix;
     double *similarity_matrix_next_gen;
     int predict_size;
-    PythonInterface* interface_call;
+    int n_classes;
+    PythonInterface *interface_call;
 
-    public: Population(PythonInterface *interface, int size_pop, double elite_portion, double mut_rate, double cross_rate);
+    public: Population(PythonInterface *interface, int size_pop, double elite_portion, double mut_rate, double cross_rate, int n_classes);
     public: ~Population();
     public: int init_population(Grammar* grammar, PopulationEnsemble  *population_ensemble);
     public: int next_generation_selection_similarity(PopulationEnsemble *population_ensemble);

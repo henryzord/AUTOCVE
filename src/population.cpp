@@ -7,7 +7,9 @@
 #define INVALID_SIMILARITY_PREDICT -1
 #define MAX_SIM 1
 
-Population::Population(PythonInterface *interface, int size_pop, double elite_portion, double mut_rate, double cross_rate){
+Population::Population(PythonInterface *interface, int size_pop, double elite_portion, double mut_rate, double cross_rate, int n_classes) {
+    this->n_classes = n_classes;
+
     this->population_size=size_pop;
     this->next_gen_size=0;
     this->population=(Solution**)malloc(sizeof(Solution*)*this->population_size);
@@ -218,47 +220,56 @@ int Population::evaluate_next_gen_cv(int population_as_buffer){
     return 1;
 }
 
-int Population::evaluate_ensemble_next_gen(PopulationEnsemble *population_ensemble, int *map_next_gen_population, int changed_index){
+int Population::evaluate_ensemble_next_gen(PopulationEnsemble *population_ensemble, int *map_next_gen_population, int changed_index) {
     int flag_valid_individual=0;
-    double min_predict,max_predict;
+    // double min_predict, max_predict;
 
     for(int i=0;i<this->predict_size;i++){
         for(int j=0;j<this->population_size;j++){
-            if(!flag_valid_individual && this->get_score_next_gen(map_next_gen_population[j])!=INVALID_INDIVIDUAL_SCORE){
-                min_predict=max_predict=this->get_predict_next_gen(i,map_next_gen_population[j]);
-                flag_valid_individual=1;
+            if(!flag_valid_individual && this->get_score_next_gen(map_next_gen_population[j]) != INVALID_INDIVIDUAL_SCORE) {
+//                min_predict = max_predict = this->get_predict_next_gen(i,map_next_gen_population[j]);
+                flag_valid_individual = 1;  // notifies that there are at least one valid classifier in the pool
+                break;
             }
-            else if(min_predict>this->get_predict_next_gen(i,map_next_gen_population[j]) && this->get_score_next_gen(map_next_gen_population[j])!=INVALID_INDIVIDUAL_SCORE) min_predict=this->get_predict_next_gen(i,map_next_gen_population[j]);
-            else if(max_predict<this->get_predict_next_gen(i,map_next_gen_population[j]) && this->get_score_next_gen(map_next_gen_population[j])!=INVALID_INDIVIDUAL_SCORE) max_predict=this->get_predict_next_gen(i,map_next_gen_population[j]);
+//            else if(min_predict > this->get_predict_next_gen(i,map_next_gen_population[j]) && this->get_score_next_gen(map_next_gen_population[j]) != INVALID_INDIVIDUAL_SCORE) {
+//                min_predict=this->get_predict_next_gen(i,map_next_gen_population[j]);
+//            }
+//            else if( max_predict < this->get_predict_next_gen(i,map_next_gen_population[j]) && this->get_score_next_gen(map_next_gen_population[j]) != INVALID_INDIVIDUAL_SCORE) {
+//                max_predict = this->get_predict_next_gen(i,map_next_gen_population[j]);
+//            }
         }
     }
 
-    if(!flag_valid_individual){
-        for(int pop=0;pop<population_ensemble->get_population_size();pop++)
+    // if there is not a single valid classifier in the pool, set all ensembles to invalid too and proceed
+    if(!flag_valid_individual) {
+        for(int pop=0;pop<population_ensemble->get_population_size();pop++) {
             population_ensemble->score_population[pop]=INVALID_INDIVIDUAL_SCORE;
+        }
         return 1;
     }
 
-    int n_classes = (max_predict-min_predict+1);
+//    int n_classes = (max_predict-min_predict+1);
     double *predict_ensemble=(double*)malloc(sizeof(double)*this->predict_size);
     double *scores_ensemble=(double*)malloc(sizeof(double) * this->predict_size * n_classes);
-    int *class_count=(int*)malloc(sizeof(int)*(max_predict-min_predict+1));
+    int *class_count=(int*)malloc(sizeof(int)*n_classes);
     int elected_class=0;
     double local_counter;
     int j_index;
     for(int pop=0;pop<population_ensemble->get_population_size();pop++){
-        if(changed_index!=-1 && !population_ensemble->population[pop][changed_index]) continue;
+        if(changed_index!=-1 && !population_ensemble->population[pop][changed_index]) {
+            continue;
+        }
 
         for(int i=0;i<this->predict_size;i++){
-            for(int j=0;j<max_predict-min_predict+1;j++) {
-                class_count[j]=0;
+            for(int j = 0; j < n_classes; j++) {
+                class_count[j] = 0;
                 scores_ensemble[i * n_classes + j] = 0.0;
             }
 
             local_counter = 0.0;
             for(int j=0;j<this->population_size;j++) {
                 if(population_ensemble->population[pop][j] && this->get_score_next_gen(map_next_gen_population[j])!=INVALID_INDIVIDUAL_SCORE) {
-                    j_index = (int)(this->get_predict_next_gen(i,map_next_gen_population[j])-min_predict);
+                    j_index = (int)(this->get_predict_next_gen(i,map_next_gen_population[j]));
                     class_count[j_index]++;
                     scores_ensemble[i * n_classes + j_index] += 1.0;
                     local_counter += 1.0;
@@ -266,25 +277,25 @@ int Population::evaluate_ensemble_next_gen(PopulationEnsemble *population_ensemb
             }
             
 
-            elected_class=0;
-            for(int j=1;j<max_predict-min_predict+1;j++) {
-                scores_ensemble[i * n_classes + (j-1)] /= local_counter;
+            elected_class = 0;
+            for(int j = 0; j < n_classes; j++) {
+                scores_ensemble[i * n_classes + j] /= local_counter;
 
-                if(class_count[j]>class_count[elected_class]) {
-                    elected_class=j;
+                if(class_count[j] > class_count[elected_class]) {
+                    elected_class = j;
                 }
             }
             
-            if(class_count[elected_class]==0) {
+            if(class_count[elected_class] == 0) {
                 break;
             }
 
-            predict_ensemble[i]=elected_class+min_predict;
+            predict_ensemble[i] = elected_class;
         }
 
 
         if(class_count[elected_class]==0){
-            population_ensemble->score_population[pop]=INVALID_INDIVIDUAL_SCORE;
+            population_ensemble->score_population[pop] = INVALID_INDIVIDUAL_SCORE;
             continue;
         }
 
@@ -334,78 +345,111 @@ int Population::evaluate_ensemble_next_gen(PopulationEnsemble *population_ensemb
     return 1;
 }
 
+// TODO work on this method first
 int Population::evaluate_ensemble_population(PopulationEnsemble *population_ensemble){
     int flag_valid_individual=0;
-    double min_predict,max_predict;
+//    double min_predict,max_predict;
 
-    for(int i=0;i<this->predict_size;i++){
-        for(int j=0;j<this->population_size;j++){
-            if(!flag_valid_individual && this->get_score_population(j)!=INVALID_INDIVIDUAL_SCORE){
-                min_predict=max_predict=this->get_predict_population(i,j);
-                flag_valid_individual=1;
+    for(int i=0;i<this->predict_size;i++) {
+        for(int j=0;j<this->population_size;j++) {
+            if(!flag_valid_individual && this->get_score_population(j) != INVALID_INDIVIDUAL_SCORE){
+//                min_predict = max_predict = this->get_predict_population(i,j);
+                flag_valid_individual = 1;
+                break;
             }
-            else if(min_predict>this->get_predict_population(i,j) && this->get_score_population(j)!=INVALID_INDIVIDUAL_SCORE) min_predict=this->get_predict_population(i,j);
-            else if(max_predict<this->get_predict_population(i,j) && this->get_score_population(j)!=INVALID_INDIVIDUAL_SCORE) max_predict=this->get_predict_population(i,j);
+//            else if(min_predict>this->get_predict_population(i,j) && this->get_score_population(j)!=INVALID_INDIVIDUAL_SCORE) {
+//                min_predict=this->get_predict_population(i,j);
+//            }
+//            else if(max_predict<this->get_predict_population(i,j) && this->get_score_population(j)!=INVALID_INDIVIDUAL_SCORE) {
+//                max_predict=this->get_predict_population(i,j);
+//            }
         }
     }
 
-    if(!flag_valid_individual){
-        for(int pop=0;pop<population_ensemble->get_population_size();pop++)
-            population_ensemble->score_population[pop]=INVALID_INDIVIDUAL_SCORE;
+    if(!flag_valid_individual) {
+        for(int pop = 0; pop<population_ensemble->get_population_size(); pop++)
+            population_ensemble->score_population[pop] = INVALID_INDIVIDUAL_SCORE;
         return 1;
     }
 
-    int n_classes = (max_predict-min_predict+1);
-    double *predict_ensemble=(double*)malloc(sizeof(double)*this->predict_size);
-    double *scores_ensemble=(double*)malloc(sizeof(double) * this->predict_size * n_classes);
-    int *class_count=(int*)malloc(sizeof(int)*(max_predict-min_predict+1));
+//    int n_classes = (max_predict-min_predict+1);
+
+    double *predict_ensemble = (double*)malloc(sizeof(double)*this->predict_size);
+    double *scores_ensemble = (double*)malloc(sizeof(double) * this->predict_size * this->n_classes);
+    int *class_count = (int*)malloc(sizeof(int)* n_classes);
     int elected_class=0;
     double local_counter;
     int j_index;
-    for(int pop=0;pop<population_ensemble->get_population_size();pop++){
-        for(int i=0;i<this->predict_size;i++){
-            for(int j=0;j<max_predict-min_predict+1;j++) {
-                class_count[j]=0;
-                scores_ensemble[i * n_classes + j] = 0.0;
+
+    // iterates over ensembles
+    for(int pop = 0; pop < population_ensemble->get_population_size(); pop++) {
+        // iterates over instances
+        for(int i = 0; i < this->predict_size; i++) {
+
+            // sets class count and scores to zero
+            for(int j = 0; j < n_classes; j++) {
+                class_count[j] = 0;
+                scores_ensemble[i * this->n_classes + j] = 0.0;
             }
             local_counter = 0;
-            for(int j=0;j<this->population_size;j++)
-                if(population_ensemble->population[pop][j] && this->get_score_population(j)!=INVALID_INDIVIDUAL_SCORE) {
-                    j_index = (int)(this->get_predict_population(i,j)-min_predict);
-                    class_count[j_index]++;
-                    scores_ensemble[i * n_classes + j_index] += 1.0;
-                    local_counter += 1.0;
-                }
 
-            elected_class=0;
-            for(int j=1;j<max_predict-min_predict+1;j++){
-                  scores_ensemble[i * n_classes + (j-1)] /= local_counter;
-                if(class_count[j]>class_count[elected_class]) {
-                    elected_class=j;
+            // iterates over classifiers in the pool
+            for(int j = 0; j < this->population_size; j++) {
+                // if this classifier is part of this ensemble and is a valid classifier
+                if(population_ensemble->population[pop][j] && this->get_score_population(j) != INVALID_INDIVIDUAL_SCORE) {
+                    j_index = (int)this->get_predict_population(i, j);
+                    class_count[j_index]++;
+                    scores_ensemble[i * this->n_classes + j_index] += 1.0;
+                    local_counter += 1.0;
                 }
             }
 
-            if(class_count[elected_class]==0) {
+            elected_class = 0;
+            for(int j = 0; j < n_classes; j++) {
+                  scores_ensemble[i * this->n_classes + j] /= local_counter;  // normalizes scores
+                if(class_count[j] > class_count[elected_class]) {
+                    elected_class = j;  // elected_class is the predicted label
+                }
+            }
+
+            if(class_count[elected_class] == 0) {
                 break;
             }
 
-            predict_ensemble[i]=elected_class+min_predict;
+            predict_ensemble[i] = elected_class;
         }
 
-        if(class_count[elected_class]==0){
-            population_ensemble->score_population[pop]=INVALID_INDIVIDUAL_SCORE;
+        // if no class received any vote, then this ensemble is invalid
+        if(class_count[elected_class] == 0) {
+            population_ensemble->score_population[pop] = INVALID_INDIVIDUAL_SCORE;
             continue;
         }
 
         npy_intp numpy_dimension[1], scores_dimension[2];
-        numpy_dimension[0]=this->predict_size;
+        numpy_dimension[0] = this->predict_size;
         scores_dimension[0] = this->predict_size;
-        scores_dimension[1] = n_classes;
-        PyObject *predict_numpy=PyArray_SimpleNewFromData(1, numpy_dimension, NPY_DOUBLE, predict_ensemble);
-        PyObject *scores_numpy=PyArray_SimpleNewFromData(2, scores_dimension, NPY_DOUBLE, scores_ensemble);
+        scores_dimension[1] = this->n_classes;
+        // number of dimensions, lengths of dimensions, type, array to copy from
+        PyObject *predict_numpy = PyArray_SimpleNewFromData(1, numpy_dimension, NPY_DOUBLE, predict_ensemble);
+        PyObject *scores_numpy = PyArray_SimpleNewFromData(2, scores_dimension, NPY_DOUBLE, scores_ensemble);
+
+        // TODO printing scores of ensemble
+//        for(int k = 0; k < this->predict_size * this->n_classes; k++) {
+//            std::cout << scores_ensemble[k] << " ";
+//            if(k > 0 && (k % this->n_classes) == 0) {
+//                std::cout << std::endl;
+//            }
+//        }
+//        std::cout << std::endl;
+//        std::cout << "local counter: " << local_counter << std::endl;  // TODO remove!
+//        std::cout << "n_classes: " << this->n_classes << std::endl;
+        // TODO printing scores of ensemble
+
+
         double return_score;
 
-        if(!this->interface_call->evaluate_predict_vector(predict_numpy, scores_numpy, &return_score)){
+        // calls the assigned fitness function
+        if(!this->interface_call->evaluate_predict_vector(predict_numpy, scores_numpy, &return_score)) {
             Py_XDECREF(predict_numpy);
             free(class_count);
             free(predict_ensemble);
@@ -414,33 +458,38 @@ int Population::evaluate_ensemble_population(PopulationEnsemble *population_ense
         Py_XDECREF(predict_numpy);
         Py_XDECREF(scores_numpy);
 
-        population_ensemble->score_population[pop]=return_score;
+        // the fitness of that ensemble is given by the defined fitness function
+        population_ensemble->score_population[pop] = return_score;
     }
 
     free(class_count);
     free(predict_ensemble);
     free(scores_ensemble);
 
-    for(int i=0;i<this->population_size;i++){
+    // iterates over classifiers in the pool
+    for(int i = 0; i < this->population_size; i++) {
+        if(this->get_score_population(i) == INVALID_INDIVIDUAL_SCORE) {
+            continue;
+        }
 
-        if(this->get_score_population(i)==INVALID_INDIVIDUAL_SCORE) continue;
+        int count_ensemble = 0;  // number of ensembles which consider this classifier in them
+        this->set_score_population(i, 0);
 
-        int count_ensemble=0;
-        this->set_score_population(i,0);
-
-        for(int j=0;j<population_ensemble->get_population_size();j++){
-            if(population_ensemble->population[j][i]){
-                this->set_score_population(i,this->get_score_population(i)+population_ensemble->score_population[j]);
+        // iterates over ensembles in population
+        for(int j = 0; j < population_ensemble->get_population_size(); j++) {
+            if(population_ensemble->population[j][i]) {  // if classifier is present in ensemble
+                this->set_score_population(i, this->get_score_population(i) + population_ensemble->score_population[j]);
                 count_ensemble++;
             }
         }
-        if(count_ensemble)
-            this->set_score_population(i,this->get_score_population(i)/count_ensemble);
-        else
-            this->set_score_population(i,this->get_metric_population(i));
+        if(count_ensemble) {  // if classifier is present in at least one ensemble
+            // its fitness is given by the average fitness of it and all the ensembles it is in
+            this->set_score_population(i, this->get_score_population(i) / count_ensemble);
+        } else {
+            // otherwise its fitness is simply its metric (the metric obtained by the fitness function)
+            this->set_score_population(i, this->get_metric_population(i));
+        }
     }
-
-
     return 1;
 }
 
@@ -799,10 +848,10 @@ void Population::set_metric_next_gen(int i, double metric){
     this->metric_next_gen[i]=metric;
 }
 
-double Population::get_predict_population(int i, int j){ //(sample_id, solution_id)
+double Population::get_predict_population(int i, int j) { // (instance_id, solution_id)
     if(i<0 || i>=this->predict_size || j<0 || j>=this->population_size)
         throw "Invalid index in predict_population";
-    return this->predict_population[i*this->population_size+j];
+    return this->predict_population[i * this->population_size + j];
 }
 
 void Population::set_predict_population(int i, int j, double predict_value){ //(sample_id, solution_id)

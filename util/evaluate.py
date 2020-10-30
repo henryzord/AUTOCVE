@@ -29,6 +29,13 @@ warnings.showwarning = log_warning_output
 
 class ScorerHandler(object):
     def __init__(self, y_pred, y_scores):
+        """
+
+        :param y_pred: The predicted labels for instances
+        :param y_scores:  A matrix where each row is an instance and each column the class probabilities, given by
+            the classifier.
+        """
+
         self.y_pred = y_pred
         self.y_scores = y_scores
 

@@ -22,10 +22,11 @@ class AUTOCVEClass{
     int size_pop_components; double elite_portion_components; double mut_rate_components; double cross_rate_components;
     int size_pop_ensemble; double elite_portion_ensemble; double mut_rate_ensemble; double cross_rate_ensemble;  
     int cv_folds;
+    int n_classes;
 
     public: AUTOCVEClass(int seed, int n_jobs, PyObject* timeout_pip_sec, int timeout_evolution_process_sec, char *grammar_file, int generations, int size_pop_components, double elite_portion_components, double mut_rate_components, double cross_rate_components, int size_pop_ensemble, double elite_portion_ensemble, double mut_rate_ensemble, double cross_rate_ensemble, PyObject *scoring, int cv_folds, int verbose);
     ~AUTOCVEClass();
-    int run_genetic_programming(PyObject *data_X, PyObject *data_y, double subsample_data);
+    int run_genetic_programming(PyObject *data_X, PyObject *data_y, double subsample_data, int n_classes);
     PyObject *get_best_pipeline();
     PyObject *get_voting_ensemble_all();
     PyObject *get_voting_ensemble_elite();
