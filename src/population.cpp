@@ -2,6 +2,7 @@
 #include "utility.h"
 #include <stdlib.h>
 #include <math.h>
+
 #define INVALID_INDIVIDUAL_SCORE -1
 #define INVALID_SIMILARITY_PREDICT -1
 #define MAX_SIM 1
@@ -717,9 +718,20 @@ int Population::compute_similarity_next_gen(){
     return 1;
 }
 
-void Population::write_population(int generation, std::ofstream *evolution_log){
-    for(int i=0;i<this->population_size;i++)
-        (*evolution_log)<<generation<<";"<<this->population[i]->get_id()<<";"<<this->population[i]->get_string_code()<<";"<<this->get_score_population(i)<<";"<<this->get_metric_population(i)<<"\n";
+void Population::write_population(int generation, std::ofstream *evolution_log) {
+
+    double min_fit, max_fit, median;
+    int count_valid, n_discarded;
+
+    get_min_median_max_double(&min_fit, &median, &max_fit, &count_valid, &n_discarded, this->metric_population, this->population_size, INVALID_INDIVIDUAL_SCORE);
+
+    (*evolution_log) << count_valid << "," << min_fit << "," << median << "," << max_fit << "," << n_discarded << ",";
+
+  // old code
+  // "Generation;ID_solution;Pipeline;Score;Metric\n"
+//    for(int i=0;i<this->population_size;i++) {
+//        (*evolution_log) << generation<< ";" << this->population[i]->get_id() << ";" <<this->population[i]->get_string_code()<<";"<<this->get_score_population(i)<<";"<<this->get_metric_population(i)<<"\n";
+//    }
 }
 
 
@@ -741,7 +753,7 @@ void Population::set_score_population(int i, double score){
     if(i<0 || i>=this->population_size)
         throw "Invalid index in score_population";
 
-    this->score_population[i]=score;
+    this->score_population[i] = score;
 }
 
 double Population::get_metric_population(int i){

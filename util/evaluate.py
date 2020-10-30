@@ -186,5 +186,6 @@ def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test, verbose=1)
     return predict_data, predict_scores
 
 
+# scoring is the scoring function passed as argument to AUTOCVEClassifier
 def evaluate_predict_vector(predict_vector, predict_scores, scoring):
     return scoring(ScorerHandler(predict_vector, predict_scores), None, y_last_test_set)

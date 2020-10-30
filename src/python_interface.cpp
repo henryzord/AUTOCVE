@@ -17,7 +17,7 @@ PythonInterface::PythonInterface(int n_jobs, PyObject* timeout_pip_sec, PyObject
         throw "Problem while load python interface";
     }
 
-    this->scoring=PyObject_CallFunction(this->load_scoring_py,"O", scoring);
+    this->scoring=PyObject_CallFunction(this->load_scoring_py, "O", scoring);
     if(!this->scoring)
         throw "Bad scoring parameter. Expected a string metric in sklearn.metric.SCORER or a scorer function.\n";
 

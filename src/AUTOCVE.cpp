@@ -60,45 +60,49 @@ AUTOCVEClass::~AUTOCVEClass(){
     Py_XDECREF(this->scoring);
 }
 
-
+// main method
 int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, double subsample_data){
     srand(this->seed);
 
-    PySys_WriteStdout("LOADING DATASET\n");
+//    PySys_WriteStdout("LOADING DATASET\n");
 
     if(!this->interface->load_dataset(data_X, data_y, subsample_data))
         return NULL;
 
-    PySys_WriteStdout("LOADED DATASET\n");
+//    PySys_WriteStdout("LOADED DATASET\n");
 
-    if(this->grammar)
+    if(this->grammar) {
         delete this->grammar;
-
-    if(this->population)
+    }
+    if(this->population) {
         delete this->population;
-
-    if(this->population_ensemble)
+    }
+    if(this->population_ensemble) {
         delete this->population_ensemble;
+    }
 
-    this->grammar=new Grammar(this->grammar_file,this->interface);
+    this->grammar = new Grammar(this->grammar_file, this->interface);
 
     std::ofstream evolution_log;
-    evolution_log.open("evolution.log");
+    evolution_log.open("loggerData.csv");
 
-    if(!evolution_log.is_open())
+    if(!evolution_log.is_open()) {
         throw "Cannot create evolution.log file\n";
+    }
 
-    std::ofstream matrix_sim_log;
-    matrix_sim_log.open("matrix_sim.log");
+//    std::ofstream matrix_sim_log;
+//    matrix_sim_log.open("matrix_sim.log");
+//
+//    if(!matrix_sim_log.is_open()) {
+//        throw "Cannot create matrix_sim.log file\n";
+//    }
 
-    if(!matrix_sim_log.is_open())
-        throw "Cannot create matrix_sim.log file\n";
-
-    std::ofstream evolution_ensemble_log;
-    evolution_ensemble_log.open("evolution_ensemble.log");
-
-    if(!evolution_ensemble_log.is_open())
-        throw "Cannot create evolution_ensemble.log file\n";
+//    std::ofstream evolution_ensemble_log;
+//    evolution_ensemble_log.open("evolution_ensemble.log");
+//
+//    if(!evolution_ensemble_log.is_open()) {
+//        throw "Cannot create evolution_ensemble.log file\n";
+//    }
 
     time_t start, end;
     time(&start);
@@ -112,31 +116,45 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
     this->population_ensemble->init_population_random();
 
     int return_flag=this->population->init_population(this->grammar, this->population_ensemble);
-    if(!return_flag)
+    if(!return_flag) {
         return NULL;
-    if(return_flag==-1)
+    }
+    if(return_flag==-1) {
         throw "Population not initialized\n";
+    }
 
-    evolution_log<<"Generation;ID_solution;Pipeline;Score;Metric\n";
-    this->population->write_population(0,&evolution_log);
+    time(&end);
 
-    matrix_sim_log<<"Generation;ID_solution;ID_solution;Similarity\n";
-    this->population->write_similarity_matrix(0,&matrix_sim_log);
+    //evolution_log << "Generation;ID_solution;Pipeline;Score;Metric\n";  // TODO former value
+    evolution_log <<
+        "\"gen\",\"lap time (seconds)\"," <<
+        "\"nevals (clfs)\",\"min fit (clfs)\",\"median fit (clfs)\",\"max fit (clfs)\",\"discarded (clfs)\"," <<
+        "\"nevals  (ens)\",\"min fit (ens)\",\"median fit (ens)\",\"max fit (ens)\",\"discarded  (ens)\"," <<
+        "\"min size (ens)\",\"median size (ens)\",\"max size (ens)\"" << std::endl;
 
-    evolution_ensemble_log<<"Generation;Length;Score\n";
-    this->population_ensemble->write_population(0,&evolution_ensemble_log);
+    evolution_log << 0 << "," << (int)difftime(end, start) << ",";
+
+    this->population->write_population(0, &evolution_log);
+    this->population_ensemble->write_population(0, &evolution_log);
+
+    // TODO uncomment
+//    matrix_sim_log << "Generation;ID_solution;ID_solution;Similarity\n";
+//    this->population->write_similarity_matrix(0, &matrix_sim_log);
+
+//    evolution_ensemble_log << "Generation;Length;Score\n";
 
 //    gettimeofday(&end, NULL);
-    time(&end);
     int control_flag;
 
     double generation_time = 0;
-    for(int i=0;i< this->generations; i++) {
+    for(int i = 0; i < this->generations; i++) {
 //        PySys_WriteStdout("GENERATION %d (%d secs)\n",i+1,(int)(end.tv_sec-start.tv_sec));
+
         PySys_WriteStdout("GENERATION %d (%d secs)\n", i+1, (int)difftime(end, start));
 
-        if(!(control_flag=this->population->next_generation_selection_similarity(this->population_ensemble)))
+        if(!(control_flag = this->population->next_generation_selection_similarity(this->population_ensemble))) {
             return NULL;
+        }
 
         this->population_ensemble->next_generation_similarity(this->population);
 
@@ -151,23 +169,33 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 //        gettimeofday(&end, NULL);
         time(&end);
 
+        // linux code
 //        if(this->timeout_evolution_process_sec && (end.tv_sec-start.tv_sec)>=this->timeout_evolution_process_sec-generation_time) control_flag=-1;
-        if(this->timeout_evolution_process_sec && (difftime(end, start))>=this->timeout_evolution_process_sec-generation_time) control_flag=-1;
+        // windows code
+        if(
+            this->timeout_evolution_process_sec && (difftime(end, start)) >=
+            this->timeout_evolution_process_sec-generation_time) {
+            control_flag=-1;
+        }
+
+        evolution_log << i + 1 << "," << generation_time << ",";
 
         this->population->write_population(i+1,&evolution_log);
-        this->population->write_similarity_matrix(i+1,&matrix_sim_log);
-        this->population_ensemble->write_population(i+1,&evolution_ensemble_log);
+        this->population_ensemble->write_population(i+1,&evolution_log);
+//        this->population->write_similarity_matrix(i+1,&matrix_sim_log);
 
-        if(control_flag==-1)//KeyboardException or timeout verified
+        //KeyboardException or timeout verified
+        if(control_flag == -1) {
             break;
+        }
     }
 
 //    PySys_WriteStdout("END PROCESS (%d secs)\n",(int)(end.tv_sec-start.tv_sec));
     PySys_WriteStdout("END PROCESS (%d secs)\n",(int)difftime(end, start));
 
     evolution_log.close();
-    matrix_sim_log.close();
-    evolution_ensemble_log.close();
+//    matrix_sim_log.close();
+//    evolution_ensemble_log.close();
 
     if(!this->interface->unload_dataset())
         return NULL;

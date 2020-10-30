@@ -3,6 +3,7 @@
 #include "population.h"
 #include <iostream>
 #define K_TOURNAMENT 2
+#define INVALID_ENSEMBLE_SCORE -1
 
 PopulationEnsemble::PopulationEnsemble(int population_size, int solution_size, double elite_portion, double mut_rate, double cross_rate){
     this->population_size=population_size;
@@ -27,15 +28,19 @@ int PopulationEnsemble::init_population_random(){
     for(int i=0;i<this->population_size;i++){
         for(int j=0;j<this->solution_size;j++){
             double sort=randDouble(0,1);
-            if(sort<0.1)
+            if(sort<0.1) {
                 this->population[i][j]=1;
-            else
+            }
+            else {
                 this->population[i][j]=0;
+            }
         }
     }
 
     this->update_length_population();
-    for(int i=0; i<this->population_size; i++) this->score_population[i]=0;
+    for(int i=0; i<this->population_size; i++) {
+        this->score_population[i] = 0;
+    }
 
     return 1;
 }
@@ -56,14 +61,19 @@ PopulationEnsemble::~PopulationEnsemble(){
 }
 
 int PopulationEnsemble::next_generation_similarity(Population *population_components){
-    if(this->next_gen_size!=this->population_size){
-        if(this->next_gen) free(this->next_gen);
-        if(this->score_next_gen) free(this->score_next_gen);
-        this->next_gen_size=this->population_size;
-        this->next_gen=(int**)malloc(sizeof(int*)*this->next_gen_size);
-        this->score_next_gen=(double*)malloc(sizeof(double)*this->next_gen_size);
-        for(int i=0;i<this->next_gen_size;i++)
-            this->next_gen[i]=NULL;
+    if(this->next_gen_size != this->population_size) {
+        if(this->next_gen) {
+            free(this->next_gen);
+        }
+        if(this->score_next_gen) {
+            free(this->score_next_gen);
+        }
+        this->next_gen_size = this->population_size;
+        this->next_gen = (int**)malloc(sizeof(int*)*this->next_gen_size);
+        this->score_next_gen = (double*)malloc(sizeof(double)*this->next_gen_size);
+        for(int i=0;i<this->next_gen_size;i++) {
+            this->next_gen[i] = NULL;
+        }
     }
 
     this->quick_sort_population();
@@ -141,12 +151,15 @@ int PopulationEnsemble::next_generation_similarity(Population *population_compon
             if(this->next_gen[max_sim_index][k])next_length_solution++;
         }
 
-        if(this->score_population[i]<this->score_next_gen[max_sim_index] || (this->score_population[i]==this->score_next_gen[max_sim_index] && next_length_solution<this->length_population[i])){
+        if(
+            (this->score_population[i] < this->score_next_gen[max_sim_index]) ||
+            (this->score_population[i] == this->score_next_gen[max_sim_index] && next_length_solution < this->length_population[i])
+        ) {
             delete this->population[i];
             this->population[i]=NULL;
             std::swap(population[i],next_gen[max_sim_index]);
             std::swap(score_population[i],score_next_gen[max_sim_index]);
-        }else{
+        } else {
             delete this->next_gen[max_sim_index];
             this->next_gen[max_sim_index]=NULL;
         }
@@ -244,8 +257,27 @@ void PopulationEnsemble::update_length_population(){
 }
 
 void PopulationEnsemble::write_population(int generation, std::ofstream *evolution_log){
-    for(int i=0;i<this->population_size;i++)
-        (*evolution_log)<<generation<<";"<<this->length_population[i]<<";"<<this->score_population[i]<<"\n";
+
+    double min_fit, max_fit, median_fit;
+    int count_valid, n_discarded;
+
+    // TODO fitness is the same for all ensembles. check it out
+    get_min_median_max_double(&min_fit, &median_fit, &max_fit, &count_valid, &n_discarded, this->score_population, this->population_size, INVALID_ENSEMBLE_SCORE);
+
+    (*evolution_log) << count_valid << "," << min_fit << "," << median_fit << "," << max_fit << "," << n_discarded;
+
+    int min_size, max_size, median_size;
+    get_min_median_max_int(&min_size, &median_size, &max_size, &count_valid, &n_discarded, this->length_population, this->population_size, INVALID_ENSEMBLE_SCORE);
+
+    (*evolution_log) << "," << min_size << "," << median_size << "," << max_size << std::endl;
+
+
+
+// old line
+// Generation;Length;Score
+//    for(int i = 0; i < this->population_size; i++) {
+//        (*evolution_log)<<generation<<";"<<this->length_population[i]<<";"<<this->score_population[i]<<"\n";
+//    }
 }
 
 int PopulationEnsemble::get_population_size(){

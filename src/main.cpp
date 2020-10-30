@@ -39,17 +39,24 @@ static int PyAUTOCVE_init(PyAUTOCVE *self, PyObject *args, PyObject *kwargs){
         return NULL;
     }
 
-    if(scoring==NULL)
-        scoring=Py_BuildValue("s","balanced_accuracy");
-    else 
+    if(scoring == NULL) {
+        PyErr_SetString(PyExc_ValueError, "invalid scoring function");
+        return NULL;
+    } else {
         Py_XINCREF(scoring);
+    }
 
     if(self->ptr_autocve)
         delete self->ptr_autocve;
 
-    try{
-        self->ptr_autocve=new AUTOCVEClass(seed, n_jobs, timeout_pip_sec, timeout_evolution_process_sec, grammar_file, generations, size_pop_components, elite_portion_components, mut_rate_components, cross_rate_components, size_pop_ensemble, elite_portion_ensemble, mut_rate_ensemble, cross_rate_ensemble, scoring, cv_folds, verbose);
-    }catch(const char *e){
+    try {
+        self->ptr_autocve = new AUTOCVEClass(
+            seed, n_jobs, timeout_pip_sec, timeout_evolution_process_sec, grammar_file, generations,
+            size_pop_components, elite_portion_components, mut_rate_components, cross_rate_components,
+            size_pop_ensemble, elite_portion_ensemble, mut_rate_ensemble, cross_rate_ensemble, scoring,
+            cv_folds, verbose
+        );
+    } catch(const char *e) {
         PyErr_SetString(PyExc_Exception, e);
         return NULL;
     }
@@ -192,6 +199,9 @@ static PyObject *PyAUTOCVE_get_parameters_char(PyAUTOCVE* self, PyObject* args){
 }
 
 
+/**
+ * This method accurately approximates the Java implementation from Weka.
+ */
 static PyObject *Py_get_unweighted_area_under_roc(PyObject *self, PyObject *args, PyObject *kwargs) {
 
     static char *kwds[] = {"y_true", "y_score", NULL};
@@ -202,12 +212,12 @@ static PyObject *Py_get_unweighted_area_under_roc(PyObject *self, PyObject *args
         return NULL;
     }
 
-    if(PyArray_NDIM((PyArrayObject*)y_score) > 2) {
+    if(PyArray_NDIM((PyArrayObject*)y_score) != 2) {
         PyErr_SetString(PyExc_ValueError, "y_score must be an array with two dimensions.");
         return NULL;
     }
 
-    if(PyArray_NDIM((PyArrayObject*)y_true) > 1) {
+    if(PyArray_NDIM((PyArrayObject*)y_true) != 1) {
         PyErr_SetString(PyExc_ValueError, "y_true should be a one-dimensional array.");
         return NULL;
     }
@@ -269,10 +279,27 @@ static PyTypeObject PyAUTOCVEType = {PyVarObject_HEAD_INIT(NULL, 0)
 };
 
 
+PyDoc_STRVAR(
+    PyIU_get_unweighted_area_under_roc_doc,
+    "get_unweighted_area_under_roc(y_true: numpy.ndarray, y_score: numpy.ndarray) -> float\n\n"
+    "Get unweighted area under the ROC curve for a set of predictions.\n"
+    "\n"
+    ":param y_true: An unidimensional array where each position is true class label for that position instance. Must be "
+    "numered [0, C], where C is the number of classes in the dataset. Must be a numpy.ndarray with C order and type np.int64.\n"
+    ":type y_true: numpy.ndarray\n"
+    ":param y_score: A matrix where each row is the scores for that position instance, and each column the scores for those "
+    "classes. Must have as many columns as there are classes. Must be a numpy.ndarray with C order and type np.int64.\n"
+    ":type y_score: numpy.ndarray\n"
+    ":return: The simple average of the AUC over all classes (even when the problem is binary).\n"
+    ":rtype: float\n"
+);
 
 // module functions
 static struct PyMethodDef AUTOCVEMethods[] = {
-    { "get_unweighted_area_under_roc", (PyCFunction)Py_get_unweighted_area_under_roc, METH_VARARGS | METH_KEYWORDS, "Get unweighted area under the ROC curve for a set of predictions." },
+    {
+        "get_unweighted_area_under_roc", (PyCFunction)Py_get_unweighted_area_under_roc, METH_VARARGS | METH_KEYWORDS,
+        PyIU_get_unweighted_area_under_roc_doc
+    },
     {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
@@ -287,7 +314,7 @@ static PyModuleDef AUTOCVE_module = {
 };
 
 
-PyMODINIT_FUNC PyInit_AUTOCVE(void){
+PyMODINIT_FUNC PyInit_AUTOCVE(void) {
     PyObject* module_py;
 
     PyAUTOCVEType.tp_new = PyType_GenericNew;

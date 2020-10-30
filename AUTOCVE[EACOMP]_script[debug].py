@@ -18,7 +18,7 @@ from pbil.utils import parse_open_ml, create_metadata_path
 GRACE_PERIOD = 0  # 60
 
 
-def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_path, id_exp, id_trial):
+def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_path, id_trial):
     """
 
     :param dataset_path:
@@ -92,9 +92,9 @@ def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_
     dict_models['AUTOCVE'] = df_metrics
 
     collapsed = reduce(lambda x, y: x.append(y), dict_models.values())
-    collapsed.to_csv(os.path.join(
-        results_path, id_exp,
-        'test_sample-%02.d_fold-%02.d.csv' % (id_trial, n_fold)), index=True
+    collapsed.to_csv(
+        os.path.join(results_path, 'test_sample-%02.d_fold-%02.d.csv' % (id_trial, n_fold)
+        ), index=True
     )
 
     return test_pevaluation
@@ -121,9 +121,13 @@ def fit_predict_proba(estimator, X, y, X_test):
 
 
 def execute_exp(
-        id_trial, n_fold, datasets_path, d_id, n_generations, time_per_task, pool_size,
+        n_sample, n_fold, datasets_path, dataset_name, n_generations, time_per_task, pool_size,
         mutation_rate_pool, crossover_rate_pool, n_ensembles, mutation_rate_ensemble, crossover_rate_ensemble,
         n_jobs, results_path, seed=None, subsample=1):
+
+    this_experiment_path = os.path.join(results_path, dataset_name, 'sample_%02.d_fold_%02.d' % (n_sample, n_fold))
+    os.mkdir(this_experiment_path)
+    os.chdir(this_experiment_path)
 
     p = AUTOCVEClassifier(
         generations=n_generations,
@@ -138,12 +142,12 @@ def execute_exp(
         max_evolution_time_secs=time_per_task,  # TODO review
         n_jobs=n_jobs,
         random_state=seed,
-        scoring=unweighted_area_under_roc,  # TODO review
+        scoring=unweighted_area_under_roc,  # function was reviewed and is operating as intended
         verbose=1
     )
 
     X_train, X_test, y_train, y_test, df_types = parse_open_ml(
-        datasets_path=datasets_path, d_id=d_id, n_fold=n_fold
+        datasets_path=datasets_path, d_id=dataset_name, n_fold=n_fold
     )
 
     p.optimize(X_train, y_train, subsample_data=subsample)
@@ -152,9 +156,9 @@ def execute_exp(
     test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)
 
     get_evaluation(
-        dataset_path=os.path.join(datasets_path, d_id), n_fold=n_fold,
+        dataset_path=os.path.join(datasets_path, dataset_name), n_fold=n_fold,
         seed=seed, train_probs=train_probs, test_probs=test_probs,
-        results_path=results_path, id_exp=d_id, id_trial=id_trial
+        results_path=os.path.join(results_path, dataset_name, 'overall'), id_trial=n_sample
     )
 
 
@@ -253,7 +257,6 @@ def main():
 
     jvm.start(max_heap_size=some_args.heap_size)
     results_path = create_metadata_path(args=some_args)
-    os.chdir(results_path)
 
     # datasets_status = {k: False for k in datasets_names}
 
@@ -261,10 +264,10 @@ def main():
 
     try:
         execute_exp(
+            n_sample=1,
             n_fold=1,
-            id_trial=1,
             datasets_path=some_args.datasets_path,
-            d_id=datasets_names[0],
+            dataset_name=datasets_names[0],
             seed=np.random.randint(np.iinfo(np.int32).max),
             n_generations=some_args.n_generations,
             n_jobs=1,
@@ -277,6 +280,7 @@ def main():
             crossover_rate_ensemble=some_args.crossover_rate_ensemble,
             results_path=results_path
         )
+        jvm.stop()
     except Exception as e:
         jvm.stop()
         raise e

@@ -145,7 +145,7 @@ def execute_exp(
         max_evolution_time_secs=time_per_task,
         n_jobs=n_jobs,
         random_state=seed,
-        scoring=unweighted_area_under_roc,
+        scoring=unweighted_area_under_roc,  # function was reviewed and is operating as intended
         verbose=1
     )
 

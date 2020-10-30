@@ -17,6 +17,7 @@ def create_metadata_path(args):
     joined = os.getcwd() if not os.path.isabs(args.metadata_path) else ''
     to_process = [args.metadata_path, str_time]
 
+    # creates metadata path, if nonexistent, and experiment path
     for path in to_process:
         joined = os.path.join(joined, path)
         if not os.path.exists(joined):
@@ -24,6 +25,7 @@ def create_metadata_path(args):
 
     for dataset_name in args.datasets_names.split(','):
         os.mkdir(os.path.join(joined, dataset_name))
+        os.mkdir(os.path.join(joined, dataset_name, 'overall'))
 
     with open(os.path.join(joined, 'parameters.json'), 'w') as f:
         json.dump({k: getattr(args, k) for k in args.__dict__}, f, indent=2)
@@ -73,7 +75,11 @@ def path_to_arff(dataset_path):
 
 
 def parse_open_ml(datasets_path, d_id, n_fold, queue=None):
-    """Function that processes each dataset into an interpretable form
+    """
+    Function that processes each dataset into an interpretable form
+
+    Warning: will convert categorical attributes to one-hot encoding.
+
     Args:
         d_id (int): dataset id
     Returns:
@@ -89,17 +95,20 @@ def parse_open_ml(datasets_path, d_id, n_fold, queue=None):
     # df = pd.read_csv('../datasets/{0}.csv'.format(d_id))
     # df_types = pd.read_csv('../datasets/{0}_types.csv'.format(d_id))
 
+    categorical_columns = []
+    dict_convs = []
+
     for column in train.columns:
         if str(train[column].dtype) == 'category':
             categories = train[column].dtype.categories
             dict_conv = dict(zip(categories, range(len(categories))))
             train.loc[:, column] = train.loc[:, column].replace(dict_conv).astype(np.int32)
 
-    for column in test.columns:
-        if str(test[column].dtype) == 'category':
-            categories = test[column].dtype.categories
-            dict_conv = dict(zip(categories, range(len(categories))))
-            test.loc[:, column] = test.loc[:, column].replace(dict_conv).astype(np.int32)
+            dict_convs += [dict_conv]
+            categorical_columns += [column]
+
+    for column, dict_conv in zip(categorical_columns, dict_convs):
+        test.loc[:, column] = test.loc[:, column].replace(dict_conv).astype(np.int32)
 
     # df_valid = train[~train['target'].isnull()]
 
