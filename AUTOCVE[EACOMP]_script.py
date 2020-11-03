@@ -10,10 +10,11 @@ import numpy as np
 import pandas as pd
 from AUTOCVE.AUTOCVE import AUTOCVEClassifier
 from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
 from weka.core import jvm
 from weka.core.converters import Loader
 from weka.core.dataset import Instances
-from AUTOCVE.util import unweighted_area_under_roc
+from AUTOCVE.util.evaluate import unweighted_area_under_roc
 
 from pbil.evaluations import evaluate_on_test, EDAEvaluation, collapse_metrics
 from pbil.utils import parse_open_ml, create_metadata_path
@@ -22,7 +23,7 @@ import javabridge
 GRACE_PERIOD = 0  # 60
 
 
-def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_path, id_exp, id_trial):
+def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_path, id_trial):
     """
 
     :param dataset_path:
@@ -96,75 +97,86 @@ def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_
     dict_models['AUTOCVE'] = df_metrics
 
     collapsed = reduce(lambda x, y: x.append(y), dict_models.values())
-    collapsed.to_csv(os.path.join(
-        results_path, id_exp,
-        'test_sample-%02.d_fold-%02.d.csv' % (id_trial, n_fold)), index=True
+    collapsed.to_csv(
+        os.path.join(results_path, 'test_sample-%02.d_fold-%02.d.csv' % (id_trial, n_fold)
+        ), index=True
     )
 
     return test_pevaluation
 
 
-def fit_predict_proba(estimator, X, y, X_test):
+def fit_predict_proba(estimator: Pipeline, X: np.ndarray, y: np.ndarray, X_test: np.ndarray):
     if estimator is None:
         return None
     try:
-        if np.any(np.isnan(X.values)) or np.any(np.isnan(X_test.values)):
-            imputer=SimpleImputer(strategy="median")
+        if np.any(np.isnan(X)) or np.any(np.isnan(X_test)):
+            imputer = SimpleImputer(strategy="median")
             imputer.fit(X)
-            X=imputer.transform(X)
-            X_test=imputer.transform(X_test)
+            X = imputer.transform(X)
+            X_test = imputer.transform(X_test)
         else:
-            X=X.values  # TPOT operators need numpy format for been applied
-            X_test=X_test.values
-            y=y.values
+            X = X
+            X_test = X_test
+            y = y
 
-        estimator.fit(X,y)
+        estimator.fit(X, y)
         return estimator.predict_proba(X_test)
     except Exception as e:
         return None
 
 
 def execute_exp(
-        id_trial, n_fold, datasets_path, d_id, n_generations, time_per_task, pool_size,
+        n_sample, n_fold, datasets_path, dataset_name, n_generations, time_per_task, pool_size,
         mutation_rate_pool, crossover_rate_pool, n_ensembles, mutation_rate_ensemble, crossover_rate_ensemble,
-        n_jobs, results_path, context, max_heap_size='2G', seed=None, subsample=1):
+        n_jobs, results_path, max_heap_size='3G', seed=None, subsample=1):
 
     jvm.start(max_heap_size=max_heap_size)
-    # jvm.start()
+    some_exception = None
+    try:
+        this_experiment_path = os.path.join(results_path, dataset_name, 'sample_%02.d_fold_%02.d' % (n_sample, n_fold))
+        os.mkdir(this_experiment_path)
+        os.chdir(this_experiment_path)
 
-    p = AUTOCVEClassifier(
-        generations=n_generations,
-        population_size_components=pool_size,
-        mutation_rate_components=mutation_rate_pool,
-        crossover_rate_components=crossover_rate_pool,
-        population_size_ensemble=n_ensembles,
-        mutation_rate_ensemble=mutation_rate_ensemble,
-        crossover_rate_ensemble=crossover_rate_ensemble,
-        grammar='grammarPBIL',
-        max_pipeline_time_secs=60,
-        max_evolution_time_secs=time_per_task,
-        n_jobs=n_jobs,
-        random_state=seed,
-        scoring=unweighted_area_under_roc,  # function was reviewed and is operating as intended
-        verbose=1
-    )
+        p = AUTOCVEClassifier(
+            generations=n_generations,
+            population_size_components=pool_size,
+            mutation_rate_components=mutation_rate_pool,
+            crossover_rate_components=crossover_rate_pool,
+            population_size_ensemble=n_ensembles,
+            mutation_rate_ensemble=mutation_rate_ensemble,
+            crossover_rate_ensemble=crossover_rate_ensemble,
+            grammar='grammarPBIL',  # grammar to be used with interpretable models
+            # grammar='grammarTPOT',
+            max_pipeline_time_secs=60,
+            max_evolution_time_secs=time_per_task,
+            n_jobs=n_jobs,
+            random_state=seed,
+            scoring=unweighted_area_under_roc,  # function was reviewed and is operating as intended
+            verbose=1
+        )
 
-    X_train, X_test, y_train, y_test, df_types = parse_open_ml(
-        datasets_path=datasets_path, d_id=d_id, n_fold=n_fold
-    )
+        X_train, X_test, y_train, y_test, df_types = parse_open_ml(
+            datasets_path=datasets_path, d_id=dataset_name, n_fold=n_fold
+        )
 
-    p.optimize(X_train, y_train, subsample_data=subsample, n_classes=len(y_train.unique()))
+        p.optimize(X_train, y_train, subsample_data=subsample, n_classes=len(np.unique(y_train)))
 
-    train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
-    test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)
+        best_pipeline = p.get_best_pipeline()
+        train_probs = fit_predict_proba(best_pipeline, X_train, y_train, X_train).astype(np.float64)
+        test_probs = fit_predict_proba(best_pipeline, X_train, y_train, X_test).astype(np.float64)
 
-    get_evaluation(
-        dataset_path=os.path.join(datasets_path, d_id), n_fold=n_fold,
-        seed=seed, train_probs=train_probs, test_probs=test_probs,
-        results_path=results_path, id_exp=d_id, id_trial=id_trial
-    )
+        get_evaluation(
+            dataset_path=os.path.join(datasets_path, dataset_name), n_fold=n_fold,
+            seed=seed, train_probs=train_probs, test_probs=test_probs,
+            results_path=os.path.join(results_path, dataset_name, 'overall'), id_trial=n_sample
+        )
+    except Exception as e:
+        some_exception = e
+    finally:
+        jvm.stop()
 
-    jvm.stop()
+    if some_exception is not None:
+        raise some_exception
 
 
 def __get_running_processes__(jobs, datasets_status, results_path, total_experiments, total_folds):
@@ -276,7 +288,7 @@ def main():
     some_args = parser.parse_args()
 
     if 0 < some_args.n_samples <= 20:
-        N_TRIALS = some_args.n_samples
+        n_samples = some_args.n_samples
     else:
         raise Exception("The number of trials is expected to be an integer with value between 1 and 20.")
 
@@ -291,26 +303,26 @@ def main():
 
     datasets_status = {k: False for k in datasets_names}
 
-    queue_experiments = it.product(datasets_names, list(range(1, N_TRIALS + 1)), list(range(1, 10 + 1)))
+    queue_experiments = it.product(datasets_names, list(range(1, n_samples + 1)), list(range(1, 10 + 1)))
 
     jobs = []
-    for id_exp, id_trial, n_fold in queue_experiments:
-        print("Dataset %s, trial %d, fold %d" % (id_exp, id_trial, n_fold))
+    for id_exp, n_sample, n_fold in queue_experiments:
+        print("Dataset %s, trial %d, fold %d" % (id_exp, n_sample, n_fold))
 
         if len(jobs) >= some_args.n_jobs:
             jobs, datasets_status = __get_running_processes__(
                 jobs=jobs, datasets_status=datasets_status,
                 results_path=results_path,
-                total_experiments=N_TRIALS, total_folds=10,
+                total_experiments=n_samples, total_folds=10,
             )
 
         job = mp.Process(
             target=execute_exp,
             kwargs=dict(
+                n_sample=n_sample,
                 n_fold=n_fold,
-                id_trial=id_trial,
                 datasets_path=some_args.datasets_path,
-                d_id=id_exp,
+                dataset_name=datasets_names[0],
                 seed=np.random.randint(np.iinfo(np.int32).max),
                 n_generations=some_args.n_generations,
                 n_jobs=1,
@@ -322,7 +334,6 @@ def main():
                 mutation_rate_ensemble=some_args.mutation_rate_ensemble,
                 crossover_rate_ensemble=some_args.crossover_rate_ensemble,
                 results_path=results_path,
-                context=context,
                 max_heap_size=some_args.heap_size
             )
         )
@@ -338,7 +349,7 @@ def main():
     __get_running_processes__(
         jobs=jobs, datasets_status=datasets_status,
         results_path=results_path,
-        total_experiments=N_TRIALS, total_folds=10,
+        total_experiments=n_samples, total_folds=10,
     )
 
     jvm.stop()

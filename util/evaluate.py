@@ -165,6 +165,7 @@ def evaluate_population(pipelines_population, X, y, scoring, n_jobs, timeout_pip
 
         return None, None, -1
 
+
 def evaluate_solution(
         pipeline_str, X_train: np.ndarray, X_test: np.ndarray, y_train: np.ndarray, y_test: np.ndarray, verbose=1
 ):
@@ -175,11 +176,10 @@ def evaluate_solution(
         pipeline.fit(X_train, y_train)
     except Exception as e:
         if verbose > 0:
-            print("Pipeline fit error: " + str(pipeline))
-            print(str(e))
+            print("Pipeline fit error: " + str(e) + "\n")
+            print(str(pipeline))
         return None
 
-    predict_data = []
     try:
         if getattr(pipeline, 'predict_proba', None) is not None:
             predict_scores = pipeline.predict_proba(X_test)
@@ -193,8 +193,8 @@ def evaluate_solution(
 
     except Exception as e:
         if verbose > 0:
-            print("Pipeline predict error: " + str(pipeline))
-            print(str(e))
+            print("Pipeline predict error: " + str(e) + "\n")
+            print(str(pipeline))
         return None
 
     return predict_data, predict_scores

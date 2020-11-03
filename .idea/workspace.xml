@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script[debug].py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script[debug].py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classifiers_test_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/classifiers_test_script.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AUTOCVE.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/AUTOCVE.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/population.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/population.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/util/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/evaluate.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +54,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -67,7 +64,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.smartKeys" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/util/evaluate.py" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -83,7 +80,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.AUTOCVE[EACOMP]_script[debug]">
+  <component name="RunManager" selected="Python.AUTOCVE[EACOMP]_script">
     <configuration name="AUTOCVE[EACOMP]_script" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="AUTOCVE" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -98,7 +95,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
-      <option name="PARAMETERS" value="--metadata-path C:\Users\henry\Projects\trash\autocve --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --datasets-names australian --n-generations 100 --n-samples 1 --n-jobs 1 --pool-size 50 --n-ensembles 200 --time-per-task 300 --heap-size 3G" />
+      <option name="PARAMETERS" value="--metadata-path C:\Users\henry\Projects\trash\autocve --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --datasets-names iris --n-generations 100 --pool-size 10 --n-ensembles 15 --time-per-task 300 --heap-size 3G --n-samples 1 --n-jobs 5" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -225,9 +222,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.AUTOCVE[EACOMP]_script" />
         <item itemvalue="Python.AUTOCVE[EACOMP]_script[debug]" />
         <item itemvalue="Python.classifiers_test_script" />
-        <item itemvalue="Python.AUTOCVE[EACOMP]_script" />
         <item itemvalue="Python.base_learners" />
         <item itemvalue="Python.old_script" />
       </list>
@@ -262,27 +259,18 @@
       <workItem from="1604361987740" duration="3571000" />
       <workItem from="1604365599653" duration="244000" />
       <workItem from="1604365883272" duration="1239000" />
-      <workItem from="1604404212048" duration="5612000" />
+      <workItem from="1604404212048" duration="11905000" />
     </task>
     <servers />
-  </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604409702734">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604411740474">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604409702734" />
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604411740474" />
     <state x="740" y="225" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1604271033241">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -295,26 +283,30 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1467" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1604406410628" />
-    <state x="739" y="274" key="FileChooserDialogImpl" timestamp="1603816154093">
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1604411740850">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="739" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1603816154093" />
-    <state width="938" height="250" key="GridCell.Tab.0.bottom" timestamp="1604410824967">
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604411740850" />
+    <state x="739" y="274" key="FileChooserDialogImpl" timestamp="1604411455589">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="250" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604410824967" />
-    <state width="938" height="250" key="GridCell.Tab.0.center" timestamp="1604410824966">
+    <state x="739" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1604411455589" />
+    <state width="938" height="214" key="GridCell.Tab.0.bottom" timestamp="1604416415401">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="250" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604410824966" />
-    <state width="938" height="250" key="GridCell.Tab.0.left" timestamp="1604410824966">
+    <state width="938" height="214" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604416415401" />
+    <state width="938" height="214" key="GridCell.Tab.0.center" timestamp="1604416415401">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="250" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604410824966" />
-    <state width="938" height="250" key="GridCell.Tab.0.right" timestamp="1604410824967">
+    <state width="938" height="214" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604416415401" />
+    <state width="938" height="214" key="GridCell.Tab.0.left" timestamp="1604416415400">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="250" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604410824967" />
+    <state width="938" height="214" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604416415400" />
+    <state width="938" height="214" key="GridCell.Tab.0.right" timestamp="1604416415401">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="938" height="214" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604416415401" />
     <state width="868" height="233" key="GridCell.Tab.1.bottom" timestamp="1604410645047">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -339,10 +331,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="968" height="528" key="XDebugger.FullValuePopup/0.0.1920.1040@0.0.1920.1040" timestamp="1604406142099" />
-    <state x="656" y="252" width="737" height="606" key="find.popup" timestamp="1604410348148">
+    <state x="656" y="252" width="737" height="606" key="find.popup" timestamp="1604414755877">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="656" y="252" width="737" height="606" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1604410348148" />
+    <state x="656" y="252" width="737" height="606" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1604414755877" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1604366715095">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -358,23 +350,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$USER_HOME$/Anaconda3/envs/autocve/Lib/site-packages/AUTOCVE/util/evaluate.py</url>
-          <line>126</line>
+          <line>125</line>
           <option name="timeStamp" value="123" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/util/evaluate.py</url>
-          <line>174</line>
-          <option name="timeStamp" value="124" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/util/evaluate.py</url>
-          <line>191</line>
-          <option name="timeStamp" value="127" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/util/evaluate.py</url>
-          <line>170</line>
-          <option name="timeStamp" value="128" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/classifiers_test_script.py</url>
@@ -390,8 +367,8 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script_debug_.coverage" NAME="AUTOCVE[EACOMP]_script[debug] Coverage Results" MODIFIED="1604410645022" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1603906410898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script_debug_.coverage" NAME="AUTOCVE[EACOMP]_script[debug] Coverage Results" MODIFIED="1604411300292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1604416415386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$classifiers_test_script.coverage" NAME="classifiers_test_script Coverage Results" MODIFIED="1604410573315" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
