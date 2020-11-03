@@ -123,7 +123,7 @@ def parse_open_ml(datasets_path, d_id, n_fold, queue=None):
     if queue is not None:
         queue.put((X_train, X_test, y_train, y_test, df_types))
 
-    return X_train, X_test, y_train, y_test, df_types
+    return X_train.values, X_test.values, y_train.values, y_test.values, df_types
 
 
 def to_java_object(val, dtype):

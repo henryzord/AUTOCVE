@@ -1,32 +1,37 @@
-from sklearn.model_selection import StratifiedKFold
-from joblib import Parallel, delayed
-from joblib import dump, load
-from .joblib_silent_timeout import ParallelSilentTimeout
-from joblib.externals.loky.process_executor import TerminatedWorkerError
-from functools import partial
-from .make_pipeline import make_pipeline_str
-from multiprocessing import TimeoutError
-import numpy as np
-import importlib
-import warnings
-import time
-import tempfile
 import os
+import tempfile
+import time
+import warnings
 from collections import Counter
+from functools import partial
+from multiprocessing import TimeoutError
+
+import numpy as np
+import pandas as pd
+from AUTOCVE.AUTOCVE import get_unweighted_area_under_roc
+from joblib import delayed
+from joblib import dump, load
+from joblib.externals.loky.process_executor import TerminatedWorkerError
+from sklearn.model_selection import StratifiedKFold
+
+from .joblib_silent_timeout import ParallelSilentTimeout
+from .make_pipeline import make_pipeline_str
 
 y_last_test_set = None
 
 
 def log_warning_output(message, category, filename, lineno, file=None, line=None):
     with open("log_warning_methods.log", "a+") as file:
-        file.write(time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ": " + warnings.formatwarning(message, category,
-                                                                                                     filename,
-                                                                                                     lineno) + "\n")
+        file.write(
+            time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ": " +
+            warnings.formatwarning(message, category, filename, lineno) + "\n"
+        )
 
 
 warnings.showwarning = log_warning_output
 
 
+# TODO must be scorerhandler the handler for models!
 class ScorerHandler(object):
     def __init__(self, y_pred, y_scores):
         """
@@ -58,7 +63,9 @@ def evaluate_population(pipelines_population, X, y, scoring, n_jobs, timeout_pip
         list_train_index = []
         list_test_index = []
         y_last_test_set = []
+
         split = StratifiedKFold(n_splits=N_SPLITS, random_state=RANDOM_STATE)
+
         for train_index, test_index in split.split(X, y):
             list_train_index.append(train_index)
             list_test_index.append(test_index)
@@ -78,8 +85,8 @@ def evaluate_population(pipelines_population, X, y, scoring, n_jobs, timeout_pip
         metric_population = []
         predict_population = []
         evaluate_pipe_timeout = partial(evaluate_solution, verbose=verbose)
-        for train_index, test_index in zip(list_train_index, list_test_index):
 
+        for train_index, test_index in zip(list_train_index, list_test_index):
             X_train = X[train_index, :]
             X_test = X[test_index, :]
             if os.path.exists(filename_train):
@@ -91,7 +98,6 @@ def evaluate_population(pipelines_population, X, y, scoring, n_jobs, timeout_pip
 
             X_train = load(filename_train, mmap_mode='r')
             X_test = load(filename_test, mmap_mode='r')
-
 
             result_pipeline = ParallelSilentTimeout(n_jobs=n_jobs, backend="loky", timeout=timeout_pip_sec)(
                 delayed(evaluate_pipe_timeout)(pipeline_str, X_train, X_test, y[train_index], y[test_index]) for
@@ -119,7 +125,7 @@ def evaluate_population(pipelines_population, X, y, scoring, n_jobs, timeout_pip
                         metric_population_cv.append(None)
                         predict_population_cv.append(None)
                         pipelines_population[pipe_id] = None
-                    elif (result_solution is None):
+                    elif result_solution is None:
                         metric_population_cv.append(None)
                         predict_population_cv.append(None)
                         pipelines_population[pipe_id] = None
@@ -160,8 +166,12 @@ def evaluate_population(pipelines_population, X, y, scoring, n_jobs, timeout_pip
 
         return None, None, -1
 
-
-def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test, verbose=1):
+# TODO here!!! fit and predict are here!!!!!
+# TODO here!!! fit and predict are here!!!!!
+# TODO here!!! fit and predict are here!!!!!
+def evaluate_solution(
+        pipeline_str, X_train: np.ndarray, X_test: np.ndarray, y_train: np.ndarray, y_test: np.ndarray, verbose=1
+):
     pipeline = make_pipeline_str(pipeline_str, verbose)
     if pipeline is None:
         return None
@@ -182,7 +192,7 @@ def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test, verbose=1)
             n_classes = len(Counter(y_train))
             predict_scores = np.zeros((len(X_test), n_classes), dtype=np.float64)
             indices = np.arange(len(X_test))
-            predict_scores[indices, predict_data] = 1.
+            predict_scores[indices, predict_data.astype(np.int32)] = 1.
 
     except Exception as e:
         if verbose > 0:
@@ -190,9 +200,21 @@ def evaluate_solution(pipeline_str, X_train, X_test, y_train, y_test, verbose=1)
             print(str(e))
         return None
 
+    print('predict scores:')
+    print(predict_scores)  # TODO remove me!
+
     return predict_data, predict_scores
 
 
 # scoring is the scoring function passed as argument to AUTOCVEClassifier
 def evaluate_predict_vector(predict_vector, predict_scores, scoring):
     return scoring(ScorerHandler(predict_vector, predict_scores), None, y_last_test_set)
+
+
+# one valid scoring function
+def unweighted_area_under_roc(score_handler, some_arg, y_true):
+    score = get_unweighted_area_under_roc(
+        y_true=np.array(y_true, copy=False, order='C', dtype=np.int64),
+        y_score=np.array(score_handler.y_scores, copy=False, order='C', dtype=np.float64)
+    )
+    return score

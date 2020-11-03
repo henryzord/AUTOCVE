@@ -26,23 +26,21 @@ PopulationEnsemble::PopulationEnsemble(int population_size, int solution_size, d
 }
 
 int PopulationEnsemble::init_population_random(){ 
-    for(int i=0;i<this->population_size;i++){
-        for(int j=0;j<this->solution_size;j++){
-            double sort=randDouble(0,1);
-            if(sort<0.1) {
-                this->population[i][j]=1;
+    for(int i = 0; i < this->population_size; i++) {
+        for(int j = 0; j < this->solution_size; j++) {
+            double sort = randDouble(0, 1);
+            if(sort < 0.1) {
+                this->population[i][j] = 1;
             }
             else {
-                this->population[i][j]=0;
+                this->population[i][j] = 0;
             }
         }
     }
-
     this->update_length_population();
-    for(int i=0; i<this->population_size; i++) {
+    for(int i = 0; i < this->population_size; i++) {
         this->score_population[i] = 0;
     }
-
     return 1;
 }
 

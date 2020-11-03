@@ -6,7 +6,7 @@
 PythonInterface::PythonInterface(int n_jobs, PyObject* timeout_pip_sec, PyObject *scoring, int cv_folds, int verbose){
     this->n_jobs=n_jobs, this->timeout_pip_sec=timeout_pip_sec, this->cv_folds=cv_folds, this->verbose=verbose;
     this->evaluate_function_py=PythonInterface::load_python_function("evaluate","evaluate_population");
-    this->evaluate_predict_vector_py=PythonInterface::load_python_function("evaluate","evaluate_predict_vector");
+    this->evaluate_predict_vector_py = PythonInterface::load_python_function("evaluate","evaluate_predict_vector");
     this->make_pipeline_py=PythonInterface::load_python_function("make_pipeline","make_pipeline_str");
     this->make_voting_ensemble_py=PythonInterface::load_python_function("make_pipeline","make_voting_ensemble");
     this->load_dataset_py=PythonInterface::load_python_function("dataset_handler","load_dataset");
@@ -121,15 +121,25 @@ PyObject* PythonInterface::load_python_function(const char *module_str, const ch
     return NULL;        
 }
 
-int PythonInterface::evaluate_pipelines_cv(char *pipeline_evaluated, PyObject **pipeline_score, PyObject **result_obj, int *predict_size){
-    if(!this->data_X || !this->data_y) return NULL;    
+int PythonInterface::evaluate_pipelines_cv(
+        char *pipeline_evaluated, PyObject **pipeline_score, PyObject **result_obj, int *predict_size)
+    {
+
+    if(!this->data_X || !this->data_y) {
+        return NULL;
+    }
 
     PyObject *return_func;
 
-    return_func=PyObject_CallFunction(this->evaluate_function_py, "sOOOiOii", pipeline_evaluated, this->data_X, this->data_y, this->scoring, this->n_jobs, this->timeout_pip_sec, this->cv_folds, this->verbose);
+    return_func=PyObject_CallFunction(
+        this->evaluate_function_py, "sOOOiOii",
+        pipeline_evaluated, this->data_X, this->data_y,
+        this->scoring, this->n_jobs, this->timeout_pip_sec, this->cv_folds, this->verbose
+    );
     
-    if(!return_func)
-        return NULL; 
+    if(!return_func) {
+        return NULL;
+    }
 
     (*pipeline_score)=PyTuple_GetItem(return_func, 0);
     (*result_obj)=PyTuple_GetItem(return_func, 1);

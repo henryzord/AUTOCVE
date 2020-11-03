@@ -10,7 +10,7 @@
 Population::Population(PythonInterface *interface, int size_pop, double elite_portion, double mut_rate, double cross_rate, int n_classes) {
     this->n_classes = n_classes;
 
-    this->population_size=size_pop;
+    this->population_size = size_pop;
     this->next_gen_size=0;
     this->population=(Solution**)malloc(sizeof(Solution*)*this->population_size);
     this->next_gen=NULL;
@@ -27,15 +27,18 @@ Population::Population(PythonInterface *interface, int size_pop, double elite_po
     this->cross_rate=cross_rate, this->mut_rate=mut_rate, this->elite_size=size_pop*elite_portion;
     this->interface_call=interface;
 
-    for(int i=0;i<this->population_size;i++)
-        this->population[i]=NULL;
+    for(int i = 0; i < this->population_size; i++) {
+        this->population[i] = NULL;
+    }
 
-    if(_import_array() < 0)//Must be called just one time
+    // Must be called just one time
+    if(_import_array() < 0) {
         throw  "Library numpy.core.multiarray failed to import";
+    }
 }
 
-int Population::init_population(Grammar* grammar, PopulationEnsemble *population_ensemble){
-    if(this->next_gen_size){  //Adjusting next_gen size by next_generation procedure
+int Population::init_population(Grammar* grammar, PopulationEnsemble *population_ensemble) {
+    if(this->next_gen_size) {  //Adjusting next_gen size by next_generation procedure
         free(this->next_gen);
         free(this->score_next_gen);
         free(this->metric_next_gen);
@@ -53,17 +56,21 @@ int Population::init_population(Grammar* grammar, PopulationEnsemble *population
 
     int return_flag=this->evaluate_next_gen_cv(false);
 
-    if(!return_flag || return_flag==-1)
+    if(!return_flag || return_flag==-1) {
         return return_flag;
+    }
     
     std::swap(this->population,this->next_gen);
     std::swap(this->predict_population,this->predict_next_gen);
     std::swap(this->score_population,this->score_next_gen);
     std::swap(this->metric_population,this->metric_next_gen);
-    for(int i=0;i<this->population_size;i++) this->population_rank[i]=i;
+    for(int i = 0; i < this->population_size; i++) {
+        this->population_rank[i]=i;
+    }
 
-    if(!this->evaluate_ensemble_population(population_ensemble))
+    if(!this->evaluate_ensemble_population(population_ensemble)) {
         return NULL;
+    }
 
     this->compute_similarity();
     this->quick_sort_population();
@@ -307,7 +314,7 @@ int Population::evaluate_ensemble_next_gen(PopulationEnsemble *population_ensemb
         PyObject *scores_numpy=PyArray_SimpleNewFromData(2, scores_dimension, NPY_DOUBLE, scores_ensemble);
         double return_score;
 
-        if(!this->interface_call->evaluate_predict_vector(predict_numpy, scores_numpy, &return_score)){
+        if(!this->interface_call->evaluate_predict_vector(predict_numpy, scores_numpy, &return_score)) {
             Py_XDECREF(predict_numpy);
             free(class_count);
             free(predict_ensemble);
@@ -346,13 +353,13 @@ int Population::evaluate_ensemble_next_gen(PopulationEnsemble *population_ensemb
 }
 
 // TODO work on this method first
-int Population::evaluate_ensemble_population(PopulationEnsemble *population_ensemble){
+int Population::evaluate_ensemble_population(PopulationEnsemble *population_ensemble) {
     int flag_valid_individual=0;
 //    double min_predict,max_predict;
 
     for(int i=0;i<this->predict_size;i++) {
         for(int j=0;j<this->population_size;j++) {
-            if(!flag_valid_individual && this->get_score_population(j) != INVALID_INDIVIDUAL_SCORE){
+            if(!flag_valid_individual && this->get_score_population(j) != INVALID_INDIVIDUAL_SCORE) {
 //                min_predict = max_predict = this->get_predict_population(i,j);
                 flag_valid_individual = 1;
                 break;
@@ -377,7 +384,7 @@ int Population::evaluate_ensemble_population(PopulationEnsemble *population_ense
     double *predict_ensemble = (double*)malloc(sizeof(double)*this->predict_size);
     double *scores_ensemble = (double*)malloc(sizeof(double) * this->predict_size * this->n_classes);
     int *class_count = (int*)malloc(sizeof(int)* n_classes);
-    int elected_class=0;
+    int elected_class = 0;
     double local_counter;
     int j_index;
 
@@ -385,7 +392,6 @@ int Population::evaluate_ensemble_population(PopulationEnsemble *population_ense
     for(int pop = 0; pop < population_ensemble->get_population_size(); pop++) {
         // iterates over instances
         for(int i = 0; i < this->predict_size; i++) {
-
             // sets class count and scores to zero
             for(int j = 0; j < n_classes; j++) {
                 class_count[j] = 0;
@@ -403,6 +409,13 @@ int Population::evaluate_ensemble_population(PopulationEnsemble *population_ense
                     local_counter += 1.0;
                 }
             }
+
+            // TODO print raw scores
+            for(int j = 0; j < this->n_classes; j++) {
+                std::cout << scores_ensemble[i * this->n_classes + j] << " ";
+            }
+            std::cout << std::endl;
+            // TODO print raw scores
 
             elected_class = 0;
             for(int j = 0; j < n_classes; j++) {
@@ -434,18 +447,18 @@ int Population::evaluate_ensemble_population(PopulationEnsemble *population_ense
         PyObject *scores_numpy = PyArray_SimpleNewFromData(2, scores_dimension, NPY_DOUBLE, scores_ensemble);
 
         // TODO printing scores of ensemble
-//        for(int k = 0; k < this->predict_size * this->n_classes; k++) {
-//            std::cout << scores_ensemble[k] << " ";
-//            if(k > 0 && (k % this->n_classes) == 0) {
-//                std::cout << std::endl;
+//        std::cout << "predict size: " << this->predict_size << std::endl;
+//        std::cout << "n_classes: " << this->n_classes << std::endl;
+//        std::cout << "classifiers in ensemble: " << local_counter << std::endl;
+//
+//        for(int i = 0; i < this->predict_size; i++) {
+//            for(int k = 0; k < this->n_classes; k++) {
+//                std::cout << scores_ensemble[i * this->n_classes + k] << " ";
 //            }
+//            std::cout << std::endl;
 //        }
 //        std::cout << std::endl;
-//        std::cout << "local counter: " << local_counter << std::endl;  // TODO remove!
-//        std::cout << "n_classes: " << this->n_classes << std::endl;
         // TODO printing scores of ensemble
-
-
         double return_score;
 
         // calls the assigned fitness function

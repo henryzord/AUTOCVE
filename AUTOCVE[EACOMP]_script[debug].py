@@ -6,8 +6,9 @@ import javabridge
 import numpy as np
 import pandas as pd
 from AUTOCVE.AUTOCVE import AUTOCVEClassifier
-from AUTOCVE.util import unweighted_area_under_roc
+from AUTOCVE.util.evaluate import unweighted_area_under_roc
 from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
 from weka.core import jvm
 from weka.core.converters import Loader
 from weka.core.dataset import Instances
@@ -100,19 +101,19 @@ def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_
     return test_pevaluation
 
 
-def fit_predict_proba(estimator, X, y, X_test):
+def fit_predict_proba(estimator: Pipeline, X: np.ndarray, y: np.ndarray, X_test: np.ndarray):
     if estimator is None:
         return None
     try:
-        if np.any(np.isnan(X.values)) or np.any(np.isnan(X_test.values)):
+        if np.any(np.isnan(X)) or np.any(np.isnan(X_test)):
             imputer = SimpleImputer(strategy="median")
             imputer.fit(X)
             X = imputer.transform(X)
             X_test = imputer.transform(X_test)
         else:
-            X = X.values  # TPOT operators need numpy format for been applied
-            X_test = X_test.values
-            y = y.values
+            X = X
+            X_test = X_test
+            y = y
 
         estimator.fit(X, y)
         return estimator.predict_proba(X_test)
@@ -137,7 +138,8 @@ def execute_exp(
         population_size_ensemble=n_ensembles,
         mutation_rate_ensemble=mutation_rate_ensemble,
         crossover_rate_ensemble=crossover_rate_ensemble,
-        grammar='grammarPBIL',
+        grammar='grammarPBIL',  # TODO reactivate
+        # grammar='grammarTPOT',
         max_pipeline_time_secs=60,  # TODO review
         max_evolution_time_secs=time_per_task,  # TODO review
         n_jobs=n_jobs,
@@ -150,7 +152,7 @@ def execute_exp(
         datasets_path=datasets_path, d_id=dataset_name, n_fold=n_fold
     )
 
-    p.optimize(X_train, y_train, subsample_data=subsample, n_classes=len(y_train.unique()))
+    p.optimize(X_train, y_train, subsample_data=subsample, n_classes=len(np.unique(y_train)))
 
     train_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_train).astype(np.float64)
     test_probs = fit_predict_proba(p.get_best_pipeline(), X_train, y_train, X_test).astype(np.float64)

@@ -10,28 +10,28 @@
 
 unsigned int Solution::solution_id_count=0;
 
-Solution::Solution(Grammar *grammar){
-    this->root=(Solution::Node*)malloc(sizeof(Solution::Node));
-    this->root->nonterminal=grammar->get_start_grammar();
-    this->root->children_count=0;
-    this->root->children=NULL;
+Solution::Solution(Grammar *grammar) {
+    this->root = (Solution::Node*)malloc(sizeof(Solution::Node));
+    this->root->nonterminal = grammar->get_start_grammar();
+    this->root->children_count = 0;
+    this->root->children = NULL;
 
-    this->id=Solution::solution_id_count++;
+    this->id = Solution::solution_id_count++;
 
-    this->root->keyword=(char*)malloc(sizeof(char)*(strlen(grammar->get_start_grammar()->get_nonterminal_keyword())+1));
-    strcpy(this->root->keyword,grammar->get_start_grammar()->get_nonterminal_keyword());
+    this->root->keyword = (char*)malloc(sizeof(char)*(strlen(grammar->get_start_grammar()->get_nonterminal_keyword()) + 1));
+    strcpy(this->root->keyword, grammar->get_start_grammar()->get_nonterminal_keyword());
 
-    this->string_code=NULL;
+    this->string_code = NULL;
 }
 
-Solution::~Solution(){
+Solution::~Solution() {
     this->root->free_subtree();
     free(this->root->keyword);
     free(this->root);
     free(this->string_code);
 }
 
-void Solution::init_solution(){
+void Solution::init_solution() {
     this->root->expand_node_rand(0);
     this->interpret_derivation_tree();
 }
@@ -62,29 +62,33 @@ void Solution::Node::set_value(Grammar::Term *term){
     strcpy(this->keyword,term->get_keyword());
 }
 
-int Solution::Node::expand_node_rand(int deep){
-    if(!this->nonterminal) return 0;
-    if(deep>MAX_DEEP){
-        std::cout<<"Max deep reached.\n";
+int Solution::Node::expand_node_rand(int deep) {
+    if(!this->nonterminal) {
+        return 0;
+    }
+    if(deep > MAX_DEEP){
+        std::cout << "Max deep reached.\n";
         return 0;
     }
 
-    int expression_choice=randInt(0,this->nonterminal->get_expression_count()-1);
-    Grammar::Expression* expression_aux=this->nonterminal->get_expression(expression_choice);
+    int expression_choice = randInt(0, this->nonterminal->get_expression_count()-1);
+    Grammar::Expression* expression_aux = this->nonterminal->get_expression(expression_choice);
 
-    for(int i=0;i<expression_aux->get_term_count();i++)
+    for(int i = 0; i < expression_aux->get_term_count(); i++) {
         this->new_children(expression_aux->get_term(i));
+    }
 
-    for(int i=0;i<this->children_count;i++){
-        if(this->children[i].nonterminal)
+    for(int i = 0; i < this->children_count; i++) {
+        if(this->children[i].nonterminal) {
             this->children[i].expand_node_rand(deep+1);
+        }
     }
 
     return 1;
 }
 
 /*Mutation procedure. VERIFY if a mutation equivalent to the original subtree is valid.*/
-void Solution::mutation(Solution* sol){
+void Solution::mutation(Solution* sol) {
     double sum_wheel=sol->sum_probability(NULL);
     double choice_value=randDouble(0,sum_wheel);
 

@@ -65,8 +65,9 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
 //    PySys_WriteStdout("LOADING DATASET\n");
 
-    if(!this->interface->load_dataset(data_X, data_y, subsample_data))
+    if(!this->interface->load_dataset(data_X, data_y, subsample_data)) {
         return NULL;
+    }
 
 //    PySys_WriteStdout("LOADED DATASET\n");
 
@@ -109,12 +110,12 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 //    gettimeofday(&start, NULL);
 
     PySys_WriteStdout("GENERATION %d\n",0);
-    this->population=new Population(this->interface, this->size_pop_components, this->elite_portion_components, this->mut_rate_components, this->cross_rate_components, n_classes);
-    this->population_ensemble=new PopulationEnsemble(this->size_pop_ensemble,this->size_pop_components,this->elite_portion_ensemble,this->mut_rate_ensemble,this->cross_rate_ensemble, n_classes);
+    this->population = new Population(this->interface, this->size_pop_components, this->elite_portion_components, this->mut_rate_components, this->cross_rate_components, n_classes);
+    this->population_ensemble = new PopulationEnsemble(this->size_pop_ensemble,this->size_pop_components,this->elite_portion_ensemble,this->mut_rate_ensemble,this->cross_rate_ensemble, n_classes);
 
     this->population_ensemble->init_population_random();
 
-    int return_flag=this->population->init_population(this->grammar, this->population_ensemble);
+    int return_flag = this->population->init_population(this->grammar, this->population_ensemble);
     if(!return_flag) {
         return NULL;
     }
