@@ -31,7 +31,6 @@ def log_warning_output(message, category, filename, lineno, file=None, line=None
 warnings.showwarning = log_warning_output
 
 
-# TODO must be scorerhandler the handler for models!
 class ScorerHandler(object):
     def __init__(self, y_pred, y_scores):
         """
@@ -166,9 +165,6 @@ def evaluate_population(pipelines_population, X, y, scoring, n_jobs, timeout_pip
 
         return None, None, -1
 
-# TODO here!!! fit and predict are here!!!!!
-# TODO here!!! fit and predict are here!!!!!
-# TODO here!!! fit and predict are here!!!!!
 def evaluate_solution(
         pipeline_str, X_train: np.ndarray, X_test: np.ndarray, y_train: np.ndarray, y_test: np.ndarray, verbose=1
 ):
@@ -185,23 +181,21 @@ def evaluate_solution(
 
     predict_data = []
     try:
-        predict_data = pipeline.predict(X_test)
         if getattr(pipeline, 'predict_proba', None) is not None:
             predict_scores = pipeline.predict_proba(X_test)
+            predict_data = np.argmax(predict_scores, axis=1).astype(np.int64)
         else:
+            predict_data = pipeline.predict(X_test).astype(np.int64)
             n_classes = len(Counter(y_train))
             predict_scores = np.zeros((len(X_test), n_classes), dtype=np.float64)
             indices = np.arange(len(X_test))
-            predict_scores[indices, predict_data.astype(np.int32)] = 1.
+            predict_scores[indices, predict_data.astype(np.int64)] = 1.
 
     except Exception as e:
         if verbose > 0:
             print("Pipeline predict error: " + str(pipeline))
             print(str(e))
         return None
-
-    print('predict scores:')
-    print(predict_scores)  # TODO remove me!
 
     return predict_data, predict_scores
 

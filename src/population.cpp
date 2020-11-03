@@ -65,7 +65,7 @@ int Population::init_population(Grammar* grammar, PopulationEnsemble *population
     std::swap(this->score_population,this->score_next_gen);
     std::swap(this->metric_population,this->metric_next_gen);
     for(int i = 0; i < this->population_size; i++) {
-        this->population_rank[i]=i;
+        this->population_rank[i] = i;
     }
 
     if(!this->evaluate_ensemble_population(population_ensemble)) {
@@ -352,7 +352,6 @@ int Population::evaluate_ensemble_next_gen(PopulationEnsemble *population_ensemb
     return 1;
 }
 
-// TODO work on this method first
 int Population::evaluate_ensemble_population(PopulationEnsemble *population_ensemble) {
     int flag_valid_individual=0;
 //    double min_predict,max_predict;
@@ -410,13 +409,6 @@ int Population::evaluate_ensemble_population(PopulationEnsemble *population_ense
                 }
             }
 
-            // TODO print raw scores
-            for(int j = 0; j < this->n_classes; j++) {
-                std::cout << scores_ensemble[i * this->n_classes + j] << " ";
-            }
-            std::cout << std::endl;
-            // TODO print raw scores
-
             elected_class = 0;
             for(int j = 0; j < n_classes; j++) {
                   scores_ensemble[i * this->n_classes + j] /= local_counter;  // normalizes scores
@@ -446,19 +438,6 @@ int Population::evaluate_ensemble_population(PopulationEnsemble *population_ense
         PyObject *predict_numpy = PyArray_SimpleNewFromData(1, numpy_dimension, NPY_DOUBLE, predict_ensemble);
         PyObject *scores_numpy = PyArray_SimpleNewFromData(2, scores_dimension, NPY_DOUBLE, scores_ensemble);
 
-        // TODO printing scores of ensemble
-//        std::cout << "predict size: " << this->predict_size << std::endl;
-//        std::cout << "n_classes: " << this->n_classes << std::endl;
-//        std::cout << "classifiers in ensemble: " << local_counter << std::endl;
-//
-//        for(int i = 0; i < this->predict_size; i++) {
-//            for(int k = 0; k < this->n_classes; k++) {
-//                std::cout << scores_ensemble[i * this->n_classes + k] << " ";
-//            }
-//            std::cout << std::endl;
-//        }
-//        std::cout << std::endl;
-        // TODO printing scores of ensemble
         double return_score;
 
         // calls the assigned fitness function
@@ -605,7 +584,7 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
         if(!this->evaluate_ensemble_next_gen(population_ensemble,map_next_gen, i))
             return NULL;
 
-        if(this->get_score_next_gen(i)<this->get_score_next_gen(max_sim_index)){
+        if(this->get_score_next_gen(i) < this->get_score_next_gen(max_sim_index)) {
             delete this->next_gen[i];
             this->next_gen[i]=NULL;
             delete this->population[i];
@@ -614,8 +593,9 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
             this->set_score_population(i,this->get_score_next_gen(max_sim_index));
             this->set_metric_population(i,this->get_metric_next_gen(max_sim_index));
 
-            for(int j=0;j<this->predict_size;j++)
-                 this->set_predict_population(j,i,this->get_predict_next_gen(j,max_sim_index));   
+            for(int j = 0; j < this->predict_size; j++) {
+                 this->set_predict_population(j,i,this->get_predict_next_gen(j,max_sim_index));
+             }
 
             map_next_gen[i]=max_sim_index;
         }else{
@@ -626,8 +606,9 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
             this->set_score_population(i,this->get_score_next_gen(i));
             this->set_metric_population(i,this->get_metric_next_gen(i));
 
-            for(int j=0;j<this->predict_size;j++)
-                 this->set_predict_population(j,i,this->get_predict_next_gen(j,i));   
+            for(int j = 0; j < this->predict_size; j++) {
+                 this->set_predict_population(j,i, this->get_predict_next_gen(j,i));
+            }
 
             map_next_gen[i]=i;
 
@@ -867,11 +848,11 @@ double Population::get_predict_population(int i, int j) { // (instance_id, solut
     return this->predict_population[i * this->population_size + j];
 }
 
-void Population::set_predict_population(int i, int j, double predict_value){ //(sample_id, solution_id)
+void Population::set_predict_population(int i, int j, double predict_value){ // (instance_id, solution_id)
     if(i<0 || i>=this->predict_size || j<0 || j>=this->population_size)
         throw "Invalid index in predict_population";
 
-    this->predict_population[i*this->population_size+j]=predict_value;
+    this->predict_population[i * this->population_size + j] = predict_value;
 }
 
 

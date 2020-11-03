@@ -13,14 +13,15 @@ def evaluate_pipeline(pipeline, X_train, y_train, X_test):
     pipeline.fit(X_train, y_train)
     predict_data = []
 
-    predict_data = pipeline.predict(X_test)
     if getattr(pipeline, 'predict_proba', None) is not None:
         predict_scores = pipeline.predict_proba(X_test)
+        predict_data = np.argmax(predict_scores, axis=1).astype(np.int64)
     else:
+        predict_data = pipeline.predict(X_test).astype(np.int64)
         n_classes = len(Counter(y_train))
         predict_scores = np.zeros((len(X_test), n_classes), dtype=np.float64)
         indices = np.arange(len(X_test))
-        predict_scores[indices, predict_data.astype(np.int32)] = 1.
+        predict_scores[indices, predict_data.astype(np.int64)] = 1.
 
     return predict_data, predict_scores
 

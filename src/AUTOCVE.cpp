@@ -125,7 +125,7 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
     time(&end);
 
-    //evolution_log << "Generation;ID_solution;Pipeline;Score;Metric\n";  // TODO former value
+    //evolution_log << "Generation;ID_solution;Pipeline;Score;Metric\n";  // former value
     evolution_log <<
         "\"gen\",\"lap time (seconds)\"," <<
         "\"nevals (clfs)\",\"min fit (clfs)\",\"median fit (clfs)\",\"max fit (clfs)\",\"discarded (clfs)\"," <<

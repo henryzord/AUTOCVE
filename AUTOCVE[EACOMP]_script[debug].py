@@ -140,8 +140,8 @@ def execute_exp(
         crossover_rate_ensemble=crossover_rate_ensemble,
         grammar='grammarPBIL',  # TODO reactivate
         # grammar='grammarTPOT',
-        max_pipeline_time_secs=60,  # TODO review
-        max_evolution_time_secs=time_per_task,  # TODO review
+        max_pipeline_time_secs=60,
+        max_evolution_time_secs=time_per_task,
         n_jobs=n_jobs,
         random_state=seed,
         scoring=unweighted_area_under_roc,  # function was reviewed and is operating as intended
