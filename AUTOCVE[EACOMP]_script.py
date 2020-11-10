@@ -134,7 +134,10 @@ def execute_exp(
     some_exception = None
     try:
         this_experiment_path = os.path.join(results_path, dataset_name, 'sample_%02.d_fold_%02.d' % (n_sample, n_fold))
-        os.mkdir(this_experiment_path)
+        try:
+            os.mkdir(this_experiment_path)
+        except FileExistsError:
+            pass
         os.chdir(this_experiment_path)
 
         p = AUTOCVEClassifier(
@@ -322,7 +325,7 @@ def main():
                 n_sample=n_sample,
                 n_fold=n_fold,
                 datasets_path=some_args.datasets_path,
-                dataset_name=datasets_names[0],
+                dataset_name=id_exp,
                 seed=np.random.randint(np.iinfo(np.int32).max),
                 n_generations=some_args.n_generations,
                 n_jobs=1,

@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +94,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py" />
-      <option name="PARAMETERS" value="--metadata-path C:\Users\henry\Projects\trash\autocve --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --datasets-names iris --n-generations 100 --pool-size 10 --n-ensembles 15 --time-per-task 300 --heap-size 3G --n-samples 1 --n-jobs 5" />
+      <option name="PARAMETERS" value="--metadata-path C:\Users\henry\Projects\trash\autocve --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --datasets-names iris --n-generations 100 --pool-size 10 --n-ensembles 15 --time-per-task 300 --heap-size 3G --n-samples 1 --n-jobs 2" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -259,6 +260,7 @@
       <workItem from="1604365883272" duration="1239000" />
       <workItem from="1604404212048" duration="11905000" />
       <workItem from="1605026997432" duration="637000" />
+      <workItem from="1605034052929" duration="284000" />
     </task>
     <servers />
   </component>
@@ -266,10 +268,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605028770507">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605034094203">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605028770507" />
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605034094203" />
     <state x="740" y="225" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1604271033241">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -290,38 +292,38 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="739" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1604411455589" />
-    <state width="938" height="214" key="GridCell.Tab.0.bottom" timestamp="1604416415401">
+    <state width="868" height="233" key="GridCell.Tab.0.bottom" timestamp="1605034118494">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="214" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604416415401" />
-    <state width="938" height="214" key="GridCell.Tab.0.center" timestamp="1604416415401">
+    <state width="868" height="233" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605034118494" />
+    <state width="868" height="233" key="GridCell.Tab.0.center" timestamp="1605034118494">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="214" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604416415401" />
-    <state width="938" height="214" key="GridCell.Tab.0.left" timestamp="1604416415400">
+    <state width="868" height="233" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605034118494" />
+    <state width="868" height="233" key="GridCell.Tab.0.left" timestamp="1605034118494">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="214" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604416415400" />
-    <state width="938" height="214" key="GridCell.Tab.0.right" timestamp="1604416415401">
+    <state width="868" height="233" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605034118494" />
+    <state width="868" height="233" key="GridCell.Tab.0.right" timestamp="1605034118494">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="214" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604416415401" />
-    <state width="868" height="233" key="GridCell.Tab.1.bottom" timestamp="1604410645047">
+    <state width="868" height="233" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605034118494" />
+    <state width="868" height="233" key="GridCell.Tab.1.bottom" timestamp="1605034124448">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="868" height="233" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1604410645047" />
-    <state width="868" height="233" key="GridCell.Tab.1.center" timestamp="1604410645047">
+    <state width="868" height="233" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605034124448" />
+    <state width="868" height="233" key="GridCell.Tab.1.center" timestamp="1605034124448">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="868" height="233" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1604410645047" />
-    <state width="868" height="233" key="GridCell.Tab.1.left" timestamp="1604410645047">
+    <state width="868" height="233" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605034124448" />
+    <state width="868" height="233" key="GridCell.Tab.1.left" timestamp="1605034124448">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="868" height="233" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1604410645047" />
-    <state width="868" height="233" key="GridCell.Tab.1.right" timestamp="1604410645047">
+    <state width="868" height="233" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605034124448" />
+    <state width="868" height="233" key="GridCell.Tab.1.right" timestamp="1605034124448">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="868" height="233" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1604410645047" />
+    <state width="868" height="233" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605034124448" />
     <state x="461" y="162" key="SettingsEditor" timestamp="1604006210112">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -362,12 +364,17 @@
           <line>17</line>
           <option name="timeStamp" value="142" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/AUTOCVE[EACOMP]_script.py</url>
+          <line>137</line>
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script_debug_.coverage" NAME="AUTOCVE[EACOMP]_script[debug] Coverage Results" MODIFIED="1604411300292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1604416415386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1605034118042" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$classifiers_test_script.coverage" NAME="classifiers_test_script Coverage Results" MODIFIED="1604410573315" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
