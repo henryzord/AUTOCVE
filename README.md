@@ -48,8 +48,13 @@ Studio with Python tools on Windows)
 SimpleCart is not provided with default Weka. On Weka, simply installing it as an additional package makes it available 
 in the GUI; however the wrapper still won't see it.
 
-i. On Ubuntu: `cp installation/weka.jar <folder_to_anaconda_installation>/anaconda3/envs/autocve/lib/python3.7/site-packages/weka/lib/` 
-ii. On Windows: `copy installation\weka.jar <folder_to_anaconda_installation>\Anaconda3\envs\autocve\Lib\site-packages\weka\lib\`
+  * On Ubuntu: 
+    
+    ```cp installation/weka.jar <folder_to_anaconda_installation>/anaconda3/envs/autocve/lib/python3.7/site-packages/weka/lib/```
+    
+  * On Windows: 
+    
+    ```copy installation\weka.jar <folder_to_anaconda_installation>\Anaconda3\envs\autocve\Lib\site-packages\weka\lib\```
 
 7. Install AUTOCVE package: 
 ```bash
