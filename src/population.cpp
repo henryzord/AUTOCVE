@@ -1,6 +1,8 @@
 #include "population.h"
 #include "utility.h"
 #include <stdlib.h>
+#include <sstream>
+#include <string>
 #include <math.h>
 
 #define INVALID_INDIVIDUAL_SCORE -1
@@ -761,14 +763,18 @@ int Population::compute_similarity_next_gen(){
     return 1;
 }
 
-void Population::write_population(int generation, std::ofstream *evolution_log) {
+std::string Population::write_population(int generation, std::ofstream *evolution_log) {
 
     double min_fit, max_fit, median;
     int count_valid, n_discarded;
 
+    std::stringstream terminal;
+
     get_min_median_max_double(&min_fit, &median, &max_fit, &count_valid, &n_discarded, this->metric_population, this->population_size, INVALID_INDIVIDUAL_SCORE);
 
     (*evolution_log) << count_valid << "," << min_fit << "," << median << "," << max_fit << "," << n_discarded << ",";
+    terminal << count_valid << "," << min_fit << "," << median << "," << max_fit << "," << n_discarded << ",";
+    return terminal.str();
 
   // old code
   // "Generation;ID_solution;Pipeline;Score;Metric\n"

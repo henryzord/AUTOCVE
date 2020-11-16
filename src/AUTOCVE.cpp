@@ -7,13 +7,20 @@
 #include "utility.h"
 #include <stdlib.h>  
 #include <fstream>
+#include <sstream>  // stringstream
 #include <string.h>
 #include <time.h>
 
 #define BUFFER_SIZE 10000
 
 
-AUTOCVEClass::AUTOCVEClass(int seed, int n_jobs, PyObject* timeout_pip_sec, int timeout_evolution_process_sec, char *grammar_file, int generations, int size_pop_components, double elite_portion_components, double mut_rate_components, double cross_rate_components, int size_pop_ensemble, double elite_portion_ensemble, double mut_rate_ensemble, double cross_rate_ensemble,  PyObject *scoring, int cv_folds, int verbose){
+AUTOCVEClass::AUTOCVEClass(
+    int seed, int n_jobs, PyObject* timeout_pip_sec, int timeout_evolution_process_sec, char *grammar_file,
+    int generations, int size_pop_components, double elite_portion_components, double mut_rate_components,
+    double cross_rate_components, int size_pop_ensemble, double elite_portion_ensemble, double mut_rate_ensemble,
+    double cross_rate_ensemble,  PyObject *scoring, int cv_folds, int verbose
+) {
+
     this->seed=seed;
     this->n_jobs=n_jobs;
     this->timeout_pip_sec=timeout_pip_sec;
@@ -109,7 +116,6 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 //    struct timeval start, end;
 //    gettimeofday(&start, NULL);
 
-    PySys_WriteStdout("GENERATION %d\n",0);
     this->population = new Population(this->interface, this->size_pop_components, this->elite_portion_components, this->mut_rate_components, this->cross_rate_components, n_classes);
     this->population_ensemble = new PopulationEnsemble(this->size_pop_ensemble,this->size_pop_components,this->elite_portion_ensemble,this->mut_rate_ensemble,this->cross_rate_ensemble, n_classes);
 
@@ -125,17 +131,30 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
     time(&end);
 
-    //evolution_log << "Generation;ID_solution;Pipeline;Score;Metric\n";  // former value
-    evolution_log <<
-        "\"gen\",\"lap time (seconds)\"," <<
-        "\"nevals (clfs)\",\"min fit (clfs)\",\"median fit (clfs)\",\"max fit (clfs)\",\"discarded (clfs)\"," <<
-        "\"nevals  (ens)\",\"min fit (ens)\",\"median fit (ens)\",\"max fit (ens)\",\"discarded  (ens)\"," <<
-        "\"min size (ens)\",\"median size (ens)\",\"max size (ens)\"" << std::endl;
+    std::string header = "gen,lap time (seconds),";
+    std::string pop_str = "nevals (clfs),min (clfs),median (clfs),max (clfs),discarded (clfs),";
+    std::string ens_size_str = "min size (ens),median size (ens),max size (ens),";
+    std::string ens_str = "nevals (ens),min (ens),median (ens),max (ens),discarded (ens)\n";
+
+    PySys_WriteStdout(header.c_str());
+    PySys_WriteStdout(ens_str.c_str());
+    evolution_log << header << pop_str << ens_size_str << ens_str;
+
+    std::stringstream firstGenOutput;
+
+    char buffer[8];  // how long is the string to be printed at the terminal
 
     evolution_log << 0 << "," << (int)difftime(end, start) << ",";
+    sprintf(buffer, "%03d,             %#5d,", 0, (int)difftime(end, start));
+    firstGenOutput << buffer;
+
+    // TODO format!
+    // "gen,lap time (seconds),nevals (ens),min (ens),median (ens),max (ens),discarded (ens)"
+
 
     this->population->write_population(0, &evolution_log);
-    this->population_ensemble->write_population(0, &evolution_log);
+    firstGenOutput << this->population_ensemble->write_population(0, &evolution_log);
+    PySys_WriteStdout(firstGenOutput.str().c_str());
 
     // TODO uncomment
 //    matrix_sim_log << "Generation;ID_solution;ID_solution;Similarity\n";
@@ -148,9 +167,8 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
     double generation_time = 0;
     for(int i = 0; i < this->generations; i++) {
+        std::stringstream thisGenOutput;
 //        PySys_WriteStdout("GENERATION %d (%d secs)\n",i+1,(int)(end.tv_sec-start.tv_sec));
-
-        PySys_WriteStdout("GENERATION %d (%d secs)\n", i+1, (int)difftime(end, start));
 
         if(!(control_flag = this->population->next_generation_selection_similarity(this->population_ensemble))) {
             return NULL;
@@ -180,9 +198,15 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
         evolution_log << i + 1 << "," << generation_time << ",";
 
+        sprintf(buffer, "%03d,             %#5d,", i + 1, generation_time);
+        thisGenOutput << buffer;
+
         this->population->write_population(i+1,&evolution_log);
-        this->population_ensemble->write_population(i+1,&evolution_log);
+        thisGenOutput << this->population_ensemble->write_population(i+1,&evolution_log);
 //        this->population->write_similarity_matrix(i+1,&matrix_sim_log);
+
+        PySys_WriteStdout(thisGenOutput.str().c_str());
+//        PySys_WriteStdout("GENERATION %d (%d secs)\n", i+1, (int)difftime(end, start));
 
         //KeyboardException or timeout verified
         if(control_flag == -1) {

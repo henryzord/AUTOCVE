@@ -4,6 +4,7 @@
 #include <Python.h>
 #include <stdio.h>
 #include <fstream>
+#include <string>
 #include "python_interface.h"
 
 class Population;
@@ -33,7 +34,7 @@ class PopulationEnsemble{
     private: int *copy(int *solution);
     private: double similarity(int *individual_1, int *individual_2);
     private: void update_length_population();
-    public: void write_population(int generation, std::ofstream *evolution_log);
+    public: std::string write_population(int generation, std::ofstream *evolution_log);
     private: void quick_sort_population();
 
     public: int get_population_size();

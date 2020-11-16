@@ -130,9 +130,10 @@ def execute_exp(
         mutation_rate_pool, crossover_rate_pool, n_ensembles, mutation_rate_ensemble, crossover_rate_ensemble,
         n_jobs, results_path, max_heap_size='3G', seed=None, subsample=1):
 
-    jvm.start(max_heap_size=max_heap_size)
     some_exception = None
     try:
+        jvm.start(max_heap_size=max_heap_size)
+
         this_experiment_path = os.path.join(results_path, dataset_name, 'sample_%02.d_fold_%02.d' % (n_sample, n_fold))
         try:
             os.mkdir(this_experiment_path)
@@ -148,14 +149,15 @@ def execute_exp(
             population_size_ensemble=n_ensembles,
             mutation_rate_ensemble=mutation_rate_ensemble,
             crossover_rate_ensemble=crossover_rate_ensemble,
-            grammar='grammarPBIL',  # grammar to be used with interpretable models
-            # grammar='grammarTPOT',
+            # grammar='grammarPBIL',  # grammar to be used with interpretable models
+            grammar='grammarTPOT',  # TODO deactivate
             max_pipeline_time_secs=60,
             max_evolution_time_secs=time_per_task,
             n_jobs=n_jobs,
             random_state=seed,
-            scoring=unweighted_area_under_roc,  # function was reviewed and is operating as intended
-            verbose=1
+            # scoring=unweighted_area_under_roc,  # function was reviewed and is operating as intended
+            scoring='balanced_accuracy',  # TODO deactivate
+            verbose=0
         )
 
         X_train, X_test, y_train, y_test, df_types = parse_open_ml(
@@ -177,9 +179,8 @@ def execute_exp(
         some_exception = e
     finally:
         jvm.stop()
-
-    if some_exception is not None:
-        raise some_exception
+        if some_exception is not None:
+            raise some_exception
 
 
 def __get_running_processes__(jobs, datasets_status, results_path, total_experiments, total_folds):
@@ -204,7 +205,7 @@ def __get_running_processes__(jobs, datasets_status, results_path, total_experim
     return jobs, datasets_status
 
 
-def main():
+def parse_args():
     parser = argparse.ArgumentParser(
         description='Script for running Helio and Celio algorithm, with hyper-parameters from EACOMP.'
     )
@@ -289,28 +290,32 @@ def main():
     )
 
     some_args = parser.parse_args()
+    assert 0 < some_args.n_samples <= 20, ValueError(
+        "The number of trials is expected to be an integer with value between 1 and 20.")
+    return some_args
 
-    if 0 < some_args.n_samples <= 20:
-        n_samples = some_args.n_samples
-    else:
-        raise Exception("The number of trials is expected to be an integer with value between 1 and 20.")
 
+def main():
+    mp.set_start_method('spawn')
+    # context = mp.get_context('spawn')
+
+    some_args = parse_args()
+    results_path = create_metadata_path(args=some_args)
+
+    n_samples = some_args.n_samples
     datasets_names = some_args.datasets_names.split(',')
 
-    jvm.start()
-    results_path = create_metadata_path(args=some_args)
     os.chdir(results_path)
-
-    mp.set_start_method('spawn')
-    context = mp.get_context('spawn')
 
     datasets_status = {k: False for k in datasets_names}
 
     queue_experiments = it.product(datasets_names, list(range(1, n_samples + 1)), list(range(1, 10 + 1)))
 
+    # TODO starts process before others in queue finish!
+
     jobs = []
-    for id_exp, n_sample, n_fold in queue_experiments:
-        print("Dataset %s, trial %d, fold %d" % (id_exp, n_sample, n_fold))
+    for dataset_name, n_sample, n_fold in queue_experiments:
+        print("Dataset %s, n_sample %d, n_fold %d" % (dataset_name, n_sample, n_fold))
 
         if len(jobs) >= some_args.n_jobs:
             jobs, datasets_status = __get_running_processes__(
@@ -325,7 +330,7 @@ def main():
                 n_sample=n_sample,
                 n_fold=n_fold,
                 datasets_path=some_args.datasets_path,
-                dataset_name=id_exp,
+                dataset_name=dataset_name,
                 seed=np.random.randint(np.iinfo(np.int32).max),
                 n_generations=some_args.n_generations,
                 n_jobs=1,
@@ -354,8 +359,6 @@ def main():
         results_path=results_path,
         total_experiments=n_samples, total_folds=10,
     )
-
-    jvm.stop()
 
 
 if __name__ == '__main__':

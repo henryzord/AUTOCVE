@@ -3,7 +3,7 @@
 #define BUFFER_SIZE 10000
 
 
-PythonInterface::PythonInterface(int n_jobs, PyObject* timeout_pip_sec, PyObject *scoring, int cv_folds, int verbose){
+PythonInterface::PythonInterface(int n_jobs, PyObject* timeout_pip_sec, PyObject *scoring, int cv_folds, int verbose) {
     this->n_jobs=n_jobs, this->timeout_pip_sec=timeout_pip_sec, this->cv_folds=cv_folds, this->verbose=verbose;
     this->evaluate_function_py=PythonInterface::load_python_function("evaluate","evaluate_population");
     this->evaluate_predict_vector_py = PythonInterface::load_python_function("evaluate","evaluate_predict_vector");
@@ -13,7 +13,8 @@ PythonInterface::PythonInterface(int n_jobs, PyObject* timeout_pip_sec, PyObject
     this->unload_dataset_py=PythonInterface::load_python_function("dataset_handler","unload_dataset");
     this->load_scoring_py=PythonInterface::load_python_function("scoring_handler","load_scoring");
 
-    if(!this->evaluate_function_py || !this->evaluate_predict_vector_py || !this->make_pipeline_py || !this->make_voting_ensemble_py || !this->load_dataset_py || !this->unload_dataset_py || !this->load_scoring_py){
+    if(!this->evaluate_function_py || !this->evaluate_predict_vector_py || !this->make_pipeline_py ||
+        !this->make_voting_ensemble_py || !this->load_dataset_py || !this->unload_dataset_py || !this->load_scoring_py) {
         throw "Problem while load python interface";
     }
 

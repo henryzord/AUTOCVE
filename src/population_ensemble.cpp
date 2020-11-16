@@ -2,6 +2,8 @@
 #include "utility.h"
 #include "population.h"
 #include <iostream>
+#include <string>
+#include <sstream>
 #define K_TOURNAMENT 2
 #define INVALID_ENSEMBLE_SCORE -1
 
@@ -255,25 +257,31 @@ void PopulationEnsemble::update_length_population(){
     }
 }
 
-void PopulationEnsemble::write_population(int generation, std::ofstream *evolution_log){
+std::string PopulationEnsemble::write_population(int generation, std::ofstream *evolution_log) {
 
-    double min_fit, max_fit, median_fit;
     int count_valid, n_discarded;
+    int min_size, max_size, median_size;
+    double min_fit, max_fit, median_fit;
+
+    // maximum size of this segment of code that will be written to the screen;
+    // the header of columns is 61 characters long + \0 character
+    char buffer[64];
+
+    get_min_median_max_int(&min_size, &median_size, &max_size, &count_valid, &n_discarded, this->length_population, this->population_size, INVALID_ENSEMBLE_SCORE);
+    (*evolution_log) << "," << min_size << "," << median_size << "," << max_size << std::endl;
+
+    std::stringstream terminal;
 
     get_min_median_max_double(&min_fit, &median_fit, &max_fit, &count_valid, &n_discarded, this->score_population, this->population_size, INVALID_ENSEMBLE_SCORE);
     (*evolution_log) << count_valid << "," << min_fit << "," << median_fit << "," << max_fit << "," << n_discarded;
 
-    int min_size, max_size, median_size;
-    get_min_median_max_int(&min_size, &median_size, &max_size, &count_valid, &n_discarded, this->length_population, this->population_size, INVALID_ENSEMBLE_SCORE);
-    (*evolution_log) << "," << min_size << "," << median_size << "," << max_size << std::endl;
-
-
-
-// old line
-// Generation;Length;Score
-//    for(int i = 0; i < this->population_size; i++) {
-//        (*evolution_log)<<generation<<";"<<this->length_population[i]<<";"<<this->score_population[i]<<"\n";
-//    }
+    sprintf(
+        buffer,
+        "        %#4d,   %01.4f,      %01.4f,   %01.4f,           %#4d\n",
+        count_valid, min_fit, median_fit, max_fit, n_discarded
+    );
+    terminal << buffer;
+    return terminal.str();
 }
 
 int PopulationEnsemble::get_population_size(){

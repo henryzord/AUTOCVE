@@ -7,30 +7,42 @@ import numpy as np
 import pandas as pd
 import psutil as psutil
 from scipy.io import arff
+from weka.core import jvm
 
 
 def create_metadata_path(args):
-    now = dt.now()
+    should_stop = False
+    some_exception = None
 
-    str_time = now.strftime('%Y-%m-%d-%H-%M-%S')
+    try:
+        jvm.start()
+        now = dt.now()
 
-    joined = os.getcwd() if not os.path.isabs(args.metadata_path) else ''
-    to_process = [args.metadata_path, str_time]
+        str_time = now.strftime('%Y-%m-%d-%H-%M-%S')
 
-    # creates metadata path, if nonexistent, and experiment path
-    for path in to_process:
-        joined = os.path.join(joined, path)
-        if not os.path.exists(joined):
-            os.mkdir(joined)
+        joined = os.getcwd() if not os.path.isabs(args.metadata_path) else ''
+        to_process = [args.metadata_path, str_time]
 
-    for dataset_name in args.datasets_names.split(','):
-        os.mkdir(os.path.join(joined, dataset_name))
-        os.mkdir(os.path.join(joined, dataset_name, 'overall'))
+        # creates metadata path, if nonexistent, and experiment path
+        for path in to_process:
+            joined = os.path.join(joined, path)
+            if not os.path.exists(joined):
+                os.mkdir(joined)
 
-    with open(os.path.join(joined, 'parameters.json'), 'w') as f:
-        json.dump({k: getattr(args, k) for k in args.__dict__}, f, indent=2)
+        for dataset_name in args.datasets_names.split(','):
+            os.mkdir(os.path.join(joined, dataset_name))
+            os.mkdir(os.path.join(joined, dataset_name, 'overall'))
 
-    return joined
+        with open(os.path.join(joined, 'parameters.json'), 'w') as f:
+            json.dump({k: getattr(args, k) for k in args.__dict__}, f, indent=2)
+
+    except Exception as e:
+        some_exception = e
+    finally:
+        jvm.stop()
+        if should_stop:
+            raise some_exception
+        return joined
 
 
 def path_to_dataframe(dataset_path):

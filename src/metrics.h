@@ -31,6 +31,8 @@ roc_point_t *getCurve(PyObject *y_score, int *y_true_int, int classIndex, int *c
     npy_intp *y_score_dims = PyArray_DIMS((PyArrayObject*)y_score);
     int n_instances = (int)y_score_dims[0], n_classes = (int)y_score_dims[1];
 
+    Py_XDECREF(y_score_dims);  // TODO added
+
     if ((n_instances == 0) || (n_classes <= classIndex)) {
       return NULL;
     }
