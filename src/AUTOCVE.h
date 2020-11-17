@@ -13,7 +13,7 @@
 #include "grammar.h"
 #include "python_interface.h"
 
-class AUTOCVEClass{
+class AUTOCVEClass {
     public: Population *population;
     PopulationEnsemble *population_ensemble;
     Grammar *grammar;

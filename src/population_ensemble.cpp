@@ -265,19 +265,19 @@ std::string PopulationEnsemble::write_population(int generation, std::ofstream *
 
     // maximum size of this segment of code that will be written to the screen;
     // the header of columns is 61 characters long + \0 character
-    char buffer[64];
+    char buffer[128];
 
     get_min_median_max_int(&min_size, &median_size, &max_size, &count_valid, &n_discarded, this->length_population, this->population_size, INVALID_ENSEMBLE_SCORE);
-    (*evolution_log) << "," << min_size << "," << median_size << "," << max_size << std::endl;
+    (*evolution_log) << min_size << "," << median_size << "," << max_size << ",";
 
     std::stringstream terminal;
 
     get_min_median_max_double(&min_fit, &median_fit, &max_fit, &count_valid, &n_discarded, this->score_population, this->population_size, INVALID_ENSEMBLE_SCORE);
-    (*evolution_log) << count_valid << "," << min_fit << "," << median_fit << "," << max_fit << "," << n_discarded;
+    (*evolution_log) << count_valid << "," << min_fit << "," << median_fit << "," << max_fit << "," << n_discarded << std::endl;
 
     sprintf(
         buffer,
-        "        %#4d,   %01.4f,      %01.4f,   %01.4f,           %#4d\n",
+        "        %#4d    %01.4f       %01.4f    %01.4f            %#4d\n",
         count_valid, min_fit, median_fit, max_fit, n_discarded
     );
     terminal << buffer;

@@ -1,11 +1,13 @@
 import argparse
-import multiprocessing as mp
-import os
-import time
-
-from functools import reduce
 import itertools as it
+import logging
+import os
+import sys
+from functools import reduce, wraps
 
+import multiprocessing as mp
+
+import javabridge
 import numpy as np
 import pandas as pd
 from AUTOCVE.AUTOCVE import AUTOCVEClassifier
@@ -14,11 +16,10 @@ from sklearn.pipeline import Pipeline
 from weka.core import jvm
 from weka.core.converters import Loader
 from weka.core.dataset import Instances
-from AUTOCVE.util.evaluate import unweighted_area_under_roc
 
 from pbil.evaluations import evaluate_on_test, EDAEvaluation, collapse_metrics
 from pbil.utils import parse_open_ml, create_metadata_path
-import javabridge
+from util.evaluate import unweighted_area_under_roc
 
 GRACE_PERIOD = 0  # 60
 
@@ -125,21 +126,59 @@ def fit_predict_proba(estimator: Pipeline, X: np.ndarray, y: np.ndarray, X_test:
         return None
 
 
-def execute_exp(
+def init_logger(path):
+    # create logger with 'application'
+    logger = logging.getLogger('application')
+    logger.setLevel(logging.DEBUG)
+    # create file handler which logs even debug messages
+    fh = logging.FileHandler(os.path.join(path, 'application.log'))
+    fh.setLevel(logging.DEBUG)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    # add the handlers to the logger
+    logger.addHandler(fh)
+
+    return logger
+
+
+def process_wrapper(func):
+    @wraps(func)
+    def inner(kwargs):
+        return func(**kwargs)
+
+    return inner
+
+
+def run_experiment(
         n_sample, n_fold, datasets_path, dataset_name, n_generations, time_per_task, pool_size,
         mutation_rate_pool, crossover_rate_pool, n_ensembles, mutation_rate_ensemble, crossover_rate_ensemble,
-        n_jobs, results_path, max_heap_size='3G', seed=None, subsample=1):
+        n_jobs, queue, results_path, max_heap_size='3G', seed=None, subsample=1):
+
+    queue.put(1)  # adds counter, to communicate that this process is allocating resources
+
+    import time
+    time.sleep(np.random.randint(2, 10))
+
+    this_experiment_path = os.path.join(results_path, dataset_name, 'sample_%02.d_fold_%02.d' % (n_sample, n_fold))
 
     some_exception = None
+
     try:
+        os.mkdir(this_experiment_path)
+    except FileExistsError:
+        pass
+    os.chdir(this_experiment_path)
+
+    logger = init_logger(this_experiment_path)
+
+    try:
+        logger.info("Dataset %s, n_sample %d, n_fold %d at process %d" % (dataset_name, n_sample, n_fold, os.getpid()))
+
+        logger.info('starting JVM')
         jvm.start(max_heap_size=max_heap_size)
 
-        this_experiment_path = os.path.join(results_path, dataset_name, 'sample_%02.d_fold_%02.d' % (n_sample, n_fold))
-        try:
-            os.mkdir(this_experiment_path)
-        except FileExistsError:
-            pass
-        os.chdir(this_experiment_path)
+        logger.info('initializing class')
 
         p = AUTOCVEClassifier(
             generations=n_generations,
@@ -149,60 +188,71 @@ def execute_exp(
             population_size_ensemble=n_ensembles,
             mutation_rate_ensemble=mutation_rate_ensemble,
             crossover_rate_ensemble=crossover_rate_ensemble,
-            # grammar='grammarPBIL',  # grammar to be used with interpretable models
-            grammar='grammarTPOT',  # TODO deactivate
+            grammar='grammarPBIL',  # grammar to be used with interpretable models
+            # grammar='grammarTPOT',  # TODO deactivate
             max_pipeline_time_secs=60,
             max_evolution_time_secs=time_per_task,
             n_jobs=n_jobs,
             random_state=seed,
-            # scoring=unweighted_area_under_roc,  # function was reviewed and is operating as intended
-            scoring='balanced_accuracy',  # TODO deactivate
+            scoring=unweighted_area_under_roc,  # function was reviewed and is operating as intended
             verbose=0
         )
+
+        logger.info('reading datasets')
 
         X_train, X_test, y_train, y_test, df_types = parse_open_ml(
             datasets_path=datasets_path, d_id=dataset_name, n_fold=n_fold
         )
 
+        logger.info('building classifier')
         p.optimize(X_train, y_train, subsample_data=subsample, n_classes=len(np.unique(y_train)))
 
+        logger.info('getting best individual')
+
         best_pipeline = p.get_best_pipeline()
+
+        logger.info('retrieving probability vectors')
         train_probs = fit_predict_proba(best_pipeline, X_train, y_train, X_train).astype(np.float64)
         test_probs = fit_predict_proba(best_pipeline, X_train, y_train, X_test).astype(np.float64)
+
+        logger.info('compiling metrics')
 
         get_evaluation(
             dataset_path=os.path.join(datasets_path, dataset_name), n_fold=n_fold,
             seed=seed, train_probs=train_probs, test_probs=test_probs,
             results_path=os.path.join(results_path, dataset_name, 'overall'), id_trial=n_sample
         )
+
     except Exception as e:
-        some_exception = e
+        logger.error('some exception was set: ', e.args[0])
+        some_exception = e  # type: Exception
     finally:
         jvm.stop()
+        logger.info('finished')
+        queue.get()  # removes counter previously inserted
         if some_exception is not None:
+            print(some_exception.args[0], file=sys.stderr)
             raise some_exception
 
 
-def __get_running_processes__(jobs, datasets_status, results_path, total_experiments, total_folds):
-    if len(jobs) > 0:
-        jobs[0].join()
+def manage_jobs(jobs, queue, max_jobs):
+    import time
 
-        for job in jobs:  # type: mp.Process
-            if not job.is_alive():
-                jobs.remove(job)
+    counter = 0
+    for i in range(max_jobs):
+        jobs[i].start()
+        counter += 1
 
-    for dataset, finished in datasets_status.items():
-        if not finished:
-            if len(os.listdir(os.path.join(results_path, dataset))) == (total_experiments * total_folds):
-                try:
-                    summary = collapse_metrics(os.path.join(results_path, dataset))
-                    datasets_status[dataset] = True
-                    print('summary for dataset %s:' % dataset)
-                    print(summary)
-                except:
-                    pass
+    while counter < len(jobs):
+        time.sleep(10)
+        while queue.full():
+            time.sleep(10)
 
-    return jobs, datasets_status
+        jobs[counter].start()
+        counter += 1
+
+    print('ran', len(jobs), 'tasks')
+
 
 
 def parse_args():
@@ -307,25 +357,13 @@ def main():
 
     os.chdir(results_path)
 
-    datasets_status = {k: False for k in datasets_names}
-
     queue_experiments = it.product(datasets_names, list(range(1, n_samples + 1)), list(range(1, 10 + 1)))
 
-    # TODO starts process before others in queue finish!
+    queue = mp.Queue(maxsize=some_args.n_jobs)
 
-    jobs = []
-    for dataset_name, n_sample, n_fold in queue_experiments:
-        print("Dataset %s, n_sample %d, n_fold %d" % (dataset_name, n_sample, n_fold))
-
-        if len(jobs) >= some_args.n_jobs:
-            jobs, datasets_status = __get_running_processes__(
-                jobs=jobs, datasets_status=datasets_status,
-                results_path=results_path,
-                total_experiments=n_samples, total_folds=10,
-            )
-
-        job = mp.Process(
-            target=execute_exp,
+    jobs = [
+        mp.Process(
+            target=run_experiment,
             kwargs=dict(
                 n_sample=n_sample,
                 n_fold=n_fold,
@@ -342,23 +380,13 @@ def main():
                 mutation_rate_ensemble=some_args.mutation_rate_ensemble,
                 crossover_rate_ensemble=some_args.crossover_rate_ensemble,
                 results_path=results_path,
-                max_heap_size=some_args.heap_size
+                max_heap_size=some_args.heap_size,
+                queue=queue
             )
-        )
-        job.start()
-        jobs += [job]
-        time.sleep(60)
+        ) for dataset_name, n_sample, n_fold in queue_experiments
+    ]
 
-    # blocks everything
-    for job in jobs:
-        job.join()
-
-    # finishes everything
-    __get_running_processes__(
-        jobs=jobs, datasets_status=datasets_status,
-        results_path=results_path,
-        total_experiments=n_samples, total_folds=10,
-    )
+    manage_jobs(jobs=jobs, queue=queue, max_jobs=some_args.n_jobs)
 
 
 if __name__ == '__main__':

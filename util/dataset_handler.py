@@ -39,7 +39,10 @@ def load_dataset(data_X, data_y, subsample_data, RANDOM_STATE=42):
 
 
 def unload_dataset(filename, temp_folder):
-    os.unlink(filename)
-    os.rmdir(temp_folder)
+    try:
+        os.unlink(filename)
+        os.rmdir(temp_folder)
+    except PermissionError:
+        pass
 
     return 1

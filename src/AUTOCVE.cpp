@@ -142,54 +142,32 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
     std::stringstream firstGenOutput;
 
-    char buffer[8];  // how long is the string to be printed at the terminal
+    char buffer[32];  // how long is the string to be printed at the terminal
 
     evolution_log << 0 << "," << (int)difftime(end, start) << ",";
-    sprintf(buffer, "%03d,             %#5d,", 0, (int)difftime(end, start));
+    sprintf(buffer, "%03d              %#5d ", 0, (int)difftime(end, start));
     firstGenOutput << buffer;
-
-    // TODO format!
-    // "gen,lap time (seconds),nevals (ens),min (ens),median (ens),max (ens),discarded (ens)"
-
 
     this->population->write_population(0, &evolution_log);
     firstGenOutput << this->population_ensemble->write_population(0, &evolution_log);
     PySys_WriteStdout(firstGenOutput.str().c_str());
 
-    // TODO uncomment
-//    matrix_sim_log << "Generation;ID_solution;ID_solution;Similarity\n";
-//    this->population->write_similarity_matrix(0, &matrix_sim_log);
-
-//    evolution_ensemble_log << "Generation;Length;Score\n";
-
-//    gettimeofday(&end, NULL);
     int control_flag;
 
     double generation_time = 0;
     for(int i = 0; i < this->generations; i++) {
         std::stringstream thisGenOutput;
-//        PySys_WriteStdout("GENERATION %d (%d secs)\n",i+1,(int)(end.tv_sec-start.tv_sec));
-
         if(!(control_flag = this->population->next_generation_selection_similarity(this->population_ensemble))) {
             return NULL;
         }
 
         this->population_ensemble->next_generation_similarity(this->population);
 
-//        struct timeval auxiliar_time;
-//        gettimeofday(&auxiliar_time, NULL);
-//        generation_time=auxiliar_time.tv_sec-end.tv_sec;
-
         time_t auxiliar_time;
         time(&auxiliar_time);
         generation_time=(double)difftime(auxiliar_time, end);
-
-//        gettimeofday(&end, NULL);
         time(&end);
 
-        // linux code
-//        if(this->timeout_evolution_process_sec && (end.tv_sec-start.tv_sec)>=this->timeout_evolution_process_sec-generation_time) control_flag=-1;
-        // windows code
         if(
             this->timeout_evolution_process_sec && (difftime(end, start)) >=
             this->timeout_evolution_process_sec-generation_time) {
@@ -198,15 +176,13 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
         evolution_log << i + 1 << "," << generation_time << ",";
 
-        sprintf(buffer, "%03d,             %#5d,", i + 1, generation_time);
+        sprintf(buffer, "%03d              %#5d ", i + 1, generation_time);
         thisGenOutput << buffer;
 
         this->population->write_population(i+1,&evolution_log);
         thisGenOutput << this->population_ensemble->write_population(i+1,&evolution_log);
-//        this->population->write_similarity_matrix(i+1,&matrix_sim_log);
 
         PySys_WriteStdout(thisGenOutput.str().c_str());
-//        PySys_WriteStdout("GENERATION %d (%d secs)\n", i+1, (int)difftime(end, start));
 
         //KeyboardException or timeout verified
         if(control_flag == -1) {
@@ -214,16 +190,13 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
         }
     }
 
-//    PySys_WriteStdout("END PROCESS (%d secs)\n",(int)(end.tv_sec-start.tv_sec));
-    PySys_WriteStdout("END PROCESS (%d secs)\n",(int)difftime(end, start));
+//    PySys_WriteStdout("END PROCESS (%d secs)\n",(int)difftime(end, start));
 
     evolution_log.close();
-//    matrix_sim_log.close();
-//    evolution_ensemble_log.close();
 
-    if(!this->interface->unload_dataset())
+    if(!this->interface->unload_dataset()) {
         return NULL;
-
+    }
     return 1;
 }
 

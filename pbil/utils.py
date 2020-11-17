@@ -38,6 +38,7 @@ def create_metadata_path(args):
 
     except Exception as e:
         some_exception = e
+        should_stop = True
     finally:
         jvm.stop()
         if should_stop:
