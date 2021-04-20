@@ -1,0 +1,73 @@
+<pipeline> ::= <classifier>
+
+<classifier> ::= <DecisionTree> | <RuleBasedClassifier> | <DecisionTable>
+
+<DecisionTree> ::= "pbil.generation/SimpleCart(jobject=None, options=["  <SimpleCart_usePrune>  ","  <SimpleCart_minNumObj>  <SimpleCart_heuristic> "])"
+
+<SimpleCart_usePrune> ::= "'-U'" | "'-C'" "," "'1'" "," "'-S'" "," "'1'"  <SimpleCart_numFoldsPruning>  <SimpleCart_useOneSE>
+
+<SimpleCart_numFoldsPruning> ::= "," "'-N'" "," "'" "CONSTINT(2, 10)" "'" | ""
+<SimpleCart_useOneSE> ::= "," "'-A'" | ""
+
+<SimpleCart_minNumObj> ::= "'-M'" "," "'" "CONSTINT(2, 10)" "'"
+<SimpleCart_heuristic> ::= "," "'-H'" | ""
+
+
+<DecisionTree> ::= "pbil.generation/J48(jobject=None, options=[" <J48_pruning>  ","  <J48_minNumObj>  <J48_binarySplits>  <J48_useMDLcorrection>  <J48_useLaplace>  <J48_doNotMakeSplitPointActualValue>  <J48_collapseTree>  "])"
+
+<J48_pruning> ::= <J48_confidenceFactor>  |  <J48_reducedErrorPruning>  |  <J48_unpruned>
+
+<J48_confidenceFactor> ::= "'-C'" "," "'" <J48_confidenceFactorValue> "'"  <J48_subtreeRaising>
+<J48_confidenceFactorValue> ::=  "0.05" | "0.15" | "0.25" | "0.35" | "0.45"
+
+<J48_reducedErrorPruning> ::= "'-R', '-Q', '1'"  ","  <J48_numFolds>  <J48_subtreeRaising>
+<J48_numFolds> ::= "'-N',"  "'"  "CONSTINT(2, 10)"  "'"
+
+<J48_subtreeRaising> ::= "," "'-S'" | ""
+
+<J48_unpruned> ::= "'-U'"
+
+# specific to J48
+<J48_useLaplace> ::= "," "'-A'" | ""
+<J48_collapseTree> ::= "," "'-O'" | ""
+
+# common to both PART and J48
+<J48_binarySplits> ::= "," "'-B'" | ""
+<J48_doNotMakeSplitPointActualValue> ::= "," "'-doNotMakeSplitPointActualValue'" | ""
+<J48_minNumObj> ::= "'-M'" ",'" "CONSTINT(2, 10)" "'"
+<J48_useMDLcorrection> ::= "," "'-J'" | ""
+
+# rule based classifier
+
+<RuleBasedClassifier> ::= "pbil.generation/PART(jobject=None, options=["  <PART_pruning>  ","  <J48_minNumObj>  <J48_binarySplits>  <J48_doNotMakeSplitPointActualValue>  <J48_useMDLcorrection> "])"
+<PART_pruning> ::= <J48_confidenceFactor>  |  <PART_reducedErrorPruning>  |  <J48_unpruned>
+<PART_reducedErrorPruning> ::= "'-R', '-Q', '1'" "," <J48_numFolds>
+
+<RuleBasedClassifier> ::= "pbil.generation/JRip(jobject=None, options=["  <JRip_seed>  <JRip_usePruning>  <JRip_minNo>  <JRip_checkErrorRate> "])"
+<JRip_seed> ::= "'-S'" "," "'1'"
+<JRip_usePruning> ::= <JRip_optimizations>  <JRip_folds>  | "," "'-P'"
+<JRip_optimizations> ::= "," "'-O'"  ","  "'"  "CONSTINT(2, 10)"  "'"  | ""
+<JRip_folds> ::= "," "'-F'"  ","  "'"  "CONSTINT(2, 10)"  "'"  | ""
+<JRip_minNo> ::= "," "'-N',"  "'" "CONSTINT(2, 10)" "'" | ""
+<JRip_checkErrorRate> ::= "," "'-E'" | ""
+
+
+# decision table classifier
+
+<DecisionTable> ::= "pbil.generation/DecisionTable(jobject=None, options=["  <DecisionTable_evaluationMeasure>  ","  <DecisionTable_crossVal>  ","  <DecisionTable_useIBk>  ","  <DecisionTable_search>  "])"
+
+<DecisionTable_evaluationMeasure> ::= "'-E'"  ","  <DecisionTable_evaluationMeasureValue>
+<DecisionTable_evaluationMeasureValue> ::= "'acc'" | "'rmse'" | "'mae'" | "'auc'"
+
+<DecisionTable_useIBk> ::= "'-I'" | "''"
+<DecisionTable_crossVal> ::= "'-X'," "'" "CONSTINT(1, 10)" "'"
+
+<DecisionTable_search> ::= "'-S'" "," "'" "weka.attributeSelection.GreedyStepwise"  <GreedyStepwise_conservativeForwardSelection>  <GreedyStepwise_searchBackwards>  "'" | "'-S'" "," "'" "weka.attributeSelection.BestFirst"  <BestFirst_direction>  <BestFirst_searchTermination>  "'"
+
+<GreedyStepwise_conservativeForwardSelection> ::= " -C" | ""
+<GreedyStepwise_searchBackwards> ::= " -B" | ""
+
+<BestFirst_direction> ::= " -D " "CONSTINT(0, 2)" | ""
+<BestFirst_searchTermination> ::= " -N " "CONSTINT(1, 10)" | ""
+
+<RANDOM_STATE> ::= "42"

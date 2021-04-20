@@ -10,6 +10,7 @@
 #define MAX_SIM 1
 
 Population::Population(PythonInterface *interface, int size_pop, double elite_portion, double mut_rate, double cross_rate, int n_classes) {
+    Solution::reset_index();  // TODO moved here to comply wit old code
     this->n_classes = n_classes;
 
     this->population_size = size_pop;
@@ -26,7 +27,7 @@ Population::Population(PythonInterface *interface, int size_pop, double elite_po
     this->similarity_matrix=(double*)malloc(sizeof(double)*this->population_size*(this->population_size-1)/2);
     this->similarity_matrix_next_gen=NULL;
     this->predict_size=0;
-    this->cross_rate=cross_rate, this->mut_rate=mut_rate, this->elite_size=size_pop*elite_portion;
+    this->cross_rate=cross_rate, this->mut_rate=mut_rate, this->elite_size=(int)(((double)size_pop)*elite_portion);
     this->interface_call=interface;
 
     for(int i = 0; i < this->population_size; i++) {
@@ -61,7 +62,7 @@ int Population::init_population(Grammar* grammar, PopulationEnsemble *population
     if(!return_flag || return_flag==-1) {
         return return_flag;
     }
-    
+
     std::swap(this->population,this->next_gen);
     std::swap(this->predict_population,this->predict_next_gen);
     std::swap(this->score_population,this->score_next_gen);
@@ -96,19 +97,20 @@ Population::~Population(){
     if(this->predict_next_gen)
         free(this->predict_next_gen);
 
-    if(this->next_gen) 
+    if(this->next_gen)
         free(this->next_gen);
 
-    if(this->score_next_gen) 
+    if(this->score_next_gen)
         free(this->score_next_gen);
 
-    if(this->metric_next_gen) 
+    if(this->metric_next_gen)
         free(this->metric_next_gen);
 
     if(this->similarity_matrix_next_gen)
         free(this->similarity_matrix_next_gen);
 
-    Solution::reset_index();
+    // TODO was here before
+//    Solution::reset_index();
 
     free(this->population);
     free(this->population_rank);
@@ -130,19 +132,20 @@ void Population::breed(Solution* child1, Solution* child2){
      }
 }
 
-
-int Population::evaluate_next_gen_cv(int population_as_buffer){
+// TODO bug is here! (population_as_buffer = true)
+// TODO pipeline_string sometimes is passed as null to evaluating function!
+int Population::evaluate_next_gen_cv(int population_as_buffer) {
     char *pipeline_string=NULL;
     int *map_evaluation=(int*)malloc(sizeof(int)*this->next_gen_size);
 
     int evaluation_count=0;
     for(int i=0;i<this->next_gen_size;i++){
         int flag_computed_already=0;
-        
+
         if(population_as_buffer){
             for(int j=0;j<this->population_size;j++){
-                if(this->population[j] && !strcmp(this->next_gen[i]->get_string_code(),this->population[j]->get_string_code())){        
-                    map_evaluation[i]=-j-1;		        
+                if(this->population[j] && !strcmp(this->next_gen[i]->get_string_code(),this->population[j]->get_string_code())){
+                    map_evaluation[i]=-j-1;
                     flag_computed_already=1;
                     break;
                 }
@@ -154,7 +157,7 @@ int Population::evaluate_next_gen_cv(int population_as_buffer){
         if(!pipeline_string){
             pipeline_string=char_concat(pipeline_string, this->next_gen[i]->get_string_code());
             map_evaluation[i]=evaluation_count++;
-        }else{                    
+        }else{
             int found_pipe=-1;
             for(int j=0;j<i;j++){
                 if(!strcmp(this->next_gen[i]->get_string_code(),this->next_gen[j]->get_string_code())){
@@ -189,12 +192,12 @@ int Population::evaluate_next_gen_cv(int population_as_buffer){
     if(this->predict_next_gen)
         free(this->predict_next_gen);
 
-    this->predict_next_gen=(double*) malloc(sizeof(double)*this->next_gen_size*this->predict_size); 
-      
+    this->predict_next_gen=(double*) malloc(sizeof(double)*this->next_gen_size*this->predict_size);
+
     for(int i=0;i<this->next_gen_size;i++){
-        if(map_evaluation[i]<0){        
+        if(map_evaluation[i]<0){
             int position_population_buffer=-map_evaluation[i]-1;
-            this->set_metric_next_gen(i,this->get_metric_population(position_population_buffer));		
+            this->set_metric_next_gen(i,this->get_metric_population(position_population_buffer));
             this->set_score_next_gen(i,this->get_metric_population(position_population_buffer));
             if(this->get_score_next_gen(i)==INVALID_INDIVIDUAL_SCORE) continue;
             for(int k=0;k<this->predict_size;k++){
@@ -206,8 +209,8 @@ int Population::evaluate_next_gen_cv(int population_as_buffer){
     for(int i=0;i<this->next_gen_size;i++){
         if(map_evaluation[i]<0) continue;
 	    if(PyList_GetItem(pipeline_score,map_evaluation[i])==Py_None){
-            this->set_metric_next_gen(i,INVALID_INDIVIDUAL_SCORE);		
-            this->set_score_next_gen(i,INVALID_INDIVIDUAL_SCORE);			    
+            this->set_metric_next_gen(i,INVALID_INDIVIDUAL_SCORE);
+            this->set_score_next_gen(i,INVALID_INDIVIDUAL_SCORE);
         }else{
             this->set_metric_next_gen(i,PyFloat_AsDouble(PyList_GetItem(pipeline_score,map_evaluation[i])));
             this->set_score_next_gen(i,PyFloat_AsDouble(PyList_GetItem(pipeline_score,map_evaluation[i])));
@@ -284,7 +287,7 @@ int Population::evaluate_ensemble_next_gen(PopulationEnsemble *population_ensemb
                     local_counter += 1.0;
                 }
             }
-            
+
 
             elected_class = 0;
             for(int j = 0; j < n_classes; j++) {
@@ -294,7 +297,7 @@ int Population::evaluate_ensemble_next_gen(PopulationEnsemble *population_ensemb
                     elected_class = j;
                 }
             }
-            
+
             if(class_count[elected_class] == 0) {
                 break;
             }
@@ -487,7 +490,7 @@ int Population::evaluate_ensemble_population(PopulationEnsemble *population_ense
     return 1;
 }
 
-int Population::next_generation_selection_similarity(PopulationEnsemble *population_ensemble){
+int Population::next_generation_selection_similarity(PopulationEnsemble *population_ensemble) {
     if(this->next_gen_size!=2*this->population_size){  //Adjusting next_gen size by next_generation procedure
         free(this->next_gen);
         free(this->score_next_gen);
@@ -509,11 +512,11 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
 //    int choice_mask[this->population_size];
     int *choice_mask = new int [this->population_size];
 
-    for(int i=0;i<this->population_size;i++) {
+    for(int i = 0; i < this->population_size; i++) {
         choice_mask[i] = 0;
     }
 
-    for(int i=this->population_size;i<this->next_gen_size; i+=2){
+    for(int i = this->population_size; i < this->next_gen_size; i += 2) {
         int parent1, parent2;
 
         parent1=randInt(0,this->population_size-1-(i-this->population_size));
@@ -524,14 +527,14 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
         choice_mask[parent1]=1;
 
         if(i<this->next_gen_size-1){
-           parent2=randInt(0,this->population_size-1-(i-this->population_size)-1);                
+           parent2=randInt(0,this->population_size-1-(i-this->population_size)-1);
            sort_position=0;
            for(int count_position=0;count_position<=parent2;sort_position++)
                if(!choice_mask[sort_position])count_position++;
            parent2=sort_position-1;
            choice_mask[parent2]=1;
         }else //If size of population is odd, a solution of population is sorted to complete the pairing procedure
-           parent2=randInt(0,this->population_size-1);                
+           parent2=randInt(0,this->population_size-1);
 
         Solution *child1, *child2;
 
@@ -542,17 +545,16 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
 
         this->next_gen[i]=child1;
 
-        if(i<this->next_gen_size-1)        
+        if(i<this->next_gen_size-1)
             this->next_gen[i+1]=child2;
         else
             delete child2;
     }
-
+    // TODO seg fault is here!
     int return_flag=this->evaluate_next_gen_cv(true);
-
+    // TODO seg fault is here!
     if(!return_flag || return_flag==-1) //Any other exception than KeyboardException, just propagate with return NULL
         return return_flag;
-
 
     free(this->predict_population);
     this->predict_population=(double*) malloc(sizeof(double)*this->population_size*this->predict_size); 
@@ -634,6 +636,7 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
     this->compute_similarity();
     this->quick_sort_population();
 
+    delete[] choice_mask;
     return 1;
 }
 

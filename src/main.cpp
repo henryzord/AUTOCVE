@@ -76,7 +76,7 @@ static PyObject *PyAUTOCVE_optimize(PyAUTOCVE *self, PyObject *args, PyObject *k
     double subsample_data=1.0;
     int n_classes;
 
-    static char *keywords[]={"X","y","subsample_data", "n_classes", NULL}; //NULL-terminated array
+    static char *keywords[]={"X", "y", "subsample_data", "n_classes", NULL}; //NULL-terminated array
 
 
     if(!PyArg_ParseTupleAndKeywords(args,kwargs,"OO|$di",keywords, &data_X, &data_y, &subsample_data, &n_classes)) //Function and arguments |$ before keyword args

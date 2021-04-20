@@ -72,6 +72,8 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
 //    PySys_WriteStdout("LOADING DATASET\n");
 
+    // TODO split into training and test set, if number of folds is zero!!!
+
     if(!this->interface->load_dataset(data_X, data_y, subsample_data)) {
         return NULL;
     }
@@ -116,11 +118,21 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 //    struct timeval start, end;
 //    gettimeofday(&start, NULL);
 
-    this->population = new Population(this->interface, this->size_pop_components, this->elite_portion_components, this->mut_rate_components, this->cross_rate_components, n_classes);
-    this->population_ensemble = new PopulationEnsemble(this->size_pop_ensemble,this->size_pop_components,this->elite_portion_ensemble,this->mut_rate_ensemble,this->cross_rate_ensemble, n_classes);
+    // population is the population of base classifiers (i.e. trees, Genetic Programming population)
+    this->population = new Population(
+        this->interface, this->size_pop_components, this->elite_portion_components,
+        this->mut_rate_components, this->cross_rate_components, n_classes
+    );
+    // population_ensemble is the population of ensembles (i.e. binary arrays, Genetic Algorithm population)
+    this->population_ensemble = new PopulationEnsemble(
+        this->size_pop_ensemble, this->size_pop_components, this->elite_portion_ensemble,
+        this->mut_rate_ensemble, this->cross_rate_ensemble, n_classes
+        );
 
     this->population_ensemble->init_population_random();
 
+    // TODO must guarantee that there are at most one base classifier of each type, when using grammarPBIL!
+    // TODO (e.g. at most one J48 tree, at most one JRip rule list, etc)
     int return_flag = this->population->init_population(this->grammar, this->population_ensemble);
     if(!return_flag) {
         return NULL;
@@ -157,10 +169,11 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
     double generation_time = 0;
     for(int i = 0; i < this->generations; i++) {
         std::stringstream thisGenOutput;
+        // TODO seg fault is here!
         if(!(control_flag = this->population->next_generation_selection_similarity(this->population_ensemble))) {
             return NULL;
         }
-
+        // TODO seg fault is here!
         this->population_ensemble->next_generation_similarity(this->population);
 
         time_t auxiliar_time;

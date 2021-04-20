@@ -56,7 +56,16 @@ in the GUI; however the wrapper still won't see it.
     
     ```copy installation\weka.jar <folder_to_anaconda_installation>\Anaconda3\envs\autocve\Lib\site-packages\weka\lib\```
 
-7. Install AUTOCVE package: 
+7. Install [mPBIL](https://github.com/henryzord/pbil/tree/comparative):
+
+```
+git clone --single-branch --branch comparative https://github.com/henryzord/PBIL
+cd PBIL
+conda activate autocve
+python setup.py install
+```
+
+8. Install AUTOCVE package: 
 ```bash
 cd AUTOCVE
 pip install .

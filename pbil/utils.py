@@ -87,58 +87,6 @@ def path_to_arff(dataset_path):
     return af
 
 
-def parse_open_ml(datasets_path, d_id, n_fold, queue=None):
-    """
-    Function that processes each dataset into an interpretable form
-
-    Warning: will convert categorical attributes to one-hot encoding.
-
-    Args:
-        d_id (int): dataset id
-    Returns:
-        A tuple of the train / test split data along with the column types
-    """
-    # X_train, X_test, y_train, y_test, df_types
-    train = path_to_dataframe('{0}-10-{1}tra.arff'.format(os.path.join(datasets_path, str(d_id), str(d_id)), n_fold))
-    test = path_to_dataframe('{0}-10-{1}tst.arff'.format(os.path.join(datasets_path, str(d_id), str(d_id)), n_fold))
-
-    df_types = pd.DataFrame(
-        dict(name=train.columns, type=['categorical' if str(x) == 'category' else 'numerical' for x in train.dtypes]))
-    df_types.loc[df_types['name'] == df_types.iloc[-1]['name'], 'type'] = 'target'
-    # df = pd.read_csv('../datasets/{0}.csv'.format(d_id))
-    # df_types = pd.read_csv('../datasets/{0}_types.csv'.format(d_id))
-
-    categorical_columns = []
-    dict_convs = []
-
-    for i, column in enumerate(train.columns):
-        if str(train[column].dtype) == 'category' or (i == len(train.columns) - 1):
-            categories = train[column].dtype.categories
-            dict_conv = dict(zip(categories, range(len(categories))))
-            train.loc[:, column] = train.loc[:, column].replace(dict_conv).astype(np.int32)
-
-            dict_convs += [dict_conv]
-            categorical_columns += [column]
-
-    for column, dict_conv in zip(categorical_columns, dict_convs):
-        test.loc[:, column] = test.loc[:, column].replace(dict_conv).astype(np.int32)
-
-    # df_valid = train[~train['target'].isnull()]
-
-    # x_cols = [c for c in df_valid.columns if c != 'target']
-    X_train = train[train.columns[:-1]]
-    y_train = train[train.columns[-1]]
-    X_test = test[test.columns[:-1]]
-    y_test = test[test.columns[-1]]
-
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=seed)
-
-    if queue is not None:
-        queue.put((X_train, X_test, y_train, y_test, df_types))
-
-    return X_train.values, X_test.values, y_train.values, y_test.values, df_types
-
-
 def to_java_object(val, dtype):
     """
     Casts a Python object to a Java object.
