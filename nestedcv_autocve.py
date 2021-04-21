@@ -1,13 +1,4 @@
-import json
-import time
-from copy import deepcopy
 from multiprocessing import set_start_method
-
-from sklearn.ensemble import VotingClassifier
-from sklearn.metrics import roc_auc_score
-from sklearn.model_selection import StratifiedKFold
-
-from mPBIL.utils import path_to_dataframe
 
 try:
     set_start_method("spawn")
@@ -15,11 +6,21 @@ except RuntimeError:
     pass  # is in child process, trying to set context to spawn but failing because is already set
 
 import multiprocessing as mp
+
+import json
+import time
+from copy import deepcopy
+from sklearn.ensemble import VotingClassifier
+from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import StratifiedKFold
+
+from mPBIL.utils import path_to_dataframe
+
+
 from datetime import datetime as dt
 import argparse
 import logging
 import os
-import sys
 from functools import reduce, wraps
 
 import javabridge
@@ -31,7 +32,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from weka.core import jvm
 from weka.core.converters import Loader
-from weka.core.dataset import Instances
+from weka.core.dataset import Instances, create_instances_from_matrices
 
 from pbil.evaluations import evaluate_on_test, EDAEvaluation
 from util.evaluate import unweighted_area_under_roc
@@ -158,6 +159,17 @@ def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_
     return test_pevaluation
 
 
+def ensemble_soft_vote(ensemble: VotingClassifier, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, n_classes: int) -> np.ndarray:
+    scores = np.zeros((X_test.shape[0], n_classes), dtype=np.float)
+    for est_name, clf in ensemble.estimators:
+        new_clf = clf.__class__(jobject=None, options=clf.options)
+        new_clf.fit(X_train, y_train)
+        scores += new_clf.predict_proba(X_test)
+
+    scores /= len(ensemble.estimators)
+    return scores
+
+
 def fit_predict_proba(estimator: Pipeline, X: np.ndarray, y: np.ndarray, X_test: np.ndarray):
     if estimator is None:
         return None
@@ -211,7 +223,7 @@ def run_external_fold(
 
         logger.info('loading combinations')
 
-        combinations = get_autocve_combinations()  # type: list
+        combinations = get_combinations()  # type: list
 
         logger.info('initializing class')
 
@@ -260,10 +272,16 @@ def run_external_fold(
                 logger.info('getting best individual')
 
                 best_ensemble = autocve.get_best_voting_ensemble()  # type: VotingClassifier
-                best_ensemble.voting = 'soft'
-                best_ensemble.fit(int_train_X, int_train_y)
-
-                preds.extend(list(map(list, best_ensemble.predict_proba(int_test_X))))
+                preds.extend(list(map(
+                    list,
+                    ensemble_soft_vote(
+                        best_ensemble,
+                        X_train=int_train_X,
+                        y_train=int_train_y,
+                        X_test=int_test_X,
+                        n_classes=len(class_unique_values)
+                    )
+                )))
                 internal_actual_classes.extend(list(int_test_y))
 
             internal_actual_classes = np.array(internal_actual_classes, dtype=np.int)
@@ -304,10 +322,13 @@ def run_external_fold(
         )
 
         clf = autocve.get_best_voting_ensemble()  # type: VotingClassifier
-        clf.voting = 'soft'
-        clf.fit(ext_train_X, ext_train_y)
-
-        external_preds = list(map(list, clf.predict_proba(ext_test_X)))
+        external_preds = list(map(
+            list,
+            ensemble_soft_vote(
+                clf,
+                X_train=ext_train_X, y_train=ext_train_y, X_test=ext_test_X, n_classes=len(class_unique_values)
+            )
+        ))
         external_actual_classes = list(ext_test_y)
 
         with open(
@@ -336,15 +357,14 @@ def run_external_fold(
             logger.info("Finished: Dataset %s, external fold %d" % (dataset_name, n_external_fold))
 
 
-def get_autocve_combinations():
+def get_combinations():
     combinations = []
 
     print('TODO to implement:')
-    print('fixar tamanho do vetor de bits do GA em 5 (usar uma população do GP diferente = 50)')
     print('aggregation function? implementar no auto-cve nossas funções de agregação')
     time.sleep(2)
 
-    generations = 50  # TODO change to 100!
+    generations = 100
     population_size_components = 50  # at most 5 classifiers for each ensemble
     population_size_ensemble = 50  # same value used by EDNEL
     grammar = 'grammarPBILlight'  # grammar without data transformations

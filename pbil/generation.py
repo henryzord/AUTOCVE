@@ -4,7 +4,7 @@ import javabridge
 import numpy as np
 import pandas as pd
 from weka.classifiers import Classifier
-from weka.core.dataset import create_instances_from_matrices
+from weka.core.dataset import create_instances_from_matrices, Instances
 from weka.filters import Filter
 
 from pbil.ptypes import process_sample
@@ -148,9 +148,14 @@ class ClassifierWrapper(Classifier):
         return np.array(predictions)
 
     def predict_proba(self, X):
-        dataset = create_instances_from_matrices(X)
-        dataset.insert_attribute(att=self._class_attribute, index=dataset.num_attributes)
-        dataset.class_is_last()
+        if isinstance(X, np.ndarray):
+            dataset = create_instances_from_matrices(X)
+            dataset.insert_attribute(att=self._class_attribute, index=dataset.num_attributes)
+            dataset.class_is_last()
+        elif isinstance(X, Instances):
+            dataset = X
+        else:
+            raise TypeError('X must be either a numpy.ndarray or a weka.core.Instances object')
 
         distribution = self.distributions_for_instances(dataset)
         return distribution
