@@ -5,39 +5,74 @@ try:
 except RuntimeError:
     pass  # is in child process, trying to set context to spawn but failing because is already set
 
-import multiprocessing as mp
-
+import os
 import json
 import time
-from copy import deepcopy
-from sklearn.ensemble import VotingClassifier
-from sklearn.metrics import roc_auc_score
-from sklearn.model_selection import StratifiedKFold
-
-from mPBIL.utils import path_to_dataframe
-
-
-from datetime import datetime as dt
 import argparse
-import logging
-import os
-from functools import reduce, wraps
-
-import javabridge
-from weka.core.classes import Random
 import numpy as np
 import pandas as pd
-from AUTOCVE.AUTOCVE import AUTOCVEClassifier
-from sklearn.impute import SimpleImputer
-from sklearn.pipeline import Pipeline
-from weka.core import jvm
-from weka.core.converters import Loader
-from weka.core.dataset import Instances, create_instances_from_matrices
+from scipy.io import arff
+from copy import deepcopy
+from functools import wraps
+import multiprocessing as mp
+from datetime import datetime as dt
 
-from pbil.evaluations import evaluate_on_test, EDAEvaluation
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.metrics import roc_auc_score
+from sklearn.ensemble import VotingClassifier
+from sklearn.model_selection import StratifiedKFold
+
+import javabridge
+from weka.core import jvm
+from weka.core.classes import Random
+from weka.core.converters import Loader
+from weka.core.dataset import Instances
+
+from AUTOCVE.AUTOCVE import AUTOCVEClassifier
 from util.evaluate import unweighted_area_under_roc
 
 GRACE_PERIOD = 0  # 60
+
+
+def path_to_dataframe(dataset_path):
+    """
+    Reads dataframes from an .arff file, casts categorical attributes to categorical type of pandas.
+    :param dataset_path:
+    :return:
+    """
+
+    value, metadata = path_to_arff(dataset_path)
+
+    df = pd.DataFrame(value, columns=metadata._attrnames)
+
+    attributes = metadata._attributes
+    for attr_name, (attr_type, rang_vals) in attributes.items():
+        if attr_type in ('nominal', 'string'):
+            df[attr_name] = df[attr_name].apply(lambda x: x.decode('utf-8'))
+
+            df[attr_name] = df[attr_name].astype('category')
+        elif attr_type == 'date':
+            raise TypeError('unsupported attribute type!')
+        else:
+            df[attr_name] = df[attr_name].astype(np.float32)
+
+    return df
+
+
+def path_to_arff(dataset_path):
+    """
+    Given a path to a dataset, reads and returns a dictionary which comprises an arff file.
+    :type dataset_path: str
+    :param dataset_path: Path to the dataset. Must contain the .arff file extension (i.e., "my_dataset.arff")
+    :rtype: dict
+    :return: a dictionary with the arff dataset.
+    """
+
+    dataset_type = dataset_path.split('.')[-1].strip()
+    assert dataset_type == 'arff', TypeError('Invalid type for dataset! Must be an \'arff\' file!')
+    af = arff.loadarff(dataset_path)
+    return af
 
 
 def parse_open_ml(datasets_path: str, d_id: str, n_fold: int):
@@ -75,88 +110,6 @@ def parse_open_ml(datasets_path: str, d_id: str, n_fold: int):
     y_test = test[test.columns[-1]]
 
     return X_train.values, X_test.values, y_train.values, y_test.values, df_types
-
-
-def get_evaluation(dataset_path, n_fold, train_probs, test_probs, seed, results_path, id_trial):
-    """
-
-    :param dataset_path:
-    :param n_fold:
-    :return: A tuple (train-data, test_data), where each object is an Instances object
-    """
-    dataset_name = dataset_path.split(os.sep)[-1]
-
-    train_path = os.path.join(dataset_path, '-'.join([dataset_name, '10', '%dtra.arff' % n_fold]))
-    test_path = os.path.join(dataset_path, '-'.join([dataset_name, '10', '%dtst.arff' % n_fold]))
-
-    loader = Loader("weka.core.converters.ArffLoader")
-    train_data = loader.load_file(train_path)
-    train_data.class_is_last()
-
-    test_data = loader.load_file(test_path)
-    test_data.class_is_last()
-
-    filter_obj = javabridge.make_instance('Lweka/filters/unsupervised/instance/Randomize;', '()V')
-    javabridge.call(filter_obj, 'setRandomSeed', '(I)V', 1)
-    javabridge.call(filter_obj, 'setInputFormat', '(Lweka/core/Instances;)Z', train_data.jobject)
-    jtrain_data = javabridge.static_call(
-        'Lweka/filters/Filter;', 'useFilter',
-        '(Lweka/core/Instances;Lweka/filters/Filter;)Lweka/core/Instances;',
-        train_data.jobject, filter_obj
-    )
-    jtest_data = javabridge.static_call(
-        'Lweka/filters/Filter;', 'useFilter',
-        '(Lweka/core/Instances;Lweka/filters/Filter;)Lweka/core/Instances;',
-        test_data.jobject, filter_obj
-    )
-
-    train_data = Instances(jtrain_data)
-    test_data = Instances(jtest_data)
-
-    env = javabridge.get_env()  # type: javabridge.JB_Env
-    jtrain_probs = env.make_object_array(train_probs.shape[0], env.find_class('[D'))  # type: numpy.ndarray
-    for i in range(train_probs.shape[0]):
-        row = env.make_double_array(np.ascontiguousarray(train_probs[i, :]))
-        env.set_object_array_element(jtrain_probs, i, row)
-
-    jtest_probs = env.make_object_array(test_probs.shape[0], env.find_class('[D'))
-    for i in range(test_probs.shape[0]):
-        row = env.make_double_array(np.ascontiguousarray(test_probs[i, :]))
-        env.set_object_array_element(jtest_probs, i, row)
-
-    clf = javabridge.make_instance(
-        'Leda/NonJavaClassifier;',
-        '([[D[[DLweka/core/Instances;Lweka/core/Instances;)V',
-        jtrain_probs,
-        jtest_probs,
-        jtrain_data,
-        jtest_data
-    )
-
-    test_evaluation_obj = evaluate_on_test(jobject=clf, test_data=test_data)
-    test_pevaluation = EDAEvaluation.from_jobject(test_evaluation_obj, data=test_data, seed=seed)
-
-    dict_metrics = dict()
-    dict_models = dict()
-    for metric_name, metric_aggregator in EDAEvaluation.metrics:
-        value = getattr(test_pevaluation, metric_name)
-        if isinstance(value, np.ndarray):
-            new_value = np.array2string(value.ravel().astype(np.int32), separator=',')
-            new_value_a = 'np.array(%s, dtype=np.%s).reshape(%s)' % (new_value, value.dtype, value.shape)
-            value = new_value_a
-
-        dict_metrics[metric_name] = value
-
-    df_metrics = pd.DataFrame(dict_metrics, index=['AUTOCVE'])
-    dict_models['AUTOCVE'] = df_metrics
-
-    collapsed = reduce(lambda x, y: x.append(y), dict_models.values())
-    collapsed.to_csv(
-        os.path.join(results_path, 'test_sample-%02.d_fold-%02.d.csv' % (id_trial, n_fold)
-        ), index=True
-    )
-
-    return test_pevaluation
 
 
 def ensemble_soft_vote(ensemble: VotingClassifier, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, n_classes: int) -> np.ndarray:
@@ -206,14 +159,14 @@ def run_external_fold(
     some_exception = None  # type: Exception
 
     try:
-        logger = init_logger(os.path.join(metadata_path, experiment_folder), n_external_fold)
+        # logger = init_logger(os.path.join(metadata_path, experiment_folder), n_external_fold)
 
-        logger.info("Starting: Dataset %s, external fold %d" % (dataset_name, n_external_fold))
+        # logger.info("Starting: Dataset %s, external fold %d" % (dataset_name, n_external_fold))
 
         random_state = 1
         seed = Random(random_state)
 
-        logger.info('reading datasets')
+        # logger.info('reading datasets')
 
         ext_train_X, ext_test_X, ext_train_y, ext_test_y, df_types = parse_open_ml(
             datasets_path=datasets_path, d_id=dataset_name, n_fold=n_external_fold
@@ -221,11 +174,11 @@ def run_external_fold(
 
         class_unique_values = sorted(np.unique(ext_train_y))
 
-        logger.info('loading combinations')
+        # logger.info('loading combinations')
 
         combinations = get_combinations()  # type: list
 
-        logger.info('initializing class')
+        # logger.info('initializing class')
 
         aucs = []  # type: list
 
@@ -262,14 +215,14 @@ def run_external_fold(
                     cv_folds=comb['cv_folds']
                 )
 
-                logger.info('building classifier')
+                # logger.info('building classifier')
                 autocve.optimize(
                     int_train_X, int_train_y,
-                    subsample_data=1,  # TODO unknown effect!!!!
+                    subsample_data=1,
                     n_classes=len(class_unique_values)
                 )
 
-                logger.info('getting best individual')
+                # logger.info('getting best individual')
 
                 best_ensemble = autocve.get_best_voting_ensemble()  # type: VotingClassifier
                 preds.extend(list(map(
@@ -317,7 +270,7 @@ def run_external_fold(
 
         autocve.optimize(
             ext_train_X, ext_train_y,
-            subsample_data=1,  # TODO unknown effect!!!!
+            subsample_data=1,
             n_classes=len(class_unique_values)
         )
 
@@ -336,6 +289,7 @@ def run_external_fold(
                              'test_sample-01_fold-%02d_parameters.json' % n_external_fold),
                 'w'
         ) as write_file:
+            combinations[best_index]['scoring'] = str(combinations[best_index]['scoring'])
             json.dump(combinations[best_index], write_file, indent=2)
 
         with open(
@@ -350,19 +304,15 @@ def run_external_fold(
         some_exception = e
     finally:
         if some_exception is not None:
-            logger.error('Finished with exception set:', str(some_exception))
+            # logger.error('Finished with exception set:', str(some_exception.args[0]))
 #             print(some_exception.args[0], file=sys.stderr)
             raise some_exception
-        else:
-            logger.info("Finished: Dataset %s, external fold %d" % (dataset_name, n_external_fold))
+        # else:
+            # logger.info("Finished: Dataset %s, external fold %d" % (dataset_name, n_external_fold))
 
 
 def get_combinations():
     combinations = []
-
-    print('TODO to implement:')
-    print('aggregation function? implementar no auto-cve nossas funções de agregação')
-    time.sleep(2)
 
     generations = 100
     population_size_components = 50  # at most 5 classifiers for each ensemble
@@ -453,23 +403,7 @@ def create_metadata_folder(some_args: argparse.Namespace, metadata_path: str, da
     return experiment_folder
 
 
-def init_logger(experiment_path, n_external_fold):
-    # create logger with 'application'
-    logger = logging.getLogger('application')
-    logger.setLevel(logging.DEBUG)
-    # create file handler which logs even debug messages
-    fh = logging.FileHandler(os.path.join(experiment_path, 'external_fold_%02d_process_%d.log' % (n_external_fold, os.getpid())))
-    fh.setLevel(logging.DEBUG)
-    # create formatter and add it to the handlers
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    fh.setFormatter(formatter)
-    # add the handlers to the logger
-    logger.addHandler(fh)
-
-    return logger
-
-
-def start_jvms(heap_size, experiment_path):
+def start_jvms(heap_size):
     if not jvm.started:
         jvm.start(max_heap_size=heap_size)
 
@@ -483,7 +417,7 @@ def main(args: argparse.Namespace):
     e = None
 
     n_jobs = args.n_jobs
-    n_external_folds = 10  # TODO do not change this
+    n_external_folds = 10  # do not change this parameter
     n_internal_folds = args.n_internal_folds
 
     experiment_folder = create_metadata_folder(args, args.metadata_path, args.dataset_name)
@@ -520,9 +454,7 @@ def main(args: argparse.Namespace):
                  args.metadata_path, experiment_folder
                  ) for x in range(1, n_external_folds + 1)]
 
-            pool.map(start_jvms, iterable=[
-                (args.heap_size, os.path.join(args.metadata_path, experiment_folder)
-                 ) for x in range(1, n_external_folds + 1)
+            pool.map(start_jvms, iterable=[args.heap_size for x in range(1, n_external_folds + 1)
             ])
             pool.starmap(func=run_external_fold, iterable=iterable_params)
             pool.map(stop_jvms, iterable=range(1, n_external_folds + 1))

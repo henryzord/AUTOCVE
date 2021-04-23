@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nestedcv_autocve.py" beforeDir="false" afterPath="$PROJECT_DIR$/nestedcv_autocve.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pbil/generation.py" beforeDir="false" afterPath="$PROJECT_DIR$/pbil/generation.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
