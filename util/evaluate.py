@@ -329,19 +329,12 @@ def evaluate_predict_vector(predict_vector, predict_scores, scoring):
 
 # one valid scoring function
 def unweighted_area_under_roc(score_handler, y_true):
-    # TODO changed from C++ code to sklearn code!
     scores = score_handler.y_scores
     n_classes = scores.shape[1]
 
     auc = 0.
     for c in range(n_classes):
-        actual_binary_class = (y_true == c).astype(np.int)  # TODO check if classes are linear!!!!
+        actual_binary_class = (y_true == c).astype(np.int)
         auc += roc_auc_score(y_true=actual_binary_class, y_score=scores[:, c])
 
     return auc / n_classes
-
-    # score = get_unweighted_area_under_roc(
-    #     y_true=np.array(y_true, copy=False, order='C', dtype=np.int64),
-    #     y_score=np.array(score_handler.y_scores, copy=False, order='C', dtype=np.float64)
-    # )
-    # return score

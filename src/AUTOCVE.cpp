@@ -70,15 +70,9 @@ AUTOCVEClass::~AUTOCVEClass(){
 int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, double subsample_data, int n_classes) {
     srand(this->seed);
 
-//    PySys_WriteStdout("LOADING DATASET\n");
-
-    // TODO split into training and test set, if number of folds is zero!!!
-
     if(!this->interface->load_dataset(data_X, data_y, subsample_data)) {
         return NULL;
     }
-
-//    PySys_WriteStdout("LOADED DATASET\n");
 
     if(this->grammar) {
         delete this->grammar;
@@ -131,8 +125,6 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
     this->population_ensemble->init_population_random();
 
-    // TODO must guarantee that there are at most one base classifier of each type, when using grammarPBIL!
-    // TODO (e.g. at most one J48 tree, at most one JRip rule list, etc)
     int return_flag = this->population->init_population(this->grammar, this->population_ensemble);
     if(!return_flag) {
         return NULL;
@@ -169,11 +161,10 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
     double generation_time = 0;
     for(int i = 0; i < this->generations; i++) {
         std::stringstream thisGenOutput;
-        // TODO seg fault is here!
+
         if(!(control_flag = this->population->next_generation_selection_similarity(this->population_ensemble))) {
             return NULL;
         }
-        // TODO seg fault is here!
         this->population_ensemble->next_generation_similarity(this->population);
 
         time_t auxiliar_time;

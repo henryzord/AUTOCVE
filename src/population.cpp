@@ -10,7 +10,7 @@
 #define MAX_SIM 1
 
 Population::Population(PythonInterface *interface, int size_pop, double elite_portion, double mut_rate, double cross_rate, int n_classes) {
-    Solution::reset_index();  // TODO moved here to comply wit old code
+    Solution::reset_index();
     this->n_classes = n_classes;
 
     this->population_size = size_pop;
@@ -109,9 +109,6 @@ Population::~Population(){
     if(this->similarity_matrix_next_gen)
         free(this->similarity_matrix_next_gen);
 
-    // TODO was here before
-//    Solution::reset_index();
-
     free(this->population);
     free(this->population_rank);
     free(this->similarity_matrix);
@@ -132,8 +129,6 @@ void Population::breed(Solution* child1, Solution* child2){
      }
 }
 
-// TODO bug is here! (population_as_buffer = true)
-// TODO pipeline_string sometimes is passed as null to evaluating function!
 int Population::evaluate_next_gen_cv(int population_as_buffer) {
     char *pipeline_string=NULL;
     int *map_evaluation=(int*)malloc(sizeof(int)*this->next_gen_size);
@@ -550,9 +545,8 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
         else
             delete child2;
     }
-    // TODO seg fault is here!
     int return_flag=this->evaluate_next_gen_cv(true);
-    // TODO seg fault is here!
+
     if(!return_flag || return_flag==-1) //Any other exception than KeyboardException, just propagate with return NULL
         return return_flag;
 
