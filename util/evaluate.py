@@ -55,6 +55,7 @@ class ScorerHandler(object):
 
 
 def evaluate_population_holdout(pipelines_population, X, y, scoring, n_jobs, timeout_pip_sec, N_SPLITS=5, verbose=1, RANDOM_STATE=42):
+    # TODO must get this data beforehand!
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, test_size=0.2, random_state=RANDOM_STATE)
 
     try:
