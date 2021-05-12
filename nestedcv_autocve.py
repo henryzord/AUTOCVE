@@ -163,6 +163,14 @@ def run_external_fold(
 
         # logger.info("Starting: Dataset %s, external fold %d" % (dataset_name, n_external_fold))
 
+        if not os.path.exists(os.path.join(metadata_path, experiment_folder, dataset_name)):
+            os.mkdir(os.path.join(metadata_path, experiment_folder, dataset_name))
+
+        local_metadata = os.path.join(metadata_path, experiment_folder, dataset_name, 'sample_%02d_fold_%02d' % (1, n_external_fold))
+
+        os.mkdir(local_metadata)
+        os.chdir(local_metadata)
+
         random_state = 1
         seed = Random(random_state)
 
@@ -320,6 +328,12 @@ def get_combinations():
     grammar = 'grammarPBILlight'  # grammar without data transformations
     # grammar = 'grammarTPOT'  # grammar to be used with interpretable models
     max_evolution_time_secs = 3600  # same value used by EDNEL
+
+    # print('---------------------------------------------------')
+    # print('TODO change from 60 seconds to 3600!!!')
+    # print('---------------------------------------------------')
+    # time.sleep(2)
+
     max_pipeline_time_secs = 60  # same value used by EDNEL
     random_state = 1
     n_jobs = 1
