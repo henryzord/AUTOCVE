@@ -54,7 +54,6 @@ class ScorerHandler(object):
 
 
 def evaluate_population_holdout(pipelines_population, X, y, scoring, n_jobs, timeout_pip_sec, N_SPLITS=5, verbose=1, RANDOM_STATE=42):
-    # TODO must get this data beforehand!
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, test_size=0.2, random_state=RANDOM_STATE)
 
     try:
@@ -80,40 +79,42 @@ def evaluate_population_holdout(pipelines_population, X, y, scoring, n_jobs, tim
 
         pipelines_population = pipelines_population.split("|")
 
-        temp_folder = tempfile.mkdtemp()
-        filename_train = os.path.join(temp_folder, 'autocve_X_train.mmap')
-        filename_test = os.path.join(temp_folder, 'autocve_X_test.mmap')
+        # temp_folder = tempfile.mkdtemp()
+        # filename_train = os.path.join(temp_folder, 'autocve_X_train.mmap')
+        # filename_test = os.path.join(temp_folder, 'autocve_X_test.mmap')
 
         metric_population = []
         predict_population = []
-        evaluate_pipe_timeout = partial(evaluate_solution, verbose=verbose)
+        # evaluate_pipe_timeout = partial(evaluate_solution, verbose=verbose)
 
         # for train_index, test_index in zip(list_train_index, list_test_index):
 
-        if os.path.exists(filename_train):
-            os.unlink(filename_train)
-        if os.path.exists(filename_test):
-            os.unlink(filename_test)
-        _ = dump(X_train, filename_train)
-        _ = dump(X_test, filename_test)
+        # if os.path.exists(filename_train):
+        #     os.unlink(filename_train)
+        # if os.path.exists(filename_test):
+        #     os.unlink(filename_test)
+        # _ = dump(X_train, filename_train)
+        # _ = dump(X_test, filename_test)
+        #
+        # X_train = load(filename_train, mmap_mode='r')
+        # X_test = load(filename_test, mmap_mode='r')
 
-        X_train = load(filename_train, mmap_mode='r')
-        X_test = load(filename_test, mmap_mode='r')
-
-        result_pipeline = ParallelSilentTimeout(n_jobs=n_jobs, backend="loky", timeout=timeout_pip_sec)(
-            delayed(evaluate_pipe_timeout)(pipeline_str, X_train, X_test, y_train, y_test) for
-            pipeline_str in pipelines_population if pipeline_str is not None)
+        # result_pipeline = ParallelSilentTimeout(n_jobs=n_jobs, backend="loky", timeout=timeout_pip_sec)(
+        #     delayed(evaluate_pipe_timeout)(pipeline_str, X_train, X_test, y_train, y_test) for
+        #     pipeline_str in pipelines_population if pipeline_str is not None)
 
         metric_population_cv = []
         predict_population_cv = []
 
-        next_pipe = iter(result_pipeline)
+        # next_pipe = iter(result_pipeline)
         for pipe_id, pipe_str in enumerate(pipelines_population):
             if pipe_str is None:
                 metric_population_cv.append(None)
                 predict_population_cv.append(None)
             else:
-                result_solution = next(next_pipe)
+                result_solution = evaluate_solution(pipe_str, X_train, X_test, y_train, y_test)
+
+                # result_solution = next(next_pipe)
                 if isinstance(result_solution, TimeoutError):
                     if verbose > 0:
                         print("Timeout reach for pipeline: " + str(pipe_str))
@@ -134,7 +135,7 @@ def evaluate_population_holdout(pipelines_population, X, y, scoring, n_jobs, tim
                     metric_population_cv.append([scoring(ScorerHandler(*result_solution), y_test)])
                     predict_population_cv.append(result_solution[0])
 
-        del result_pipeline
+        # del result_pipeline
 
         if len(metric_population) == 0:
             metric_population = metric_population_cv
@@ -149,9 +150,10 @@ def evaluate_population_holdout(pipelines_population, X, y, scoring, n_jobs, tim
 
         # raises PermissionError on windows
         try:
-            os.unlink(filename_train)
-            os.unlink(filename_test)
-            os.rmdir(temp_folder)
+            pass
+            # os.unlink(filename_train)
+            # os.unlink(filename_test)
+            # os.rmdir(temp_folder)
         except PermissionError:
             pass  # leaves for OS do deal with it later
 
@@ -159,9 +161,10 @@ def evaluate_population_holdout(pipelines_population, X, y, scoring, n_jobs, tim
 
     except (KeyboardInterrupt, SystemExit) as e:
         try:
-            os.unlink(filename_train)
-            os.unlink(filename_test)
-            os.rmdir(temp_folder)
+            pass
+            # os.unlink(filename_train)
+            # os.unlink(filename_test)
+            # os.rmdir(temp_folder)
         except Exception as e:
             pass
 
