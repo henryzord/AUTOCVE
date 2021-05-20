@@ -306,18 +306,23 @@ int Population::evaluate_ensemble_next_gen(PopulationEnsemble *population_ensemb
             continue;
         }
 
-        npy_intp numpy_dimension[1], scores_dimension[2];
-        numpy_dimension[0]=this->predict_size;
+        npy_intp numpy_dimension[1];
+        npy_intp scores_dimension[2];
+
+        numpy_dimension[0] = this->predict_size;
         scores_dimension[0] = this->predict_size;
         scores_dimension[1] = n_classes;
+
         PyObject *predict_numpy=PyArray_SimpleNewFromData(1, numpy_dimension, NPY_DOUBLE, predict_ensemble);
         PyObject *scores_numpy=PyArray_SimpleNewFromData(2, scores_dimension, NPY_DOUBLE, scores_ensemble);
         double return_score;
 
         if(!this->interface_call->evaluate_predict_vector(predict_numpy, scores_numpy, &return_score)) {
             Py_XDECREF(predict_numpy);
+            Py_XDECREF(scores_numpy);
             free(class_count);
             free(predict_ensemble);
+            free(scores_ensemble);
             return NULL;
         }
         Py_XDECREF(predict_numpy);
@@ -430,7 +435,8 @@ int Population::evaluate_ensemble_population(PopulationEnsemble *population_ense
             continue;
         }
 
-        npy_intp numpy_dimension[1], scores_dimension[2];
+        npy_intp numpy_dimension[1];
+        npy_intp scores_dimension[2];
         numpy_dimension[0] = this->predict_size;
         scores_dimension[0] = this->predict_size;
         scores_dimension[1] = this->n_classes;
@@ -443,8 +449,10 @@ int Population::evaluate_ensemble_population(PopulationEnsemble *population_ense
         // calls the assigned fitness function
         if(!this->interface_call->evaluate_predict_vector(predict_numpy, scores_numpy, &return_score)) {
             Py_XDECREF(predict_numpy);
+            Py_XDECREF(scores_numpy);
             free(class_count);
             free(predict_ensemble);
+            free(scores_ensemble);
             return NULL;
         }
         Py_XDECREF(predict_numpy);
@@ -545,6 +553,8 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
         else
             delete child2;
     }
+    delete[] choice_mask;
+
     int return_flag=this->evaluate_next_gen_cv(true);
 
     if(!return_flag || return_flag==-1) //Any other exception than KeyboardException, just propagate with return NULL
@@ -630,7 +640,6 @@ int Population::next_generation_selection_similarity(PopulationEnsemble *populat
     this->compute_similarity();
     this->quick_sort_population();
 
-    delete[] choice_mask;
     return 1;
 }
 

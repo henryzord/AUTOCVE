@@ -123,6 +123,7 @@ int PopulationEnsemble::next_generation_similarity(Population *population_compon
         else
             delete child2;
     }
+    delete [] choice_mask;
 
     std::swap(this->population,this->next_gen);
     std::swap(this->score_population,this->score_next_gen);
@@ -171,8 +172,6 @@ int PopulationEnsemble::next_generation_similarity(Population *population_compon
 
     this->update_length_population();
     this->quick_sort_population();
-
-    delete [] choice_mask;
 
     return 1;
 }

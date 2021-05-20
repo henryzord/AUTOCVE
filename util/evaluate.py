@@ -149,13 +149,13 @@ def evaluate_population_holdout(pipelines_population, X, y, scoring, n_jobs, tim
         metric_population = [None if metrics is None else np.mean(metrics) for metrics in metric_population]
 
         # raises PermissionError on windows
-        try:
-            pass
-            # os.unlink(filename_train)
-            # os.unlink(filename_test)
-            # os.rmdir(temp_folder)
-        except PermissionError:
-            pass  # leaves for OS do deal with it later
+        # try:
+        #     pass
+        #     # os.unlink(filename_train)
+        #     # os.unlink(filename_test)
+        #     # os.rmdir(temp_folder)
+        # except PermissionError:
+        #     pass  # leaves for OS do deal with it later
 
         return metric_population, predict_population, predict_length
 

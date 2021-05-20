@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nestedcv_autocve.py" beforeDir="false" afterPath="$PROJECT_DIR$/nestedcv_autocve.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +52,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AUTOCVE-star" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -93,7 +93,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/nestedcv_autocve.py" />
-      <option name="PARAMETERS" value="--heap-size 4g --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --dataset-name banana --metadata-path C:\Users\henry\Projects\trash\ednel\nestedcv --n-internal-folds 3 --n-jobs 1" />
+      <option name="PARAMETERS" value="--heap-size 4g --datasets-path C:\Users\henry\Projects\ednel\keel_datasets_10fcv --dataset-name contraceptive --metadata-path C:\Users\henry\Projects\trash\ednel\nestedcv --n-internal-folds 3 --n-jobs 1" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -195,7 +195,14 @@
       <workItem from="1620233096600" duration="5189000" />
       <workItem from="1620777046010" duration="14000" />
       <workItem from="1620839409518" duration="472000" />
-      <workItem from="1620850593745" duration="1813000" />
+      <workItem from="1620850593745" duration="2465000" />
+      <workItem from="1620856052130" duration="405000" />
+      <workItem from="1620866517382" duration="550000" />
+      <workItem from="1620867872181" duration="375000" />
+      <workItem from="1621010496814" duration="28000" />
+      <workItem from="1621368172817" duration="2657000" />
+      <workItem from="1621384138017" duration="11000" />
+      <workItem from="1621437855042" duration="154000" />
     </task>
     <servers />
   </component>
@@ -235,11 +242,6 @@
           <line>88</line>
           <option name="timeStamp" value="171" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/nestedcv_autocve.py</url>
-          <line>234</line>
-          <option name="timeStamp" value="178" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -247,7 +249,7 @@
     <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script_debug_.coverage" NAME="AUTOCVE[EACOMP]_script[debug] Coverage Results" MODIFIED="1604411300292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$AUTOCVE_EACOMP__script.coverage" NAME="AUTOCVE[EACOMP]_script Coverage Results" MODIFIED="1605625127443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$testzilla.coverage" NAME="testzilla Coverage Results" MODIFIED="1620840174239" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop" />
-    <SUITE FILE_PATH="coverage/AUTOCVE$nestedcv_autocve.coverage" NAME="nestedcv_autocve Coverage Results" MODIFIED="1620852302010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AUTOCVE$nestedcv_autocve.coverage" NAME="nestedcv_autocve Coverage Results" MODIFIED="1620852524470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AUTOCVE$sample_datasets.coverage" NAME="sample_datasets Coverage Results" MODIFIED="1606397631853" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="D:/Users/Henry/Desktop" />
     <SUITE FILE_PATH="coverage/AUTOCVE$classifiers_test_script.coverage" NAME="classifiers_test_script Coverage Results" MODIFIED="1604410573315" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
