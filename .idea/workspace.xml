@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be89012a-b4ca-4f52-8726-c60e41dee1d4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nestedcv_autocve.py" beforeDir="false" afterPath="$PROJECT_DIR$/nestedcv_autocve.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AUTOCVE.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/AUTOCVE.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AUTOCVE.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/AUTOCVE.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/make_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/make_pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,7 +206,7 @@
       <workItem from="1621902679891" duration="891000" />
       <workItem from="1621978342302" duration="1103000" />
       <workItem from="1622657114278" duration="754000" />
-      <workItem from="1622658359706" duration="3183000" />
+      <workItem from="1622658359706" duration="3692000" />
     </task>
     <servers />
   </component>

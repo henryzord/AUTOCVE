@@ -25,7 +25,12 @@ static int PyAUTOCVE_init(PyAUTOCVE *self, PyObject *args, PyObject *kwargs){
     double elite_portion_ensemble=0.1, mut_rate_ensemble=0.1, cross_rate_ensemble=0.9;
     int cv_folds=5;
 
-    static char *keywords[]={"random_state","n_jobs","max_pipeline_time_secs","max_evolution_time_secs","grammar","generations","population_size_components","mutation_rate_components","crossover_rate_components","population_size_ensemble","mutation_rate_ensemble","crossover_rate_ensemble","scoring","cv_folds","verbose", NULL}; //NULL-terminated array
+    static char *keywords[] = {
+        (char*)"random_state", (char*)"n_jobs", (char*)"max_pipeline_time_secs", (char*)"max_evolution_time_secs",
+        (char*)"grammar", (char*)"generations", (char*)"population_size_components", (char*)"mutation_rate_components",
+        (char*)"crossover_rate_components", (char*)"population_size_ensemble", (char*)"mutation_rate_ensemble",
+        (char*)"crossover_rate_ensemble", (char*)"scoring", (char*)"cv_folds", (char*)"verbose", NULL
+    }; //NULL-terminated array
 
     if(!PyArg_ParseTupleAndKeywords(args,kwargs,"|$iiOisiiddiddOii",keywords, &seed, &n_jobs, &timeout_pip_sec, &timeout_evolution_process_sec, &grammar_file, &generations, &size_pop_components, &mut_rate_components, &cross_rate_components, &size_pop_ensemble, &mut_rate_ensemble, &cross_rate_ensemble, &scoring, &cv_folds, &verbose)) //Function and arguments |$ before keyword args
         return NULL;
@@ -76,7 +81,7 @@ static PyObject *PyAUTOCVE_optimize(PyAUTOCVE *self, PyObject *args, PyObject *k
     double subsample_data=1.0;
     int n_classes;
 
-    static char *keywords[]={"X", "y", "subsample_data", "n_classes", NULL}; //NULL-terminated array
+    static char *keywords[]={(char*)"X", (char*)"y", (char*)"subsample_data", (char*)"n_classes", NULL}; //NULL-terminated array
 
 
     if(!PyArg_ParseTupleAndKeywords(args,kwargs,"OO|$di",keywords, &data_X, &data_y, &subsample_data, &n_classes)) //Function and arguments |$ before keyword args
