@@ -16,7 +16,6 @@ def make_pipeline_str(pipeline_str, verbose=1):
 
         method_call_str = method_str[0].split("/")
 
-        attr_list_str = []
         attr_list_str = split_attr(method_str[1][0:len(method_str[1]) - 1])
 
         try:
@@ -45,13 +44,13 @@ def make_pipeline_str(pipeline_str, verbose=1):
             #           print(kwargs_method)
             method = getattr(imported_lib, method_call_str[1])(**kwargs_method)
             list_pip_methods.append(method)
-        except  Exception as e:
+        except Exception as e:
             if verbose > 0:
                 print("Load method error: " + str(method_str))
                 print(str(e))
             return None
 
-    # If there is justs one method, return it outside a pipeline (RFE methods doesn't work otherwise)
+    # If there is just one method, return it outside a pipeline (RFE methods doesn't work otherwise)
     if len(list_pip_methods) == 1:
         return list_pip_methods[0]
 

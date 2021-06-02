@@ -9,10 +9,35 @@
 #include <fstream>
 #include <sstream>  // stringstream
 #include <string.h>
-#include <time.h>
+#ifdef _WIN32
+    #include <Windows.h>
+#endif
 
 #define BUFFER_SIZE 10000
 
+
+void get_instant_time(struct timeval *time_pointer){
+    #ifdef _WIN32
+        // Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's
+        // This magic number is the number of 100 nanosecond intervals since January 1, 1601 (UTC)
+        // until 00:00:00 January 1, 1970
+        static const uint64_t EPOCH = ((uint64_t) 116444736000000000ULL);
+
+        SYSTEMTIME  system_time;
+        FILETIME    file_time;
+        uint64_t    time;
+
+        GetSystemTime( &system_time );
+        SystemTimeToFileTime( &system_time, &file_time );
+        time =  ((uint64_t)file_time.dwLowDateTime )      ;
+        time += ((uint64_t)file_time.dwHighDateTime) << 32;
+
+        time_pointer->tv_sec  = (long) ((time - EPOCH) / 10000000L);
+        time_pointer->tv_usec = (long) (system_time.wMilliseconds * 1000);
+    #else
+        gettimeofday(time_pointer, NULL);
+    #endif
+}
 
 AUTOCVEClass::AUTOCVEClass(
     int seed, int n_jobs, PyObject* timeout_pip_sec, int timeout_evolution_process_sec, char *grammar_file,
@@ -41,10 +66,10 @@ AUTOCVEClass::AUTOCVEClass(
     this->cv_folds=cv_folds;
     this->population=NULL;
     this->grammar=NULL;
-    this->interface=NULL;
+    this->python_interface=NULL;
     this->population_ensemble=NULL;
 
-    this->interface = new PythonInterface(this->n_jobs, this->timeout_pip_sec, this->scoring, this->cv_folds, this->verbose);
+    this->python_interface = new PythonInterface(this->n_jobs, this->timeout_pip_sec, this->scoring, this->cv_folds, this->verbose);
 }
 
 AUTOCVEClass::~AUTOCVEClass(){
@@ -57,8 +82,8 @@ AUTOCVEClass::~AUTOCVEClass(){
     if(this->grammar)
         delete this->grammar;
 
-    if(this->interface)
-        delete this->interface;
+    if(this->python_interface)
+        delete this->python_interface;
 
     free(this->grammar_file);
    
@@ -68,13 +93,13 @@ AUTOCVEClass::~AUTOCVEClass(){
 
 // main method
 int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, double subsample_data, int n_classes) {
-    time_t start, a1, a2;
-    time(&a1);
-    time(&start);
+    struct timeval start, a1, a2;
+    get_instant_time(&a1);
+    get_instant_time(&start);
 
     srand(this->seed);
 
-    if(!this->interface->load_dataset(data_X, data_y, subsample_data)) {
+    if(!this->python_interface->load_dataset(data_X, data_y, subsample_data)) {
         return NULL;
     }
 
@@ -88,7 +113,7 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
         delete this->population_ensemble;
     }
 
-    this->grammar = new Grammar(this->grammar_file, this->interface);
+    this->grammar = new Grammar(this->grammar_file, this->python_interface);
 
     std::ofstream evolution_log;
     evolution_log.open("loggerData.csv");
@@ -116,7 +141,7 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
     // population is the population of base classifiers (i.e. trees, Genetic Programming population)
     this->population = new Population(
-        this->interface, this->size_pop_components, this->elite_portion_components,
+        this->python_interface, this->size_pop_components, this->elite_portion_components,
         this->mut_rate_components, this->cross_rate_components, n_classes
     );
     // population_ensemble is the population of ensembles (i.e. binary arrays, Genetic Algorithm population)
@@ -148,9 +173,9 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
     char buffer[32];  // how long is the string to be printed at the terminal
 
-    time(&a2);
-    int time_difference = (int)difftime(a2, a1);
-    time(&a1);
+    get_instant_time(&a2);
+    int time_difference = (int)(a2.tv_sec - a1.tv_sec);
+    get_instant_time(&a1);
 
     evolution_log << 0 << "," << time_difference << ",";
     sprintf(buffer, "%03d              %#5d ", 0, time_difference);
@@ -172,9 +197,9 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
         }
         this->population_ensemble->next_generation_similarity(this->population);
 
-        time(&a2);
-        generation_time = (int)difftime(a2, a1);
-        time(&a1);
+        get_instant_time(&a2);
+        generation_time = (int)(a2.tv_sec - a1.tv_sec);
+        get_instant_time(&a1);
 
         evolution_log << i + 1 << "," << generation_time << ",";
 
@@ -188,7 +213,7 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
 
         // checks timeout
         if(
-            this->timeout_evolution_process_sec && (difftime(a2, start)) >=
+            this->timeout_evolution_process_sec && (int)(a2.tv_sec - start.tv_sec) >=
             this->timeout_evolution_process_sec-generation_time) {
             control_flag=-1;
         }
@@ -199,11 +224,11 @@ int AUTOCVEClass::run_genetic_programming(PyObject *data_X, PyObject *data_y, do
         }
     }
 
-//    PySys_WriteStdout("END PROCESS (%d secs)\n",(int)difftime(end, start));
+//    PySys_WriteStdout("END PROCESS (%d secs)\n",(int)(end.tv_sec - start.tv_sec));
 
     evolution_log.close();
 
-    if(!this->interface->unload_dataset()) {
+    if(!this->python_interface->unload_dataset()) {
         return NULL;
     }
     return 1;

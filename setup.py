@@ -8,7 +8,7 @@ AUTOCVE_modulename = Extension('AUTOCVE.AUTOCVE',
                                         "src/utility.cpp"],
                                include_dirs=[numpy.get_include()],
                                language='c++',
-                               extra_compile_args=['/std:c++latest' if os.name == 'nt' else '--std=c++11', '-O0']
+                               extra_compile_args=['/std:c++latest'] if os.name == 'nt' else ['--std=c++11']
                                )
 
 setup(

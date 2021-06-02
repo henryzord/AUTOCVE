@@ -171,7 +171,7 @@ def run_external_fold(
         os.mkdir(local_metadata)
         os.chdir(local_metadata)
 
-        random_state = 1
+        random_state = 42
         seed = Random(random_state)
 
         # logger.info('reading datasets')
@@ -313,7 +313,7 @@ def run_external_fold(
     finally:
         if some_exception is not None:
             # logger.error('Finished with exception set:', str(some_exception.args[0]))
-#             print(some_exception.args[0], file=sys.stderr)
+            # print(some_exception.args[0], file=sys.stderr)
             raise some_exception
         # else:
             # logger.info("Finished: Dataset %s, external fold %d" % (dataset_name, n_external_fold))
@@ -335,7 +335,7 @@ def get_combinations():
     # time.sleep(2)
 
     max_pipeline_time_secs = 60  # same value used by EDNEL
-    random_state = 1
+    random_state = 42
     n_jobs = 1
     scoring = unweighted_area_under_roc  # function was reviewed and is operating as intended
     verbose = 0  # shut up!
@@ -371,24 +371,6 @@ def get_combinations():
                 combinations += [comb]
 
     return combinations
-
-
-def read_dataset(path: str) -> Instances:
-    loader = Loader("weka.core.converters.ArffLoader")  # type: weka.core.converters.Loader
-
-    data = loader.load_file(path)
-    data.class_is_last()
-
-    filter_obj = javabridge.make_instance('Lweka/filters/unsupervised/instance/Randomize;', '()V')
-    javabridge.call(filter_obj, 'setRandomSeed', '(I)V', 1)
-    javabridge.call(filter_obj, 'setInputFormat', '(Lweka/core/Instances;)Z', data.jobject)
-    jtrain_data = javabridge.static_call(
-        'Lweka/filters/Filter;', 'useFilter',
-        '(Lweka/core/Instances;Lweka/filters/Filter;)Lweka/core/Instances;',
-        data.jobject, filter_obj
-    )
-    data = Instances(jtrain_data)
-    return data
 
 
 def get_params(args: argparse.Namespace) -> dict:
