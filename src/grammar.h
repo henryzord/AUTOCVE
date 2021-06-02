@@ -56,7 +56,7 @@ class Grammar{
     int constfloat_count;
     int nfeat_const;
 
-    public: Grammar(const char *filename, PythonInterface* interface);
+    public: Grammar(const char *filename, PythonInterface* python_interface);
     public: ~Grammar();
     private: NonTerminal* new_nonterminal(char *token);
     private: int find_nonterminal(char *token);

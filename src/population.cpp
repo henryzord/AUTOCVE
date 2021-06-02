@@ -9,7 +9,7 @@
 #define INVALID_SIMILARITY_PREDICT -1
 #define MAX_SIM 1
 
-Population::Population(PythonInterface *interface, int size_pop, double elite_portion, double mut_rate, double cross_rate, int n_classes) {
+Population::Population(PythonInterface *python_interface, int size_pop, double elite_portion, double mut_rate, double cross_rate, int n_classes) {
     Solution::reset_index();
     this->n_classes = n_classes;
 
@@ -28,7 +28,7 @@ Population::Population(PythonInterface *interface, int size_pop, double elite_po
     this->similarity_matrix_next_gen=NULL;
     this->predict_size=0;
     this->cross_rate=cross_rate, this->mut_rate=mut_rate, this->elite_size=(int)(((double)size_pop)*elite_portion);
-    this->interface_call=interface;
+    this->interface_call=python_interface;
 
     for(int i = 0; i < this->population_size; i++) {
         this->population[i] = NULL;

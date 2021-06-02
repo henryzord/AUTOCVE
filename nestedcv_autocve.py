@@ -44,15 +44,15 @@ def path_to_dataframe(dataset_path):
 
     value, metadata = path_to_arff(dataset_path)
 
-    df = pd.DataFrame(value, columns=metadata._attrnames)
+    df = pd.DataFrame(value, columns=list(metadata._attributes))
 
     attributes = metadata._attributes
-    for attr_name, (attr_type, rang_vals) in attributes.items():
-        if attr_type in ('nominal', 'string'):
+    for attr_name, attr_dict in attributes.items():
+        if attr_dict.type_name in ('nominal', 'string'):
             df[attr_name] = df[attr_name].apply(lambda x: x.decode('utf-8'))
 
             df[attr_name] = df[attr_name].astype('category')
-        elif attr_type == 'date':
+        elif attr_dict.type_name == 'date':
             raise TypeError('unsupported attribute type!')
         else:
             df[attr_name] = df[attr_name].astype(np.float32)

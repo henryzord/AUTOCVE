@@ -15,7 +15,7 @@
 char *process_token(char* buffer, int *nonterminal);
 
 /*Load grammar. First, the procedure reads a file containing the grammar described. After that, it connects all nonterminals with the respective expression.*/
-Grammar::Grammar(const char *filename, PythonInterface *interface){
+Grammar::Grammar(const char *filename, PythonInterface *python_interface){
     std::ifstream grammar_file;
     grammar_file.open(filename);
     if(!grammar_file.is_open())
@@ -25,7 +25,7 @@ Grammar::Grammar(const char *filename, PythonInterface *interface){
     this->nonterminal_set=NULL;
     this->constint_count=0;
     this->constfloat_count=0;
-    this->nfeat_const=interface->get_n_feat_dataset();
+    this->nfeat_const=python_interface->get_n_feat_dataset();
 
     char line[BUFFERSIZE];
     while(grammar_file.getline(line,BUFFERSIZE)){
