@@ -68,16 +68,6 @@ conda activate autocve
 pip install .
 ```
 
-Warning: use
-
-```bash
-pip install --global-option build_ext --global-option --compiler=mingw32 .
-```
-
-for minGW on Windows, and check this [link](https://github.com/Roche/pyreadstat/blob/master/windows_compilation.md) for
-further instructions if ld cannot find `-lmsvcr140`.
-
-
 ## Usage
 
 * **Note:** Use only one dataset per call.
