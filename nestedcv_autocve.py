@@ -23,11 +23,8 @@ from sklearn.metrics import roc_auc_score
 from sklearn.ensemble import VotingClassifier
 from sklearn.model_selection import StratifiedKFold
 
-import javabridge
 from weka.core import jvm
 from weka.core.classes import Random
-from weka.core.converters import Loader
-from weka.core.dataset import Instances
 
 from AUTOCVE.AUTOCVE import AUTOCVEClassifier
 from util.evaluate import unweighted_area_under_roc
@@ -327,12 +324,14 @@ def get_combinations():
     population_size_ensemble = 50  # same value used by EDNEL
     grammar = 'grammarPBILlight'  # grammar without data transformations
     # grammar = 'grammarTPOT'  # grammar to be used with interpretable models
-    max_evolution_time_secs = 3600  # same value used by EDNEL
+    # max_evolution_time_secs = 3600  # same value used by EDNEL
 
-    # print('---------------------------------------------------')
-    # print('TODO change from 60 seconds to 3600!!!')
-    # print('---------------------------------------------------')
-    # time.sleep(2)
+    max_evolution_time_secs = 60
+
+    print('---------------------------------------------------')
+    print('TODO change from 60 seconds to 3600!!!')
+    print('---------------------------------------------------')
+    time.sleep(2)
 
     max_pipeline_time_secs = 60  # same value used by EDNEL
     random_state = 42

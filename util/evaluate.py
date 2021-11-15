@@ -5,13 +5,12 @@ import warnings
 from collections import Counter
 from functools import partial
 from multiprocessing import TimeoutError
-from sklearn.metrics import roc_auc_score
 
 import numpy as np
-import pandas as pd
 from joblib import delayed
 from joblib import dump, load
 from joblib.externals.loky.process_executor import TerminatedWorkerError
+from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold, train_test_split
 
 from .joblib_silent_timeout import ParallelSilentTimeout
@@ -287,7 +286,6 @@ def evaluate_population(pipelines_population, X, y, scoring, n_jobs, timeout_pip
     if N_SPLITS > 0:
         return evaluate_population_cv(pipelines_population, X, y, scoring, n_jobs, timeout_pip_sec, N_SPLITS, verbose, RANDOM_STATE)
     return evaluate_population_holdout(pipelines_population, X, y, scoring, n_jobs, timeout_pip_sec, N_SPLITS, verbose, RANDOM_STATE)
-
 
 
 def evaluate_solution(
